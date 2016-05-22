@@ -1,0 +1,12 @@
+  "name": "election",
+  "description": "Welcome to Election UBDA App",
+  "keywords": [
+    "election",
+    "go",
+    "sample",
+    "poll"
+  ],
+  "image": "heroku/go:1.6",
+  "mount_dir": "src/gitlab.com/baligul.hasan/election",
+  "website": "https://github.com/Baligul/election",
+  "repository": "https://github.com/Baligul/election"
