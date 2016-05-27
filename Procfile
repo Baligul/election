@@ -1,1 +1,1 @@
-web: election
+web: ./election -port 
