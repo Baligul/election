@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "gitlab.com/baligul.hasan/election/routers"
+	_ "github.com/Baligul/election/routers"
 	"github.com/astaxie/beego"
 )
 

@@ -98,18 +98,6 @@
 			"ImportPath": "github.com/smartystreets/goconvey/convey/reporting",
 			"Comment": "1.6.0-10-g995f5b2",
 			"Rev": "995f5b2e021c69b8b028ba6d0b05c1dd500783db"
-		},
-		{
-			"ImportPath": "gitlab.com/baligul.hasan/election/controllers",
-			"Rev": "882e6432f863065bb9c7e2a17e6aa62e5e8bf84c"
-		},
-		{
-			"ImportPath": "gitlab.com/baligul.hasan/election/models",
-			"Rev": "882e6432f863065bb9c7e2a17e6aa62e5e8bf84c"
-		},
-		{
-			"ImportPath": "gitlab.com/baligul.hasan/election/routers",
-			"Rev": "882e6432f863065bb9c7e2a17e6aa62e5e8bf84c"
 		}
 	]
 }

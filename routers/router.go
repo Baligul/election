@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"gitlab.com/baligul.hasan/election/controllers"
+	"github.com/Baligul/election/controllers"
 	"github.com/astaxie/beego"
 )
 

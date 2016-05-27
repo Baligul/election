@@ -4,7 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
     _ "github.com/lib/pq"
-	models "gitlab.com/baligul.hasan/election/models"
+	models "github.com/Baligul/election/models"
 )
 
 func init() {
