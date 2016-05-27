@@ -7,6 +7,6 @@
     "poll"
   ],
   "image": "heroku/go:1.6",
-  "mount_dir": "src/gitlab.com/baligul.hasan/election",
+  "mount_dir": "src/github.com/Baligul/election",
   "website": "https://github.com/Baligul/election",
   "repository": "https://github.com/Baligul/election"
