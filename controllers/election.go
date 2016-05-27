@@ -82,7 +82,7 @@ func (e *ElectionController) View() {
 	o.Using("default")
     
     var voters []*models.Voter
-	num, err := o.QueryTable("voter").Filter("Name_english__icontains", "khan").Filter("Section_name_english__exact","GHER MOHABBAT KHA").All(&voters)
+	num, err := o.QueryTable("voter").Filter("Section_name_english__exact","GHER MOHABBAT KHA").All(&voters)
 
 	if err != orm.ErrNoRows && num > 0 {
 		e.Data["records"] = voters
