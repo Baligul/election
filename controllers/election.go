@@ -9,7 +9,7 @@ import (
 
 func init() {
     orm.RegisterDriver("postgres", orm.DRPostgres)
-    orm.RegisterDataBase("ec2-54-225-93-34.compute-1.amazonaws.com:5432", "postgres", "user=ggxssikrsehequ password=sQElIpN-CHqcFFNAx7mJO31Y3v dbname=da6obv8tnlvcev sslmode=require")
+    orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
     orm.RegisterModel(new(models.Voter))
 }
 
