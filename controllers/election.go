@@ -10,6 +10,7 @@ import (
 func init() {
     orm.RegisterDriver("postgres", orm.DRPostgres)
     orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
+    //orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
     orm.RegisterModel(new(models.Voter))
 }
 
@@ -82,7 +83,7 @@ func (e *ElectionController) View() {
 	o.Using("default")
     
     var voters []*models.Voter
-	num, err := o.QueryTable("voter").Filter("Section_name_english__exact","GHER MOHABBAT KHA").All(&voters)
+	num, err := o.QueryTable("voter").Filter("Religion_english__exact","Muslim").All(&voters)
 
 	if err != orm.ErrNoRows && num > 0 {
 		e.Data["records"] = voters

@@ -25,7 +25,7 @@
         <ul class="nav navbar-nav">
           <li><a href="/">Home</a></li>
           <li class="dropdown">
-            <a href="/election/view" class="dropdown-toggle" data-toggle="dropdown">See Records <b class="caret"></b></a>
+            <a href="/election/view" class="dropdown-toggle" data-toggle="dropdown">See Records</a>
           </li>
         </ul>
       </div><!--/.nav-collapse -->

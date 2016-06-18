@@ -18,6 +18,8 @@ type Voter struct {
     Ac_name_hindi               string `form:"acnamehindi"`
     Section_name_english        string `form:"sectionnameenglish"`
     Section_name_hindi          string `form:"sectionnamehindi"`
+    Religion_english            string `form:"religionenglish"`
+    Religion_hindi              string `form:"religionhindi"`
 }
 
 func (a *Voter) TableName() string {
