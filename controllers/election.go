@@ -18,47 +18,84 @@ type ElectionController struct {
 	beego.Controller
 }
 
-func (e *ElectionController) Home() {
+func 
+(e *ElectionController) Home() {
 	e.Layout = "basic-layout.tpl"
 	e.LayoutSections = make(map[string]string)
 	e.LayoutSections["Header"] = "header.tpl"
 	e.LayoutSections["Footer"] = "footer.tpl"
 	e.TplName = "election/home.tpl"
-}
-
-/*
-func (e *ElectionController) Update() {
-	o := orm.NewOrm()
+    
+    var (
+        votersCount int64
+        muslimVotersCount int64
+        otherVotersCount int64
+        maleVotersCount int64
+        femaleVotersCount int64
+        err interface{}
+    )
+    
+    o := orm.NewOrm()
 	o.Using("default")
-	flash := beego.NewFlash()
+    qs := o.QueryTable("voter")
+    
+    flash := beego.ReadFromRequest(&e.Controller)
 
-	// convert the string value to an int
-	if articleId, err := strconv.Atoi(e.Ctx.Input.Param(":id")); err == nil {
-		article := models.Article{Id: articleId}
-		// attempt to load the record from the database
-		if o.Read(&article) == nil {
-			// set the Client and Url properties to arbitrary values
-			article.Client = "Sitepoint"
-			article.Url = "http://www.google.com"
-			if num, err := o.Update(&article); err == nil {
-				flash.Notice("Record Was Updated.")
-				flash.Store(&e.Controller)
-				beego.Info("Record Was Updated. ", num)
-			}
-		} else {
-			flash.Notice("Record Was NOT Updated.")
-			flash.Store(&e.Controller)
-			beego.Error("Couldn't find article matching id: ", articleId)
-		}
-	} else {
-		flash.Notice("Record Was NOT Updated.")
-		flash.Store(&e.Controller)
-		beego.Error("Couldn't convert id from a string to a number. ", err)
+	if ok := flash.Data["error"]; ok != "" {
+		// Display error messages
+		e.Data["errors"] = ok
 	}
 
-	// redirect afterwards
-	e.Redirect("/e/view", 302)
-}*/
+	if ok := flash.Data["notice"]; ok != "" {
+		// Display error messages
+		e.Data["notices"] = ok
+	}
+    
+    votersCount, err = qs.Count()
+    
+    if err != orm.ErrNoRows && votersCount > 0 {
+        e.Data["VotersCount"] = votersCount
+	} else {
+        e.Data["VotersCount"] = "No voters found"
+    }
+    
+    muslimVotersCount, err = qs.Filter("Religion_english__exact", "Muslim").Count()
+    
+    if err != orm.ErrNoRows && muslimVotersCount > 0 {
+        e.Data["MuslimVotersCount"] = muslimVotersCount
+	} else {
+        e.Data["MuslimVotersCount"] = "No muslim voters found"
+    }
+    
+    otherVotersCount, err = qs.Filter("Religion_english__exact", "Other").Count()
+    
+    if err != orm.ErrNoRows && otherVotersCount > 0 {
+        e.Data["OtherVotersCount"] = otherVotersCount
+	} else {
+        e.Data["OtherVotersCount"] = "No other voters found"
+    }   
+    
+    maleVotersCount, err = qs.Filter("Gender__exact", "M").Count()
+    
+    if err != orm.ErrNoRows && maleVotersCount > 0 {
+        e.Data["MaleVotersCount"] = maleVotersCount
+	} else {
+        e.Data["MaleVotersCount"] = "No male voters found"
+    }   
+    
+    femaleVotersCount, err = qs.Filter("Gender__exact", "F").Count()
+    
+    if err != orm.ErrNoRows && femaleVotersCount > 0 {
+        e.Data["FemaleVotersCount"] = femaleVotersCount
+	} else {
+        e.Data["FemaleVotersCount"] = "No female voters found"
+    }      
+    
+    e.Data["MuslimVotersPercentage"] = (float64(muslimVotersCount) / float64(votersCount)) * 100
+    e.Data["OtherVotersPercentage"] = (float64(otherVotersCount) / float64(votersCount)) * 100
+    e.Data["MaleVotersPercentage"] = (float64(maleVotersCount) / float64(votersCount)) * 100
+    e.Data["FemaleVotersPercentage"] = (float64(femaleVotersCount) / float64(votersCount)) * 100
+}
 
 func (e *ElectionController) View() {
 	e.Layout = "basic-layout.tpl"
@@ -66,7 +103,19 @@ func (e *ElectionController) View() {
 	e.LayoutSections["Header"] = "header.tpl"
 	e.LayoutSections["Footer"] = "footer.tpl"
 	e.TplName = "election/view.tpl"
-
+    
+    var (
+        num int64
+        votersCount int64
+        criteriaVotersCount int64
+        voters []*models.Voter
+        err interface{}
+    )
+    
+    o := orm.NewOrm()
+	o.Using("default")
+    qs := o.QueryTable("voter")
+    
 	flash := beego.ReadFromRequest(&e.Controller)
 
 	if ok := flash.Data["error"]; ok != "" {
@@ -78,19 +127,59 @@ func (e *ElectionController) View() {
 		// Display error messages
 		e.Data["notices"] = ok
 	}
-
-	o := orm.NewOrm()
-	o.Using("default")
     
-    var voters []*models.Voter
-	num, err := o.QueryTable("voter").Filter("Religion_english__exact","Muslim").All(&voters)
-
-	if err != orm.ErrNoRows && num > 0 {
+    gender := e.GetString("gender")
+    
+    if gender == "male" {
+        qs = qs.Filter("Gender__exact", "M")
+    }
+    
+    if gender == "female" {
+        qs = qs.Filter("Gender__exact", "F")
+    }
+    
+    acname := e.GetString("acname")
+    if acname != "" {
+        qs = qs.Filter("Ac_name_english__exact", acname)
+    }
+    
+    district := e.GetString("district")
+    if district != "" {
+        qs = qs.Filter("District_name_english__exact", district)
+    }
+    
+    sectionname := e.GetString("sectionname")
+    if sectionname != "" {
+        qs = qs.Filter("Section_name_english__exact", sectionname)
+    }
+    
+    religion := e.GetString("religion")
+    
+    if religion == "Muslim" {
+        qs = qs.Filter("Religion_english__exact", "Muslim")
+    }
+    
+    if religion == "Other" {
+        qs = qs.Filter("Religion_english__exact", "Other")
+    }
+    
+    num, err = qs.Limit(1000).All(&voters)
+    criteriaVotersCount, err = qs.Count()
+    
+    voterOrm := orm.NewOrm()
+	voterOrm.Using("default")
+    votersCount, err = voterOrm.QueryTable("voter").Count()
+    
+    if err != orm.ErrNoRows && num > 0 {
 		e.Data["records"] = voters
         e.Data["counts"] = num
+        votersCountPercentage := (float64(criteriaVotersCount) / float64(votersCount)) * 100
+        e.Data["CriteriaVotersCount"] = criteriaVotersCount
+        e.Data["CriteriaVotersPercentage"] = votersCountPercentage
 	} else {
-        panic(err)
+        e.Data["counts"] = "No voters found with this criteria. Please try again!"
     }
+    
     /*
 
     db, err := sql.Open("postgres", "user=member password= dbname=election sslmode=disable")
@@ -124,4 +213,12 @@ func (e *ElectionController) View() {
     }*/
     
     //e.Data["records"] = voters
+}
+
+func (e *ElectionController) Form() {
+	e.Layout = "basic-layout.tpl"
+	e.LayoutSections = make(map[string]string)
+	e.LayoutSections["Header"] = "header.tpl"
+	e.LayoutSections["Footer"] = "footer.tpl"
+	e.TplName = "election/view.tpl"
 }
