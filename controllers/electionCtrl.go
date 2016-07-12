@@ -48,8 +48,8 @@ import (
 
 func init() {
     orm.RegisterDriver("postgres", orm.DRPostgres)
-    //orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
-    orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
+    orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
+    //orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
     orm.RegisterModel(new(models.Voter))
 }
 
