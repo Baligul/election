@@ -14,6 +14,7 @@ import (
 )
 
 func init() {
+    beego.Router("/", &controllers.ElectionController{}, "get:Home")
     beego.Router("/api/voters", &controllers.ElectionController{}, "*:GetVoters")
     beego.Router("/api/statistic", &controllers.ElectionController{}, "post:GetStatistic")
     beego.Router("/api/statistics", &controllers.ElectionController{}, "post:GetStatistics")

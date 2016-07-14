@@ -1484,3 +1484,11 @@ func (e *ElectionController) GetStatistics() {
     }
     e.ServeJSON()
 }
+
+func (e *ElectionController) Home() {
+    responseStatus := models.NewResponseStatus()
+    responseStatus.Response = "ok"
+    responseStatus.Message = "This API is up and running!"
+    e.Data["json"] = &responseStatus
+    e.ServeJSON()
+}
