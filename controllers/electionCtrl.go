@@ -36,6 +36,7 @@
 package controllers
 
 import (
+    "fmt"
     "encoding/json"
     "errors"
 
@@ -79,8 +80,8 @@ func (e *ElectionController) GetVoters() {
     err = json.Unmarshal(inputJson, &query)
 	if err != nil {
         responseStatus := models.NewResponseStatus()
-        responseStatus.Response = "error"
-        responseStatus.Message = "Invalid Json. Unable to parse."
+        responseStatus.Response = "error:"
+        responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
         responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
         e.ServeJSON()

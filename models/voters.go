@@ -39,8 +39,8 @@ type Voter struct {
     Relation_name_hindi         string `form:"relationnamehindi json:"relation_name_hindi"`
     Gender                      string `form:"gender json:"gender"`
     Id_card_number              string `form:"idcardnumber json:"id_card_number"`
-    District_name_hindi         string `form:"districtnameenglish json:"district_name_hindi"`
-    District_name_english       string `form:"districtnamehindi json:"district_name_english"`
+    District_name_hindi         string `form:"districtnamehindi json:"district_name_hindi"`
+    District_name_english       string `form:"districtnameenglish json:"district_name_english"`
     Ac_name_english             string `form:"acnameenglish json:"ac_name_english"`
     Ac_name_hindi               string `form:"acnamehindi json:"ac_name_hindi"`
     Section_name_english        string `form:"sectionnameenglish json:"section_name_english"`
