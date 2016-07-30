@@ -1,30 +1,33 @@
 package models
 
 /* Voters
-[
-    {
-        "voter_id":2,
-        "ac_number":3,
-        "part_number":5,
-        "section_number":34,
-        "serial_number_in_part":23,
-        "name_english":"baligul hasan",
-        "name_hindi":"बलिग",
-        "relation_name_english":"Hasan",
-        "relation_name_hindi":"हसन",
-        "gender":"M",
-        "id_card_number":"SJKJFF132JH",    
-        "district_name_hindi":"मुरादाबाद",
-        "district_name_english":"Moradabad",
-        "ac_name_english":"Moradabad Urban",
-        "ac_name_hindi":"मुरादाबाद नगर",
-        "section_name_english":"Civil Lines",
-        "section_name_hindi":"सिविल लाइन्स",
-        "religion_english":"Muslim",
-        "religion_hindi":"मुसलमान",
-        "age":34 
-    }
-]
+{
+    total:1900234
+    [
+        {
+            "voter_id":2,
+            "ac_number":3,
+            "part_number":5,
+            "section_number":34,
+            "serial_number_in_part":23,
+            "name_english":"baligul hasan",
+            "name_hindi":"बलिग",
+            "relation_name_english":"Hasan",
+            "relation_name_hindi":"हसन",
+            "gender":"M",
+            "id_card_number":"SJKJFF132JH",    
+            "district_name_hindi":"मुरादाबाद",
+            "district_name_english":"Moradabad",
+            "ac_name_english":"Moradabad Urban",
+            "ac_name_hindi":"मुरादाबाद नगर",
+            "section_name_english":"Civil Lines",
+            "section_name_hindi":"सिविल लाइन्स",
+            "religion_english":"Muslim",
+            "religion_hindi":"मुसलमान",
+            "age":34 
+        }
+    ]
+}
 */
 
 type Voter struct {
@@ -50,6 +53,10 @@ type Voter struct {
     Age                         int    `form:"age json:"age"`
 }
 
+type Voters struct {
+    Total   int64   `json:"total"`
+    Voters  []*Voter `json:"voters"`
+}
 
 // Queries
 /*{

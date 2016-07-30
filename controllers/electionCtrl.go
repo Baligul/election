@@ -72,6 +72,8 @@ func (e *ElectionController) GetVoters() {
 		votersHubli          []*models.Voter
 	)
 
+	votersWithTotal := new(models.Voters)
+
 	err := errors.New("Errors")
 	err = nil
 
@@ -92,6 +94,7 @@ func (e *ElectionController) GetVoters() {
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
+		e.Data["total"] = 0
 		e.ServeJSON()
 	}
 
@@ -398,13 +401,17 @@ func (e *ElectionController) GetVoters() {
 	if len(query.DistrictNameEnglish) == 0 && len(query.DistrictNameHindi) == 0 && len(query.DistrictNumber) == 0 {
 		for _, state := range query.StateNumber {
 			if state == 27 {
-				votersCountRampur, err = qsRampur.Limit(limit, offset).All(&votersRampur)
-				votersCountMoradabad, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
+				votersCountRampur, _ = qsRampur.Count()
+				_, err = qsRampur.Limit(limit, offset).All(&votersRampur)
+				votersCountMoradabad, _ = qsMoradabad.Count()
+				_, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
 			}
 
 			if state == 12 {
-				votersCountBangalore, err = qsBangalore.Limit(limit, offset).All(&votersBangalore)
-				votersCountHubli, err = qsHubli.Limit(limit, offset).All(&votersHubli)
+				votersCountBangalore, _ = qsBangalore.Count()
+				_, err = qsBangalore.Limit(limit, offset).All(&votersBangalore)
+				votersCountHubli, _ = qsHubli.Count()
+				_, err = qsHubli.Limit(limit, offset).All(&votersHubli)
 			}
 
 		}
@@ -413,33 +420,39 @@ func (e *ElectionController) GetVoters() {
 	// District Name Hindi
 	for _, districtNameHindi := range query.DistrictNameHindi {
 		if districtNameHindi == "मुरादाबाद" {
-			votersCountMoradabad, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
+			votersCountMoradabad, _ = qsMoradabad.Count()
+			_, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
 		}
 
 		if districtNameHindi == "रामपुर" {
-			votersCountRampur, err = qsRampur.Limit(limit, offset).All(&votersRampur)
+			votersCountRampur, _ = qsRampur.Count()
+			_, err = qsRampur.Limit(limit, offset).All(&votersRampur)
 		}
 	}
 
 	// District Name English
 	for _, districtNameEnglish := range query.DistrictNameEnglish {
 		if districtNameEnglish == "Moradabad" || districtNameEnglish == "moradabad" {
-			votersCountMoradabad, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
+			votersCountMoradabad, _ = qsMoradabad.Count()
+			_, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
 		}
 
 		if districtNameEnglish == "Rampur" || districtNameEnglish == "rampur" {
-			votersCountRampur, err = qsRampur.Limit(limit, offset).All(&votersRampur)
+			votersCountRampur, _ = qsRampur.Count()
+			_, err = qsRampur.Limit(limit, offset).All(&votersRampur)
 		}
 	}
 
 	// Get voters for each district
 	for _, district := range query.DistrictNumber {
 		if district == 20 {
-			votersCountRampur, err = qsRampur.Limit(limit, offset).All(&votersRampur)
+			votersCountRampur, _ = qsRampur.Count()
+			_, err = qsRampur.Limit(limit, offset).All(&votersRampur)
 		}
 
 		if district == 19 {
-			votersCountMoradabad, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
+			votersCountMoradabad, _ = qsMoradabad.Count()
+			_, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
 		}
 	}
 
@@ -447,8 +460,12 @@ func (e *ElectionController) GetVoters() {
 	voters = append(voters, votersBangalore...)
 	voters = append(voters, votersHubli...)
 
+	totalVotersCount := votersCountRampur + votersCountMoradabad + votersCountBangalore + votersCountHubli
+
 	if votersCountRampur > 0 || votersCountMoradabad > 0 || votersCountBangalore > 0 || votersCountHubli > 0 {
-		e.Data["json"] = voters
+		votersWithTotal.Total = totalVotersCount
+		votersWithTotal.Voters = voters
+		e.Data["json"] = votersWithTotal
 	} else {
 		responseStatus := models.NewResponseStatus()
 		responseStatus.Response = "ok"
