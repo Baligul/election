@@ -39,6 +39,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 
 	models "github.com/Baligul/election/models"
 
@@ -126,92 +127,128 @@ func (e *ElectionController) GetVoters() {
 	// Apply filters for each query string
 	// Voter Id
 	for _, voterId := range query.VoterID {
-		condVoterId = condVoterId.Or("Voter_id__exact", voterId)
+		if voterId > 0 {
+			condVoterId = condVoterId.Or("Voter_id__exact", voterId)
+		}
 	}
 
 	// Ac Number
 	for _, acNumber := range query.AcNumber {
-		condAcNumber = condAcNumber.Or("Ac_number__exact", acNumber)
+		if acNumber > 0 {
+			condAcNumber = condAcNumber.Or("Ac_number__exact", acNumber)
+		}
 	}
 
 	// Part Number
 	for _, partNumber := range query.PartNumber {
-		condPartNumber = condPartNumber.Or("Part_number__exact", partNumber)
+		if partNumber > 0 {
+			condPartNumber = condPartNumber.Or("Part_number__exact", partNumber)
+		}
 	}
 
 	// Section Number
 	for _, sectionNumber := range query.SectionNumber {
-		condSectionNumber = condSectionNumber.Or("Section_number__exact", sectionNumber)
+		if sectionNumber > 0 {
+			condSectionNumber = condSectionNumber.Or("Section_number__exact", sectionNumber)
+		}
 	}
 
 	// Serial Number In Part
 	for _, serialNumberInPart := range query.SerialNumberInPart {
-		condSerialNumberInPart = condSerialNumberInPart.Or("Serial_number_in_part__exact", serialNumberInPart)
+		if serialNumberInPart > 0 {
+			condSerialNumberInPart = condSerialNumberInPart.Or("Serial_number_in_part__exact", serialNumberInPart)
+		}
 	}
 
 	// Name English
 	for _, nameEnglish := range query.NameEnglish {
-		condNameEnglish = condNameEnglish.Or("Name_english__icontains", nameEnglish)
+		if len(strings.TrimSpace(nameEnglish)) > 0 {
+			condNameEnglish = condNameEnglish.Or("Name_english__icontains", nameEnglish)
+		}
 	}
 
 	// Name Hindi
 	for _, nameHindi := range query.NameHindi {
-		condNameHindi = condNameHindi.Or("Name_hindi__icontains", nameHindi)
+		if len(strings.TrimSpace(nameHindi)) > 0 {
+			condNameHindi = condNameHindi.Or("Name_hindi__icontains", nameHindi)
+		}
 	}
 
 	// Relation Name English
 	for _, relationNameEnglish := range query.RelationNameEnglish {
-		condRelationNameEnglish = condRelationNameEnglish.Or("Relation_name_english__icontains", relationNameEnglish)
+		if len(strings.TrimSpace(relationNameEnglish)) > 0 {
+			condRelationNameEnglish = condRelationNameEnglish.Or("Relation_name_english__icontains", relationNameEnglish)
+		}
 	}
 
 	// Relation Name Hindi
 	for _, relationNameHindi := range query.RelationNameHindi {
-		condRelationNameHindi = condRelationNameHindi.Or("Relation_name_hindi__icontains", relationNameHindi)
+		if len(strings.TrimSpace(relationNameHindi)) > 0 {
+			condRelationNameHindi = condRelationNameHindi.Or("Relation_name_hindi__icontains", relationNameHindi)
+		}
 	}
 
 	// Gender
 	for _, gender := range query.Gender {
-		condGender = condGender.Or("Gender__exact", gender)
+		if gender == "M" || gender == "F" {
+			condGender = condGender.Or("Gender__exact", gender)
+		}
 	}
 
 	// ID Card Number
 	for _, idCardNumber := range query.NameHindi {
-		condIdCardNumber = condIdCardNumber.Or("Id_card_number__exact", idCardNumber)
+		if len(strings.TrimSpace(idCardNumber)) > 0 {
+			condIdCardNumber = condIdCardNumber.Or("Id_card_number__exact", idCardNumber)
+		}
 	}
 
 	// Ac Name English
 	for _, acNameEnglish := range query.AcNameEnglish {
-		condAcNameEnglish = condAcNameEnglish.Or("Ac_name_english__icontains", acNameEnglish)
+		if len(strings.TrimSpace(acNameEnglish)) > 0 {
+			condAcNameEnglish = condAcNameEnglish.Or("Ac_name_english__icontains", acNameEnglish)
+		}
 	}
 
 	// Ac Name Hindi
 	for _, acNameHindi := range query.AcNameHindi {
-		condAcNameHindi = condAcNameHindi.Or("Ac_name_hindi__icontains", acNameHindi)
+		if len(strings.TrimSpace(acNameHindi)) > 0 {
+			condAcNameHindi = condAcNameHindi.Or("Ac_name_hindi__icontains", acNameHindi)
+		}
 	}
 
 	// Section Name English
 	for _, sectionNameEnglish := range query.SectionNameEnglish {
-		condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__icontains", sectionNameEnglish)
+		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
+			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__icontains", sectionNameEnglish)
+		}
 	}
 
 	// Section Name Hindi
 	for _, sectionNameHindi := range query.SectionNameHindi {
-		condSectionNameHindi = condSectionNameHindi.Or("Section_name_hindi__ilike", sectionNameHindi)
+		if len(strings.TrimSpace(sectionNameHindi)) > 0 {
+			condSectionNameHindi = condSectionNameHindi.Or("Section_name_hindi__ilike", sectionNameHindi)
+		}
 	}
 
 	//Religion English
 	for _, religionEnglish := range query.ReligionEnglish {
-		condReligionEnglish = condReligionEnglish.Or("Religion_english__exact", religionEnglish)
+		if len(strings.TrimSpace(religionEnglish)) > 0 {
+			condReligionEnglish = condReligionEnglish.Or("Religion_english__exact", religionEnglish)
+		}
 	}
 
 	// Religion Hindi
 	for _, religionHindi := range query.ReligionHindi {
-		condReligionHindi = condReligionHindi.Or("Religion_hindi__exact", religionHindi)
+		if len(strings.TrimSpace(religionHindi)) > 0 {
+			condReligionHindi = condReligionHindi.Or("Religion_hindi__exact", religionHindi)
+		}
 	}
 
 	// Age
 	for _, age := range query.Age {
-		condAge = condAge.Or("Age__exact", age)
+		if age > 0 {
+			condAge = condAge.Or("Age__exact", age)
+		}
 	}
 
 	if condVoterId != nil && !condVoterId.IsEmpty() {
@@ -521,44 +558,61 @@ func (e *ElectionController) GetStatistic() {
 	condSectionNameHindi := orm.NewCondition()
 	condAge := orm.NewCondition()
 
+	// Apply filters for each query string
 	// Ac Number
 	for _, acNumber := range query.AcNumber {
-		condAcNumber = condAcNumber.Or("Ac_number__exact", acNumber)
+		if acNumber > 0 {
+			condAcNumber = condAcNumber.Or("Ac_number__exact", acNumber)
+		}
 	}
 
 	// Part Number
 	for _, partNumber := range query.PartNumber {
-		condPartNumber = condPartNumber.Or("Part_number__exact", partNumber)
+		if partNumber > 0 {
+			condPartNumber = condPartNumber.Or("Part_number__exact", partNumber)
+		}
 	}
 
 	// Section Number
 	for _, sectionNumber := range query.SectionNumber {
-		condSectionNumber = condSectionNumber.Or("Section_number__exact", sectionNumber)
+		if sectionNumber > 0 {
+			condSectionNumber = condSectionNumber.Or("Section_number__exact", sectionNumber)
+		}
 	}
 
 	// Ac Name English
 	for _, acNameEnglish := range query.AcNameEnglish {
-		condAcNameEnglish = condAcNameEnglish.Or("Ac_name_english__icontains", acNameEnglish)
+		if len(strings.TrimSpace(acNameEnglish)) > 0 {
+			condAcNameEnglish = condAcNameEnglish.Or("Ac_name_english__icontains", acNameEnglish)
+		}
 	}
 
 	// Ac Name Hindi
 	for _, acNameHindi := range query.AcNameHindi {
-		condAcNameHindi = condAcNameHindi.Or("Ac_name_hindi__icontains", acNameHindi)
+		if len(strings.TrimSpace(acNameHindi)) > 0 {
+			condAcNameHindi = condAcNameHindi.Or("Ac_name_hindi__icontains", acNameHindi)
+		}
 	}
 
 	// Section Name English
 	for _, sectionNameEnglish := range query.SectionNameEnglish {
-		condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__icontains", sectionNameEnglish)
+		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
+			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__icontains", sectionNameEnglish)
+		}
 	}
 
 	// Section Name Hindi
 	for _, sectionNameHindi := range query.SectionNameHindi {
-		condSectionNameHindi = condSectionNameHindi.Or("Section_name_hindi__ilike", sectionNameHindi)
+		if len(strings.TrimSpace(sectionNameHindi)) > 0 {
+			condSectionNameHindi = condSectionNameHindi.Or("Section_name_hindi__ilike", sectionNameHindi)
+		}
 	}
 
 	// Age
 	for _, age := range query.Age {
-		condAge = condAge.Or("Age__exact", age)
+		if age > 0 {
+			condAge = condAge.Or("Age__exact", age)
+		}
 	}
 
 	if condAcNumber != nil && !condAcNumber.IsEmpty() {
@@ -942,83 +996,115 @@ func (e *ElectionController) GetStatistics() {
 	// Apply filters for each query string
 	// Ac Number Query
 	for _, acNumber := range queries.Query.AcNumber {
-		condAcNumberQuery = condAcNumberQuery.Or("Ac_number__exact", acNumber)
+		if acNumber > 0 {
+			condAcNumberQuery = condAcNumberQuery.Or("Ac_number__exact", acNumber)
+		}
 	}
 
 	// Apply filters for each query string
 	// Ac Number Scope
 	for _, acNumber := range queries.Scope.AcNumber {
-		condAcNumberScope = condAcNumberScope.Or("Ac_number__exact", acNumber)
+		if acNumber > 0 {
+			condAcNumberScope = condAcNumberScope.Or("Ac_number__exact", acNumber)
+		}
 	}
 
 	// Part Number Query
 	for _, partNumber := range queries.Query.PartNumber {
-		condPartNumberQuery = condPartNumberQuery.Or("Part_number__exact", partNumber)
+		if partNumber > 0 {
+			condPartNumberQuery = condPartNumberQuery.Or("Part_number__exact", partNumber)
+		}
 	}
 
 	// Part Number Scope
 	for _, partNumber := range queries.Scope.PartNumber {
-		condPartNumberScope = condPartNumberScope.Or("Part_number__exact", partNumber)
+		if partNumber > 0 {
+			condPartNumberScope = condPartNumberScope.Or("Part_number__exact", partNumber)
+		}
 	}
 
 	// Section Number Query
 	for _, sectionNumber := range queries.Query.SectionNumber {
-		condSectionNumberQuery = condSectionNumberQuery.Or("Section_number__exact", sectionNumber)
+		if sectionNumber > 0 {
+			condSectionNumberQuery = condSectionNumberQuery.Or("Section_number__exact", sectionNumber)
+		}
 	}
 
 	// Section Number Scope
 	for _, sectionNumber := range queries.Scope.SectionNumber {
-		condSectionNumberScope = condSectionNumberScope.Or("Section_number__exact", sectionNumber)
+		if sectionNumber > 0 {
+			condSectionNumberScope = condSectionNumberScope.Or("Section_number__exact", sectionNumber)
+		}
 	}
 
 	// Ac Name English Query
 	for _, acNameEnglish := range queries.Query.AcNameEnglish {
-		condAcNameEnglishQuery = condAcNameEnglishQuery.Or("Ac_name_english__icontains", acNameEnglish)
+		if len(strings.TrimSpace(acNameEnglish)) > 0 {
+			condAcNameEnglishQuery = condAcNameEnglishQuery.Or("Ac_name_english__icontains", acNameEnglish)
+		}
 	}
 
 	// Ac Name English Scope
 	for _, acNameEnglish := range queries.Scope.AcNameEnglish {
-		condAcNameEnglishScope = condAcNameEnglishScope.Or("Ac_name_english__icontains", acNameEnglish)
+		if len(strings.TrimSpace(acNameEnglish)) > 0 {
+			condAcNameEnglishScope = condAcNameEnglishScope.Or("Ac_name_english__icontains", acNameEnglish)
+		}
 	}
 
 	// Ac Name Hindi Query
 	for _, acNameHindi := range queries.Query.AcNameHindi {
-		condAcNameHindiQuery = condAcNameHindiQuery.Or("Ac_name_hindi__icontains", acNameHindi)
+		if len(strings.TrimSpace(acNameHindi)) > 0 {
+			condAcNameHindiQuery = condAcNameHindiQuery.Or("Ac_name_hindi__icontains", acNameHindi)
+		}
 	}
 
 	// Ac Name Hindi Scope
 	for _, acNameHindi := range queries.Scope.AcNameHindi {
-		condAcNameHindiScope = condAcNameHindiScope.Or("Ac_name_hindi__icontains", acNameHindi)
+		if len(strings.TrimSpace(acNameHindi)) > 0 {
+			condAcNameHindiScope = condAcNameHindiScope.Or("Ac_name_hindi__icontains", acNameHindi)
+		}
 	}
 
 	// Section Name English Query
 	for _, sectionNameEnglish := range queries.Query.SectionNameEnglish {
-		condSectionNameEnglishQuery = condSectionNameEnglishQuery.Or("Section_name_english__icontains", sectionNameEnglish)
+		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
+			condSectionNameEnglishQuery = condSectionNameEnglishQuery.Or("Section_name_english__icontains", sectionNameEnglish)
+		}
 	}
 
 	// Section Name English Scope
 	for _, sectionNameEnglish := range queries.Scope.SectionNameEnglish {
-		condSectionNameEnglishScope = condSectionNameEnglishScope.Or("Section_name_english__icontains", sectionNameEnglish)
+		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
+			condSectionNameEnglishScope = condSectionNameEnglishScope.Or("Section_name_english__icontains", sectionNameEnglish)
+		}
 	}
 
 	// Section Name Hindi Query
 	for _, sectionNameHindi := range queries.Query.SectionNameHindi {
-		condSectionNameHindiQuery = condSectionNameHindiQuery.Or("Section_name_hindi__ilike", sectionNameHindi)
+		if len(strings.TrimSpace(sectionNameHindi)) > 0 {
+			condSectionNameHindiQuery = condSectionNameHindiQuery.Or("Section_name_hindi__ilike", sectionNameHindi)
+		}
 	}
 
 	// Section Name Hindi Scope
 	for _, sectionNameHindi := range queries.Scope.SectionNameHindi {
-		condSectionNameHindiScope = condSectionNameHindiScope.Or("Section_name_hindi__ilike", sectionNameHindi)
+		if len(strings.TrimSpace(sectionNameHindi)) > 0 {
+			condSectionNameHindiScope = condSectionNameHindiScope.Or("Section_name_hindi__ilike", sectionNameHindi)
+		}
 	}
 
 	// Age Query
 	for _, age := range queries.Query.Age {
-		condAgeQuery = condAgeQuery.Or("Age__exact", age)
+		if age > 0 {
+			condAgeQuery = condAgeQuery.Or("Age__exact", age)
+		}
 	}
 
 	// Age Scope
 	for _, age := range queries.Scope.Age {
-		condAgeScope = condAgeScope.Or("Age__exact", age)
+		if age > 0 {
+			condAgeScope = condAgeScope.Or("Age__exact", age)
+		}
 	}
 
 	if condAcNumberQuery != nil && !condAcNumberQuery.IsEmpty() {
@@ -1578,73 +1664,101 @@ func (e *ElectionController) GetStatistics() {
 	// Apply filters for each query string
 	// Name English Query
 	for _, nameEnglish := range queries.Query.NameEnglish {
-		condNameEnglishQuery = condNameEnglishQuery.Or("Name_english__icontains", nameEnglish)
+		if len(strings.TrimSpace(nameEnglish)) > 0 {
+			condNameEnglishQuery = condNameEnglishQuery.Or("Name_english__icontains", nameEnglish)
+		}
 	}
 
 	// Name English Scope
 	for _, nameEnglish := range queries.Scope.NameEnglish {
-		condNameEnglishScope = condNameEnglishScope.Or("Name_english__icontains", nameEnglish)
+		if len(strings.TrimSpace(nameEnglish)) > 0 {
+			condNameEnglishScope = condNameEnglishScope.Or("Name_english__icontains", nameEnglish)
+		}
 	}
 
 	// Apply filters for each query string
 	// Name Hindi Query
 	for _, nameHindi := range queries.Query.NameHindi {
-		condNameHindiQuery = condNameHindiQuery.Or("Name_hindi__icontains", nameHindi)
+		if len(strings.TrimSpace(nameHindi)) > 0 {
+			condNameHindiQuery = condNameHindiQuery.Or("Name_hindi__icontains", nameHindi)
+		}
 	}
 
 	// Name Hindi Scope
 	for _, nameHindi := range queries.Scope.NameHindi {
-		condNameHindiScope = condNameHindiScope.Or("Name_hindi__icontains", nameHindi)
+		if len(strings.TrimSpace(nameHindi)) > 0 {
+			condNameHindiScope = condNameHindiScope.Or("Name_hindi__icontains", nameHindi)
+		}
 	}
 
 	// Relation Name English Query
 	for _, relationNameEnglish := range queries.Query.RelationNameEnglish {
-		condRelationNameEnglishQuery = condRelationNameEnglishQuery.Or("Relation_name_english__icontains", relationNameEnglish)
+		if len(strings.TrimSpace(relationNameEnglish)) > 0 {
+			condRelationNameEnglishQuery = condRelationNameEnglishQuery.Or("Relation_name_english__icontains", relationNameEnglish)
+		}
 	}
 
 	// Relation Name English Scope
 	for _, relationNameEnglish := range queries.Scope.RelationNameEnglish {
-		condRelationNameEnglishScope = condRelationNameEnglishScope.Or("Relation_name_english__icontains", relationNameEnglish)
+		if len(strings.TrimSpace(relationNameEnglish)) > 0 {
+			condRelationNameEnglishScope = condRelationNameEnglishScope.Or("Relation_name_english__icontains", relationNameEnglish)
+		}
 	}
 
 	// Relation Name Hindi Query
 	for _, relationNameHindi := range queries.Query.RelationNameHindi {
-		condRelationNameHindiQuery = condRelationNameHindiQuery.Or("Relation_name_hindi__icontains", relationNameHindi)
+		if len(strings.TrimSpace(relationNameHindi)) > 0 {
+			condRelationNameHindiQuery = condRelationNameHindiQuery.Or("Relation_name_hindi__icontains", relationNameHindi)
+		}
 	}
 
 	// Relation Name Hindi Scope
 	for _, relationNameHindi := range queries.Scope.RelationNameHindi {
-		condRelationNameHindiScope = condRelationNameHindiScope.Or("Relation_name_hindi__icontains", relationNameHindi)
+		if len(strings.TrimSpace(relationNameHindi)) > 0 {
+			condRelationNameHindiScope = condRelationNameHindiScope.Or("Relation_name_hindi__icontains", relationNameHindi)
+		}
 	}
 
 	// Gender Query
 	for _, gender := range queries.Query.Gender {
-		condGenderQuery = condGenderQuery.Or("Gender__exact", gender)
+		if gender == "M" || gender == "F" {
+			condGenderQuery = condGenderQuery.Or("Gender__exact", gender)
+		}
 	}
 
 	// Gender Scope
 	for _, gender := range queries.Scope.Gender {
-		condGenderScope = condGenderScope.Or("Gender__exact", gender)
+		if gender == "M" || gender == "F" {
+			condGenderScope = condGenderScope.Or("Gender__exact", gender)
+		}
 	}
 
 	//Religion English Query
 	for _, religionEnglish := range queries.Query.ReligionEnglish {
-		condReligionEnglishQuery = condReligionEnglishQuery.Or("Religion_english__exact", religionEnglish)
+		if len(strings.TrimSpace(religionEnglish)) > 0 {
+			condReligionEnglishQuery = condReligionEnglishQuery.Or("Religion_english__exact", religionEnglish)
+		}
 	}
 
 	//Religion English Scope
 	for _, religionEnglish := range queries.Scope.ReligionEnglish {
-		condReligionEnglishScope = condReligionEnglishScope.Or("Religion_english__exact", religionEnglish)
+		if len(strings.TrimSpace(religionEnglish)) > 0 {
+			condReligionEnglishScope = condReligionEnglishScope.Or("Religion_english__exact", religionEnglish)
+		}
 	}
 
 	// Religion Hindi Query
 	for _, religionHindi := range queries.Query.ReligionHindi {
-		condReligionHindiQuery = condReligionHindiQuery.Or("Religion_hindi__exact", religionHindi)
+		if len(strings.TrimSpace(religionHindi)) > 0 {
+			condReligionHindiQuery = condReligionHindiQuery.Or("Religion_hindi__exact", religionHindi)
+		}
 	}
 
 	// Religion Hindi Scope
 	for _, religionHindi := range queries.Scope.ReligionHindi {
-		condReligionHindiScope = condReligionHindiScope.Or("Religion_hindi__exact", religionHindi)
+		if len(strings.TrimSpace(religionHindi)) > 0 {
+			condReligionHindiScope = condReligionHindiScope.Or("Religion_hindi__exact", religionHindi)
+		}
 	}
 
 	if condNameEnglishQuery != nil && !condNameEnglishQuery.IsEmpty() {
