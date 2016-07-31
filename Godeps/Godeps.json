@@ -52,6 +52,10 @@
 			"Rev": "1f68e5a70531ed57240f270db95f5306ca0d6890"
 		},
 		{
+			"ImportPath": "github.com/craigmj/gototp",
+			"Rev": "bbfd598b42caf9b1db7318cae7e10d0b94846f56"
+		},
+		{
 			"ImportPath": "github.com/gopherjs/gopherjs/js",
 			"Rev": "4b53e1bddba0e2f734514aeb6c02db652f4c6fe8"
 		},

@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 /* Voters
 {
     total:1900234
@@ -56,6 +58,36 @@ type Voter struct {
 type Voters struct {
     Total   int64   `json:"total"`
     Voters  []*Voter `json:"voters"`
+}
+    
+/* account
+{
+    "account_id":1,
+    "otp":3344,
+    "display_name":"amit",
+    "email":"amit@gmail.com",
+    "mobile_no":9344627378,
+    "token":"a%4fFF$%jgds^&J",
+    "approved_districts":[19,20],
+    "approved_acs":[203,204],
+    "last_login":"2014-05-16T08:28:06.801064-04:00",
+    "updated_on":"2014-05-16T08:28:06.801064-04:00",
+    "created_on":"2014-05-16T08:28:06.801064-04:00"
+}
+*/
+
+type Account struct {
+    Account_id          int       `orm:"pk" json:"account_id"`
+    Otp                 int       `json:"otp"`
+    Display_name        string    `json:"display_name"`
+    Email               string    `json:"email"`
+    Mobile_no	    	int64     `json:"mobile_no"`
+    Token			    string    `json:"token"`
+    Approved_districts  string    `json:"approved_districts"`
+    Approved_acs		string    `json:"approved_acs"`
+    Last_login			time.Time `json:"last_login"`
+    Updated_on 			time.Time `json:"updated_on"`
+    Created_on 			time.Time `json:"created_on"`
 }
 
 // Queries

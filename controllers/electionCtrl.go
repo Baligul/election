@@ -30,21 +30,30 @@
 
    curl -X POST -H "Content-Type: application/json" -d '{"query":{"state_number":[],"district_number":[20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":["M"],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":["Muslim"],"religion_hindi":[],"age":[] },"scope":{"state_number":[],"district_number":[20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":["M"],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[]}}' http://localhost:8080/api/statistics
 
+   GET OTP
+   curl -X POST -H "Content-Type: application/json" -d '{"mobile_no": 9564783954}' http://localhost:8080/api/otp
 
 */
 
 package controllers
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math/rand"
+	"net/mail"
+	"net/smtp"
+	"strconv"
 	"strings"
+	"time"
 
 	models "github.com/Baligul/election/models"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"github.com/craigmj/gototp"
 	_ "github.com/lib/pq"
 )
 
@@ -52,6 +61,7 @@ func init() {
 	orm.RegisterDriver("postgres", orm.DRPostgres)
 	orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
 	//orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
+	orm.RegisterModel(new(models.Account))
 	orm.RegisterModel(new(models.Voter))
 }
 
@@ -90,11 +100,10 @@ func (e *ElectionController) GetVoters() {
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
 		responseStatus := models.NewResponseStatus()
-		responseStatus.Response = "error:"
+		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
-		e.Data["total"] = 0
 		e.ServeJSON()
 	}
 
@@ -2100,4 +2109,169 @@ func (e *ElectionController) Home() {
 	responseStatus.Message = "This API is up and running!"
 	e.Data["json"] = &responseStatus
 	e.ServeJSON()
+}
+
+func (e *ElectionController) GetOTP() {
+	var (
+		otp       int32
+		num       int64
+		recipient []*models.Account
+	)
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	// Create query string for account table
+	qsAccount := o.QueryTable("account")
+	qsRecipient := o.QueryTable("account")
+
+	inputJson := e.Ctx.Input.RequestBody
+	account := new(models.Account)
+
+	err := json.Unmarshal(inputJson, &account)
+	if err != nil {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	exist := qsAccount.Filter("Mobile_no__exact", account.Mobile_no).Exist()
+	if !exist {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Invalid mobile number or mobile number does not exists in our database. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	otp, err = generateOTP()
+	if err != nil {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't generate the otp. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	num, err = qsAccount.Filter("Mobile_no__exact", account.Mobile_no).Update(orm.Params{
+		"OTP": otp,
+	})
+
+	if err != nil || num != 1 {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Error occur while updating the otp. Please contact electionubda.com team for assistance.")
+		if err != nil {
+			responseStatus.Error = err.Error()
+		}
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	_, err = qsRecipient.Filter("Mobile_no__exact", account.Mobile_no).All(&recipient)
+
+	if err != nil {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't send the otp. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	if len(recipient) > 0 {
+		err = sendOTP(recipient[0].Otp, recipient[0].Email, recipient[0].Display_name)
+
+		if err != nil {
+			responseStatus := models.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Couldn't send the otp. Please contact electionubda.com team for assistance.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "ok"
+		responseStatus.Message = fmt.Sprintf("One time password has been generated and sent to %s successfully.", recipient[0].Email)
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+
+	} else {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't send the otp. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+}
+
+func generateOTP() (int32, error) {
+	rnd := rand.New(rand.NewSource(time.Now().Unix()))
+	secret := gototp.RandomSecret(10, rnd)
+	otp, err := gototp.New(secret)
+	if err != nil {
+		return 0, err
+	}
+	return otp.Now(), nil
+}
+
+func sendOTP(otp int, email string, displayName string) error {
+	// Set up authentication information.
+	smtpServer := "smtp.gmail.com"
+	auth := smtp.PlainAuth(
+		"",
+		"electionubda",
+		"hu123*ElectionUBDA",
+		smtpServer,
+	)
+
+	from := mail.Address{"ElectionUBDA", "electionubda@gmail.com"}
+	to := mail.Address{displayName, email}
+	toCC1 := mail.Address{"Baligul Hasan", "baligcoup8@gmail.com"}
+	toCC2 := mail.Address{"Iftekhar Khan", "iiiftekhar@gmail.com"}
+	title := strconv.Itoa(otp) + " is your One Time Password"
+
+	body := "Hi " + displayName + "!\n\nWelcome to Election UBDA.\n\nThanks & Regards,\nElectionUBDA Team"
+
+	header := make(map[string]string)
+	header["From"] = from.String()
+	header["To"] = to.String()
+	header["Subject"] = encodeRFC2047(title)
+	header["MIME-Version"] = "1.0"
+	header["Content-Type"] = "text/plain; charset=\"utf-8\""
+	header["Content-Transfer-Encoding"] = "base64"
+
+	message := ""
+	for k, v := range header {
+		message += fmt.Sprintf("%s: %s\r\n", k, v)
+	}
+	message += "\r\n" + base64.StdEncoding.EncodeToString([]byte(body))
+
+	// Connect to the server, authenticate, set the sender and recipient,
+	// and send the email all in one step.
+	err := smtp.SendMail(
+		smtpServer+":587",
+		auth,
+		from.Address,
+		[]string{to.Address, toCC1.Address, toCC2.Address},
+		[]byte(message),
+		//[]byte("This is the email body."),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func encodeRFC2047(String string) string {
+	// use mail's rfc2047 to encode any string
+	addr := mail.Address{String, ""}
+	return strings.Trim(addr.String(), " <>")
 }
