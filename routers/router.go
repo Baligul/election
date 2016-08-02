@@ -18,6 +18,6 @@ func init() {
     beego.Router("/api/voters", &controllers.ElectionController{}, "*:GetVoters")
     beego.Router("/api/statistic", &controllers.ElectionController{}, "post:GetStatistic")
     beego.Router("/api/statistics", &controllers.ElectionController{}, "post:GetStatistics")
-    beego.Router("/api/otp", &controllers.ElectionController{}, "post:GetOTP")
-    //beego.Router("/api/register", &controllers.ElectionController{}, "post:Register")
+    beego.Router("/api/otp", &controllers.ElectionController{}, "post:OTP")
+    beego.Router("/api/register", &controllers.ElectionController{}, "post:Register")
 }

@@ -33,11 +33,14 @@
    GET OTP
    curl -X POST -H "Content-Type: application/json" -d '{"mobile_no": 9564783954}' http://localhost:8080/api/otp
 
+   Register
+   curl -X POST -H "Content-Type: application/json" -d '{"mobile_no": 9343352734, "otp":23435}' http://localhost:8080/api/register
 */
 
 package controllers
 
 import (
+	token "crypto/rand"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -2111,7 +2114,7 @@ func (e *ElectionController) Home() {
 	e.ServeJSON()
 }
 
-func (e *ElectionController) GetOTP() {
+func (e *ElectionController) OTP() {
 	var (
 		otp       int32
 		num       int64
@@ -2242,7 +2245,7 @@ func sendOTP(otp int, email string, displayName string) error {
 	header := make(map[string]string)
 	header["From"] = from.String()
 	header["To"] = to.String()
-	header["Subject"] = encodeRFC2047(title)
+	header["Subject"] = title
 	header["MIME-Version"] = "1.0"
 	header["Content-Type"] = "text/plain; charset=\"utf-8\""
 	header["Content-Transfer-Encoding"] = "base64"
@@ -2270,8 +2273,94 @@ func sendOTP(otp int, email string, displayName string) error {
 	return nil
 }
 
-func encodeRFC2047(String string) string {
-	// use mail's rfc2047 to encode any string
-	addr := mail.Address{String, ""}
-	return strings.Trim(addr.String(), " <>")
+func randToken() string {
+	b := make([]byte, 8)
+	token.Read(b)
+	return fmt.Sprintf("%x", b)
+}
+
+func (e *ElectionController) Register() {
+	var (
+		token string
+		num   int64
+		users []*models.Account
+	)
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	// Create query string for account table
+	qsAccount := o.QueryTable("account")
+
+	inputJson := e.Ctx.Input.RequestBody
+	account := new(models.Account)
+
+	err := json.Unmarshal(inputJson, &account)
+	if err != nil {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	exist := qsAccount.Filter("Mobile_no__exact", account.Mobile_no).Exist()
+	if !exist {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Invalid mobile number or mobile number does not exists in our database. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", account.Mobile_no).All(&users)
+	if err != nil {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't generate the token. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	if len(users) > 0 {
+		if users[0].Otp != account.Otp || users[0].Otp == 0 {
+			responseStatus := models.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Invalid Otp. Please try with a correct otp sent to you or contact electionubda.com team for assistance.")
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+		token = randToken()
+
+		num, err = qsAccount.Filter("Mobile_no__exact", account.Mobile_no).Filter("Otp__exact", account.Otp).Update(orm.Params{
+			"TOKEN": token,
+			"OTP":   0,
+		})
+
+		if err != nil || num != 1 {
+			responseStatus := models.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Error occur while updating the token. Please contact electionubda.com team for assistance.")
+			if err != nil {
+				responseStatus.Error = err.Error()
+			}
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+		user := new(models.Account)
+		users[0].Token = token
+		user = users[0]
+		e.Data["json"] = &user
+		e.ServeJSON()
+	} else {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't generate the token. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
 }
