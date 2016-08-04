@@ -94,7 +94,7 @@ func (e *ElectionController) GetVoters() {
 	offset, _ := e.GetInt("offset")
 
 	if limit == 0 {
-		limit = 100
+		limit = -1
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -114,10 +114,10 @@ func (e *ElectionController) GetVoters() {
 	o.Using("default")
 
 	// Create query string for each and every district
-	qsRampur := o.QueryTable("voter")
-	qsMoradabad := o.QueryTable("voter")
-	qsBangalore := o.QueryTable("voter")
-	qsHubli := o.QueryTable("voter")
+	qsRampur := o.QueryTable(models.GetTableName("Rampur"))
+	qsMoradabad := o.QueryTable(models.GetTableName("Moradabad"))
+	qsBangalore := o.QueryTable(models.GetTableName("Bangalore"))
+	qsHubli := o.QueryTable(models.GetTableName("Hubli"))
 
 	cond := orm.NewCondition()
 	condVoterId := orm.NewCondition()
@@ -572,10 +572,10 @@ func (e *ElectionController) GetStatistic() {
 	o.Using("default")
 
 	// Create query string for each and every district
-	qsRampur := o.QueryTable("voter")
-	qsMoradabad := o.QueryTable("voter")
-	qsBangalore := o.QueryTable("voter")
-	qsHubli := o.QueryTable("voter")
+	qsRampur := o.QueryTable(models.GetTableName("Rampur"))
+	qsMoradabad := o.QueryTable(models.GetTableName("Moradabad"))
+	qsBangalore := o.QueryTable(models.GetTableName("Bangalore"))
+	qsHubli := o.QueryTable(models.GetTableName("Hubli"))
 
 	cond := orm.NewCondition()
 	condAcNumber := orm.NewCondition()
@@ -992,16 +992,16 @@ func (e *ElectionController) GetStatistics() {
 
 	// Create query string for each and every district
 	// Query
-	qsRampur := o.QueryTable("voter")
-	qsMoradabad := o.QueryTable("voter")
-	qsBangalore := o.QueryTable("voter")
-	qsHubli := o.QueryTable("voter")
+	qsRampur := o.QueryTable(models.GetTableName("Rampur"))
+	qsMoradabad := o.QueryTable(models.GetTableName("Moradabad"))
+	qsBangalore := o.QueryTable(models.GetTableName("Bangalore"))
+	qsHubli := o.QueryTable(models.GetTableName("Hubli"))
 
 	// Scope
-	qsScopeRampur := o.QueryTable("voter")
-	qsScopeMoradabad := o.QueryTable("voter")
-	qsScopeBangalore := o.QueryTable("voter")
-	qsScopeHubli := o.QueryTable("voter")
+	qsScopeRampur := o.QueryTable(models.GetTableName("Rampur"))
+	qsScopeMoradabad := o.QueryTable(models.GetTableName("Moradabad"))
+	qsScopeBangalore := o.QueryTable(models.GetTableName("Bangalore"))
+	qsScopeHubli := o.QueryTable(models.GetTableName("Hubli"))
 
 	condQuery := orm.NewCondition()
 	condScope := orm.NewCondition()
@@ -2187,7 +2187,7 @@ func (e *ElectionController) OTP() {
 	}
 
 	if len(recipient) > 0 {
-		err = sendOTP(recipient[0].Otp, recipient[0].Email, recipient[0].Display_name)
+		err = sendOTP(recipient[0].Otp, recipient[0].Email, recipient[0].Display_name, recipient[0].Mobile_no)
 
 		if err != nil {
 			responseStatus := models.NewResponseStatus()
@@ -2208,7 +2208,6 @@ func (e *ElectionController) OTP() {
 		responseStatus := models.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't send the otp. Please contact electionubda.com team for assistance.")
-		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -2224,7 +2223,7 @@ func generateOTP() (int32, error) {
 	return otp.Now(), nil
 }
 
-func sendOTP(otp int, email string, displayName string) error {
+func sendOTP(otp int, email string, displayName string, mobileNumber int64) error {
 	// Set up authentication information.
 	smtpServer := "smtp.gmail.com"
 	auth := smtp.PlainAuth(
@@ -2238,7 +2237,7 @@ func sendOTP(otp int, email string, displayName string) error {
 	to := mail.Address{displayName, email}
 	toCC1 := mail.Address{"Baligul Hasan", "baligcoup8@gmail.com"}
 	toCC2 := mail.Address{"Iftekhar Khan", "iiiftekhar@gmail.com"}
-	title := strconv.Itoa(otp) + " is your One Time Password"
+	title := strconv.Itoa(otp) + " is your One Time Password - " + strconv.FormatInt(mobileNumber, 10)
 
 	body := "Hi " + displayName + "!\n\nWelcome to Election UBDA.\n\nThanks & Regards,\nElectionUBDA Team"
 
