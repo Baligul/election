@@ -43,7 +43,6 @@ import (
 	token "crypto/rand"
 	"encoding/base64"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"math/rand"
 	"net/mail"
@@ -62,8 +61,8 @@ import (
 
 func init() {
 	orm.RegisterDriver("postgres", orm.DRPostgres)
-	orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
-	//orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
+	//orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
+	orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
 	orm.RegisterModel(new(models.Account))
 	orm.RegisterModel(new(models.Voter))
 }
@@ -83,15 +82,60 @@ func (e *ElectionController) GetVoters() {
 		votersMoradabad      []*models.Voter
 		votersBangalore      []*models.Voter
 		votersHubli          []*models.Voter
+		num                  int64
+		user                 []*models.Account
+		err                  error
 	)
 
 	votersWithTotal := new(models.Voters)
 
-	err := errors.New("Errors")
-	err = nil
-
 	limit, _ := e.GetInt("limit")
 	offset, _ := e.GetInt("offset")
+	mobileNo, _ := e.GetInt("mobile_no")
+	token := e.GetString("token")
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	// Create query string for account table
+	qsAccount := o.QueryTable("account")
+
+	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
+	if !exist {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
+
+	if err != nil {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	if num > 0 {
+		if user[0].Token != token {
+			responseStatus := models.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+	} else {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
 
 	if limit == 0 {
 		limit = -1
@@ -109,9 +153,6 @@ func (e *ElectionController) GetVoters() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-
-	o := orm.NewOrm()
-	o.Using("default")
 
 	// Create query string for each and every district
 	qsRampur := o.QueryTable(models.GetTableName("Rampur"))
@@ -549,10 +590,56 @@ func (e *ElectionController) GetStatistic() {
 		otherFemaleVotersCountMoradabad  int64
 		otherFemaleVotersCountBangalore  int64
 		otherFemaleVotersCountHubli      int64
+		num                              int64
+		user                             []*models.Account
+		err                              error
 	)
 
-	err := errors.New("Errors")
-	err = nil
+	mobileNo, _ := e.GetInt("mobile_no")
+	token := e.GetString("token")
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	// Create query string for account table
+	qsAccount := o.QueryTable("account")
+
+	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
+	if !exist {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
+
+	if err != nil {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	if num > 0 {
+		if user[0].Token != token {
+			responseStatus := models.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+	} else {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
 
 	inputJson := e.Ctx.Input.RequestBody
 	query := new(models.Query)
@@ -567,9 +654,6 @@ func (e *ElectionController) GetStatistic() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-
-	o := orm.NewOrm()
-	o.Using("default")
 
 	// Create query string for each and every district
 	qsRampur := o.QueryTable(models.GetTableName("Rampur"))
@@ -968,10 +1052,56 @@ func (e *ElectionController) GetStatistics() {
 		otherFemaleVotersCountMoradabad  int64
 		otherFemaleVotersCountBangalore  int64
 		otherFemaleVotersCountHubli      int64
+		num                              int64
+		user                             []*models.Account
+		err                              error
 	)
 
-	err := errors.New("Errors")
-	err = nil
+	mobileNo, _ := e.GetInt("mobile_no")
+	token := e.GetString("token")
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	// Create query string for account table
+	qsAccount := o.QueryTable("account")
+
+	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
+	if !exist {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
+
+	if err != nil {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	if num > 0 {
+		if user[0].Token != token {
+			responseStatus := models.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+	} else {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
 
 	inputJson := e.Ctx.Input.RequestBody
 	queries := new(models.Queries)
@@ -986,9 +1116,6 @@ func (e *ElectionController) GetStatistics() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-
-	o := orm.NewOrm()
-	o.Using("default")
 
 	// Create query string for each and every district
 	// Query
