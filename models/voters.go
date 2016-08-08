@@ -253,6 +253,11 @@ type ResponseStatus struct {
 	Error    string `json:"error"`
 }
 
+type List struct {
+	Districts []int `json:"districts"`
+	Acs       []int `json:"acs"`
+}
+
 func NewResponseStatus() *ResponseStatus {
 	return new(ResponseStatus)
 }
