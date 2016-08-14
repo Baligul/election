@@ -67,8 +67,8 @@ import (
 
 func init() {
 	orm.RegisterDriver("postgres", orm.DRPostgres)
-	//orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
-	orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
+	orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
+	//orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
 	orm.RegisterModel(new(models.Account))
 	orm.RegisterModel(new(models.Voter))
 }
@@ -2648,10 +2648,12 @@ func getAcs(districts []string) []string {
     
     for _, district := range districts {
         switch district {
-            case "d1":
-                acs = append(acs, "ac1", "ac2", "ac3")
-            case "d2":
-                acs = append(acs, "ac4", "ac5", "ac6")
+            case "Moradabad":
+                acs = append(acs, "Moradabad", "Bilari", "ac3")
+            case "Rampur":
+                acs = append(acs, "Rampur", "Suar", "ac6")
+            case "Bijnor":
+                acs = append(acs, "Dhampur", "ac2", "ac3")           
         }
     }
     return acs
