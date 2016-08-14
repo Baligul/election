@@ -35,6 +35,12 @@
 
    Register
    curl -X POST -H "Content-Type: application/json" -d '{"mobile_no": 9343352734, "otp":23435}' http://localhost:8080/api/register
+   
+   Get List
+   curl -X POST -H "Content-Type: application/json" -d '{"districts": [19,20], "acs":[34, 43]}' http://localhost:8080/api/list
+   
+   Read Json
+   curl -X POST -H "Content-Type: application/json" -d @json/data.json http://localhost:8080/api/read/json
 */
 
 package controllers
@@ -61,8 +67,8 @@ import (
 
 func init() {
 	orm.RegisterDriver("postgres", orm.DRPostgres)
-	orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
-	//orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
+	//orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
+	orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
 	orm.RegisterModel(new(models.Account))
 	orm.RegisterModel(new(models.Voter))
 }
@@ -2489,4 +2495,185 @@ func (e *ElectionController) Register() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
+}
+
+func (e *ElectionController) GetList() {
+	var (
+		num  int64
+		user []*models.Account
+		err  error              
+	)
+
+	mobileNo, _ := e.GetInt("mobile_no")
+	token := e.GetString("token")
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	// Create query string for account table
+	qsAccount := o.QueryTable("account")
+
+	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
+	if !exist {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
+
+	if err != nil {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	if num > 0 {
+		if user[0].Token != token {
+			responseStatus := models.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+	} else {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	inputJson := e.Ctx.Input.RequestBody
+	list := new(models.List)
+
+	err = json.Unmarshal(inputJson, &list)
+	if err != nil {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+    
+    if len(list.Acs) > 0 {
+        sections := getApprovedSections(user[0].Approved_acs, list.Acs)
+        e.Data["json"] = &sections
+		e.ServeJSON()
+    }
+    
+    if len(list.Districts) > 0 {
+        acs := getApprovedAcs(user[0].Approved_districts, list.Districts)
+        e.Data["json"] = &acs
+		e.ServeJSON()
+    }
+    
+    approvedDistricts := strings.Split(user[0].Approved_districts, ",")
+    e.Data["json"] = &approvedDistricts
+	e.ServeJSON()
+}
+
+func (e *ElectionController) ReadJson() {
+	inputJson := e.Ctx.Input.RequestBody
+	readJsons := new(models.ReadJsons)
+    
+    acNameSectionName := make(map[string]string)
+
+	err := json.Unmarshal(inputJson, &readJsons)
+	if err != nil {
+		responseStatus := models.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}   
+    
+    for _, val := range readJsons.ReadJsons {
+        acNameSectionName[val.AcName] = val.SectionName
+    }
+    
+    fmt.Println("************************************")
+    fmt.Println("No. of Acs: ", len(acNameSectionName))
+    fmt.Println("************************************")
+}
+
+func getApprovedSections(csvAcs string, acs []string) []string {
+    approvedAcs := strings.Split(csvAcs, ",")
+    approvedSections := getSections(approvedAcs)
+    sections := getSections(acs)
+    
+    return getCommonItems(sections, approvedSections)
+}
+
+func getApprovedAcs(csvDistricts string, districts []string) []string {
+    approvedDistricts := strings.Split(csvDistricts, ",")
+    approvedAcs := getAcs(approvedDistricts)
+    acs := getAcs(districts)
+    
+    return getCommonItems(acs, approvedAcs)
+}
+
+func getSections(acs []string) []string {
+    var sections []string
+    
+    for _, ac := range acs {
+        switch ac {
+            case "ac1":
+                sections = append(sections, "sec1", "sec2", "sec3")
+            case "ac2":
+                sections = append(sections, "sec4", "sec5", "sec6")
+            case "ac3":
+                sections = append(sections, "sec7", "sec8", "sec9")
+            case "ac4":
+                sections = append(sections, "sec10", "sec11", "sec12")
+            case "ac5":
+                sections = append(sections, "sec13", "sec14", "sec15")
+            case "ac6":
+                sections = append(sections, "sec16", "sec17", "sec18")                                
+        }
+    }
+    return sections
+}
+
+func getAcs(districts []string) []string {
+    var acs []string
+    
+    for _, district := range districts {
+        switch district {
+            case "d1":
+                acs = append(acs, "ac1", "ac2", "ac3")
+            case "d2":
+                acs = append(acs, "ac4", "ac5", "ac6")
+        }
+    }
+    return acs
+}
+
+func getCommonItems(list1 []string, list2 []string) []string {
+    var items []string
+    
+    for _, item := range list1 {
+        if contains(list2, item) {
+            items = append(items, item)
+        }
+    }
+    
+    return items
+}
+
+func contains(sliceString []string, item string) bool {
+    for _, val := range sliceString {
+        if val == item {
+            return true
+        }
+    }
+    return false
 }

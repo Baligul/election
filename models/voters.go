@@ -254,8 +254,8 @@ type ResponseStatus struct {
 }
 
 type List struct {
-	Districts []int `json:"districts"`
-	Acs       []int `json:"acs"`
+	Districts []string `json:"districts"`
+	Acs       []string `json:"acs"`
 }
 
 func NewResponseStatus() *ResponseStatus {
@@ -280,4 +280,15 @@ func GetTableName(districtName string) string {
 		return ""
 	}
 	return ""
+}
+
+type ReadJson struct {
+	District string `json:"district"`
+	AcNum int `json:"ac_num"`
+	AcName string `json:"ac_name"`
+	SectionName string `json:"section_name"`
+}
+
+type ReadJsons struct {
+    ReadJsons []ReadJson
 }
