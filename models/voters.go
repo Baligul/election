@@ -269,19 +269,25 @@ func (a *Voter) TableName() string {
 func GetTableName(districtName string) string {
 	switch districtName {
 	case "Rampur":
-		return "voter_20"
+        return "voter_21"
+		//return "voter_20"
 	case "Moradabad":
-		return "voter_19"
+		return "voter_21"
+        //return "voter_19"
 	case "Bangalore":
-		return "voter"
+		return "voter_21"
+        //return "voter"
 	case "Bijnor":
 		return "voter_21"
 	case "Hubli":
-		return "voter"
+		return "voter_21"
+        //return "voter"
 	default:
-		return "voter"
+		return "voter_21"
+        //return "voter"
 	}
-	return "voter"
+    return "voter_21"
+	//return "voter"
 }
 
 type ReadJson struct {
