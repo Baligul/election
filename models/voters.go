@@ -274,23 +274,23 @@ func GetTableName(districtName string) string {
 		return "voter_19"
 	case "Bangalore":
 		return "voter"
-    case "Bijnor":
-		return "voter_21"        
+	case "Bijnor":
+		return "voter_21"
 	case "Hubli":
 		return "voter"
 	default:
-		return ""
+		return "voter"
 	}
-	return ""
+	return "voter"
 }
 
 type ReadJson struct {
-	District string `json:"district"`
-	AcNum int `json:"ac_num"`
-	AcName string `json:"ac_name"`
+	District    string `json:"district"`
+	AcNum       int    `json:"ac_num"`
+	AcName      string `json:"ac_name"`
 	SectionName string `json:"section_name"`
 }
 
 type ReadJsons struct {
-    ReadJsons []ReadJson
+	ReadJsons []ReadJson
 }
