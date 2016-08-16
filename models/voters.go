@@ -269,11 +269,13 @@ func (a *Voter) TableName() string {
 func GetTableName(districtName string) string {
 	switch districtName {
 	case "Rampur":
-		return "voter"
+		return "voter_20"
 	case "Moradabad":
-		return "voter"
+		return "voter_19"
 	case "Bangalore":
 		return "voter"
+    case "Bijnor":
+		return "voter_21"        
 	case "Hubli":
 		return "voter"
 	default:
