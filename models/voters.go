@@ -32,7 +32,7 @@ import "time"
 }
 */
 
-type Voter struct {
+type Voter_21 struct {
 	Voter_id              int    `form:"-" orm:"pk" json:"voter_id"`
 	Ac_number             int    `form:"acnumber" json:"ac_number"`
 	Part_number           int    `form:"partnumber" json:"part_number"`
@@ -57,7 +57,7 @@ type Voter struct {
 
 type Voters struct {
 	Total  int64    `json:"total"`
-	Voters []*Voter `json:"voters"`
+	Voters []*Voter_21 `json:"voters"`
 }
 
 /* account
@@ -260,10 +260,6 @@ type List struct {
 
 func NewResponseStatus() *ResponseStatus {
 	return new(ResponseStatus)
-}
-
-func (a *Voter) TableName() string {
-	return "voter"
 }
 
 func GetTableName(districtName string) string {

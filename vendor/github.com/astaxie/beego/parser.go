@@ -23,11 +23,10 @@ import (
 	"go/token"
 	"io/ioutil"
 	"os"
-	"path/filepath"
+	"path"
 	"sort"
 	"strings"
 
-	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/utils"
 )
 
@@ -56,11 +55,10 @@ func init() {
 }
 
 func parserPkg(pkgRealpath, pkgpath string) error {
-	rep := strings.NewReplacer("\\", "_", "/", "_", ".", "_")
-	commentFilename, _ = filepath.Rel(AppPath, pkgRealpath)
-	commentFilename = coomentPrefix + rep.Replace(commentFilename) + ".go"
+	rep := strings.NewReplacer("/", "_", ".", "_")
+	commentFilename = coomentPrefix + rep.Replace(pkgpath) + ".go"
 	if !compareFile(pkgRealpath) {
-		logs.Info(pkgRealpath + " no changed")
+		Info(pkgRealpath + " no changed")
 		return nil
 	}
 	genInfoList = make(map[string][]ControllerComments)
@@ -88,7 +86,7 @@ func parserPkg(pkgRealpath, pkgpath string) error {
 			}
 		}
 	}
-	genRouterCode(pkgRealpath)
+	genRouterCode()
 	savetoFile(pkgRealpath)
 	return nil
 }
@@ -131,9 +129,9 @@ func parserComments(comments *ast.CommentGroup, funcName, controllerName, pkgpat
 	return nil
 }
 
-func genRouterCode(pkgRealpath string) {
-	os.Mkdir(getRouterDir(pkgRealpath), 0755)
-	logs.Info("generate router from comments")
+func genRouterCode() {
+	os.Mkdir(path.Join(AppPath, "routers"), 0755)
+	Info("generate router from comments")
 	var (
 		globalinfo string
 		sortKey    []string
@@ -174,7 +172,7 @@ func genRouterCode(pkgRealpath string) {
 		}
 	}
 	if globalinfo != "" {
-		f, err := os.Create(filepath.Join(getRouterDir(pkgRealpath), commentFilename))
+		f, err := os.Create(path.Join(AppPath, "routers", commentFilename))
 		if err != nil {
 			panic(err)
 		}
@@ -184,7 +182,7 @@ func genRouterCode(pkgRealpath string) {
 }
 
 func compareFile(pkgRealpath string) bool {
-	if !utils.FileExists(filepath.Join(getRouterDir(pkgRealpath), commentFilename)) {
+	if !utils.FileExists(path.Join(AppPath, "routers", commentFilename)) {
 		return true
 	}
 	if utils.FileExists(lastupdateFilename) {
@@ -230,20 +228,4 @@ func getpathTime(pkgRealpath string) (lastupdate int64, err error) {
 		}
 	}
 	return lastupdate, nil
-}
-
-func getRouterDir(pkgRealpath string) string {
-	dir := filepath.Dir(pkgRealpath)
-	for {
-		d := filepath.Join(dir, "routers")
-		if utils.FileExists(d) {
-			return d
-		}
-
-		if r, _ := filepath.Rel(dir, AppPath); r == "." {
-			return d
-		}
-		// Parent dir.
-		dir = filepath.Dir(dir)
-	}
 }

@@ -28,7 +28,6 @@ import (
 	"time"
 
 	beecontext "github.com/astaxie/beego/context"
-	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/toolbox"
 	"github.com/astaxie/beego/utils"
 )
@@ -115,7 +114,7 @@ type controllerInfo struct {
 type ControllerRegister struct {
 	routers      map[string]*Tree
 	enableFilter bool
-	filters      [FinishRouter + 1][]*FilterRouter
+	filters      map[int][]*FilterRouter
 	pool         sync.Pool
 }
 
@@ -123,6 +122,7 @@ type ControllerRegister struct {
 func NewControllerRegister() *ControllerRegister {
 	cr := &ControllerRegister{
 		routers: make(map[string]*Tree),
+		filters: make(map[int][]*FilterRouter),
 	}
 	cr.pool.New = func() interface{} {
 		return beecontext.NewContext()
@@ -408,6 +408,7 @@ func (p *ControllerRegister) AddAutoPrefix(prefix string, c ControllerInterface)
 // InsertFilter Add a FilterFunc with pattern rule and action constant.
 // The bool params is for setting the returnOnOutput value (false allows multiple filters to execute)
 func (p *ControllerRegister) InsertFilter(pattern string, pos int, filter FilterFunc, params ...bool) error {
+
 	mr := new(FilterRouter)
 	mr.tree = NewTree()
 	mr.pattern = pattern
@@ -425,13 +426,9 @@ func (p *ControllerRegister) InsertFilter(pattern string, pos int, filter Filter
 }
 
 // add Filter into
-func (p *ControllerRegister) insertFilterRouter(pos int, mr *FilterRouter) (err error) {
-	if pos < BeforeStatic || pos > FinishRouter {
-		err = fmt.Errorf("can not find your filter postion")
-		return
-	}
-	p.enableFilter = true
+func (p *ControllerRegister) insertFilterRouter(pos int, mr *FilterRouter) error {
 	p.filters[pos] = append(p.filters[pos], mr)
+	p.enableFilter = true
 	return nil
 }
 
@@ -440,11 +437,11 @@ func (p *ControllerRegister) insertFilterRouter(pos int, mr *FilterRouter) (err 
 func (p *ControllerRegister) URLFor(endpoint string, values ...interface{}) string {
 	paths := strings.Split(endpoint, ".")
 	if len(paths) <= 1 {
-		logs.Warn("urlfor endpoint must like path.controller.method")
+		Warn("urlfor endpoint must like path.controller.method")
 		return ""
 	}
 	if len(values)%2 != 0 {
-		logs.Warn("urlfor params must key-value pair")
+		Warn("urlfor params must key-value pair")
 		return ""
 	}
 	params := make(map[string]string)
@@ -580,16 +577,20 @@ func (p *ControllerRegister) geturl(t *Tree, url, controllName, methodName strin
 	return false, ""
 }
 
-func (p *ControllerRegister) execFilter(context *beecontext.Context, urlPath string, pos int) (started bool) {
-	for _, filterR := range p.filters[pos] {
-		if filterR.returnOnOutput && context.ResponseWriter.Started {
-			return true
-		}
-		if ok := filterR.ValidRouter(urlPath, context); ok {
-			filterR.filterFunc(context)
-		}
-		if filterR.returnOnOutput && context.ResponseWriter.Started {
-			return true
+func (p *ControllerRegister) execFilter(context *beecontext.Context, pos int, urlPath string) (started bool) {
+	if p.enableFilter {
+		if l, ok := p.filters[pos]; ok {
+			for _, filterR := range l {
+				if filterR.returnOnOutput && context.ResponseWriter.Started {
+					return true
+				}
+				if ok := filterR.ValidRouter(urlPath, context); ok {
+					filterR.filterFunc(context)
+				}
+				if filterR.returnOnOutput && context.ResponseWriter.Started {
+					return true
+				}
+			}
 		}
 	}
 	return false
@@ -616,10 +617,11 @@ func (p *ControllerRegister) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 		context.Output.Header("Server", BConfig.ServerName)
 	}
 
-	var urlPath = r.URL.Path
-
+	var urlPath string
 	if !BConfig.RouterCaseSensitive {
-		urlPath = strings.ToLower(urlPath)
+		urlPath = strings.ToLower(r.URL.Path)
+	} else {
+		urlPath = r.URL.Path
 	}
 
 	// filter wrong http method
@@ -629,12 +631,11 @@ func (p *ControllerRegister) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 	}
 
 	// filter for static file
-	if len(p.filters[BeforeStatic]) > 0 && p.execFilter(context, urlPath, BeforeStatic) {
+	if p.execFilter(context, BeforeStatic, urlPath) {
 		goto Admin
 	}
 
 	serverStaticRouter(context)
-
 	if context.ResponseWriter.Started {
 		findRouter = true
 		goto Admin
@@ -652,9 +653,9 @@ func (p *ControllerRegister) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 		var err error
 		context.Input.CruSession, err = GlobalSessions.SessionStart(rw, r)
 		if err != nil {
-			logs.Error(err)
+			Error(err)
 			exception("503", context)
-			goto Admin
+			return
 		}
 		defer func() {
 			if context.Input.CruSession != nil {
@@ -662,7 +663,8 @@ func (p *ControllerRegister) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 			}
 		}()
 	}
-	if len(p.filters[BeforeRouter]) > 0 && p.execFilter(context, urlPath, BeforeRouter) {
+
+	if p.execFilter(context, BeforeRouter, urlPath) {
 		goto Admin
 	}
 
@@ -691,7 +693,7 @@ func (p *ControllerRegister) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 
 	if findRouter {
 		//execute middleware filters
-		if len(p.filters[BeforeExec]) > 0 && p.execFilter(context, urlPath, BeforeExec) {
+		if p.execFilter(context, BeforeExec, urlPath) {
 			goto Admin
 		}
 		isRunnable := false
@@ -781,7 +783,7 @@ func (p *ControllerRegister) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 				if !context.ResponseWriter.Started && context.Output.Status == 0 {
 					if BConfig.WebConfig.AutoRender {
 						if err := execController.Render(); err != nil {
-							logs.Error(err)
+							panic(err)
 						}
 					}
 				}
@@ -792,18 +794,17 @@ func (p *ControllerRegister) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 		}
 
 		//execute middleware filters
-		if len(p.filters[AfterExec]) > 0 && p.execFilter(context, urlPath, AfterExec) {
+		if p.execFilter(context, AfterExec, urlPath) {
 			goto Admin
 		}
 	}
-	if len(p.filters[FinishRouter]) > 0 && p.execFilter(context, urlPath, FinishRouter) {
-		goto Admin
-	}
+
+	p.execFilter(context, FinishRouter, urlPath)
 
 Admin:
+	timeDur := time.Since(startTime)
 	//admin module record QPS
 	if BConfig.Listen.EnableAdmin {
-		timeDur := time.Since(startTime)
 		if FilterMonitorFunc(r.Method, r.URL.Path, timeDur) {
 			if runRouter != nil {
 				go toolbox.StatisticsMap.AddStatistics(r.Method, r.URL.Path, runRouter.Name(), timeDur)
@@ -814,7 +815,6 @@ Admin:
 	}
 
 	if BConfig.RunMode == DEV || BConfig.Log.AccessLogs {
-		timeDur := time.Since(startTime)
 		var devInfo string
 		if findRouter {
 			if routerInfo != nil {
@@ -826,7 +826,7 @@ Admin:
 			devInfo = fmt.Sprintf("| % -10s | % -40s | % -16s | % -10s |", r.Method, r.URL.Path, timeDur.String(), "notmatch")
 		}
 		if DefaultAccessLogFilter == nil || !DefaultAccessLogFilter.Filter(context) {
-			logs.Debug(devInfo)
+			Debug(devInfo)
 		}
 	}
 
@@ -843,26 +843,27 @@ func (p *ControllerRegister) recoverPanic(context *beecontext.Context) {
 		}
 		if !BConfig.RecoverPanic {
 			panic(err)
-		}
-		if BConfig.EnableErrorsShow {
-			if _, ok := ErrorMaps[fmt.Sprint(err)]; ok {
-				exception(fmt.Sprint(err), context)
-				return
+		} else {
+			if BConfig.EnableErrorsShow {
+				if _, ok := ErrorMaps[fmt.Sprint(err)]; ok {
+					exception(fmt.Sprint(err), context)
+					return
+				}
 			}
-		}
-		var stack string
-		logs.Critical("the request url is ", context.Input.URL())
-		logs.Critical("Handler crashed with error", err)
-		for i := 1; ; i++ {
-			_, file, line, ok := runtime.Caller(i)
-			if !ok {
-				break
+			var stack string
+			Critical("the request url is ", context.Input.URL())
+			Critical("Handler crashed with error", err)
+			for i := 1; ; i++ {
+				_, file, line, ok := runtime.Caller(i)
+				if !ok {
+					break
+				}
+				Critical(fmt.Sprintf("%s:%d", file, line))
+				stack = stack + fmt.Sprintln(fmt.Sprintf("%s:%d", file, line))
 			}
-			logs.Critical(fmt.Sprintf("%s:%d", file, line))
-			stack = stack + fmt.Sprintln(fmt.Sprintf("%s:%d", file, line))
-		}
-		if BConfig.RunMode == DEV {
-			showErr(err, context, stack)
+			if BConfig.RunMode == DEV {
+				showErr(err, context, stack)
+			}
 		}
 	}
 }

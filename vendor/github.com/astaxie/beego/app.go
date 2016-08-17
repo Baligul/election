@@ -24,7 +24,6 @@ import (
 	"time"
 
 	"github.com/astaxie/beego/grace"
-	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/utils"
 )
 
@@ -69,9 +68,9 @@ func (app *App) Run() {
 	if BConfig.Listen.EnableFcgi {
 		if BConfig.Listen.EnableStdIo {
 			if err = fcgi.Serve(nil, app.Handlers); err == nil { // standard I/O
-				logs.Info("Use FCGI via standard I/O")
+				BeeLogger.Info("Use FCGI via standard I/O")
 			} else {
-				logs.Critical("Cannot use FCGI via standard I/O", err)
+				BeeLogger.Critical("Cannot use FCGI via standard I/O", err)
 			}
 			return
 		}
@@ -85,10 +84,10 @@ func (app *App) Run() {
 			l, err = net.Listen("tcp", addr)
 		}
 		if err != nil {
-			logs.Critical("Listen: ", err)
+			BeeLogger.Critical("Listen: ", err)
 		}
 		if err = fcgi.Serve(l, app.Handlers); err != nil {
-			logs.Critical("fcgi.Serve: ", err)
+			BeeLogger.Critical("fcgi.Serve: ", err)
 		}
 		return
 	}
@@ -96,7 +95,6 @@ func (app *App) Run() {
 	app.Server.Handler = app.Handlers
 	app.Server.ReadTimeout = time.Duration(BConfig.Listen.ServerTimeOut) * time.Second
 	app.Server.WriteTimeout = time.Duration(BConfig.Listen.ServerTimeOut) * time.Second
-	app.Server.ErrorLog = logs.GetLogger("HTTP")
 
 	// run graceful mode
 	if BConfig.Listen.Graceful {
@@ -113,7 +111,7 @@ func (app *App) Run() {
 				server.Server.ReadTimeout = app.Server.ReadTimeout
 				server.Server.WriteTimeout = app.Server.WriteTimeout
 				if err := server.ListenAndServeTLS(BConfig.Listen.HTTPSCertFile, BConfig.Listen.HTTPSKeyFile); err != nil {
-					logs.Critical("ListenAndServeTLS: ", err, fmt.Sprintf("%d", os.Getpid()))
+					BeeLogger.Critical("ListenAndServeTLS: ", err, fmt.Sprintf("%d", os.Getpid()))
 					time.Sleep(100 * time.Microsecond)
 					endRunning <- true
 				}
@@ -128,7 +126,7 @@ func (app *App) Run() {
 					server.Network = "tcp4"
 				}
 				if err := server.ListenAndServe(); err != nil {
-					logs.Critical("ListenAndServe: ", err, fmt.Sprintf("%d", os.Getpid()))
+					BeeLogger.Critical("ListenAndServe: ", err, fmt.Sprintf("%d", os.Getpid()))
 					time.Sleep(100 * time.Microsecond)
 					endRunning <- true
 				}
@@ -139,18 +137,16 @@ func (app *App) Run() {
 	}
 
 	// run normal mode
+	app.Server.Addr = addr
 	if BConfig.Listen.EnableHTTPS {
 		go func() {
 			time.Sleep(20 * time.Microsecond)
 			if BConfig.Listen.HTTPSPort != 0 {
 				app.Server.Addr = fmt.Sprintf("%s:%d", BConfig.Listen.HTTPSAddr, BConfig.Listen.HTTPSPort)
-			} else if BConfig.Listen.EnableHTTP {
-				BeeLogger.Info("Start https server error, confict with http.Please reset https port")
-				return
 			}
-			logs.Info("https server Running on %s", app.Server.Addr)
+			BeeLogger.Info("https server Running on %s", app.Server.Addr)
 			if err := app.Server.ListenAndServeTLS(BConfig.Listen.HTTPSCertFile, BConfig.Listen.HTTPSKeyFile); err != nil {
-				logs.Critical("ListenAndServeTLS: ", err)
+				BeeLogger.Critical("ListenAndServeTLS: ", err)
 				time.Sleep(100 * time.Microsecond)
 				endRunning <- true
 			}
@@ -159,24 +155,24 @@ func (app *App) Run() {
 	if BConfig.Listen.EnableHTTP {
 		go func() {
 			app.Server.Addr = addr
-			logs.Info("http server Running on %s", app.Server.Addr)
+			BeeLogger.Info("http server Running on %s", app.Server.Addr)
 			if BConfig.Listen.ListenTCP4 {
 				ln, err := net.Listen("tcp4", app.Server.Addr)
 				if err != nil {
-					logs.Critical("ListenAndServe: ", err)
+					BeeLogger.Critical("ListenAndServe: ", err)
 					time.Sleep(100 * time.Microsecond)
 					endRunning <- true
 					return
 				}
 				if err = app.Server.Serve(ln); err != nil {
-					logs.Critical("ListenAndServe: ", err)
+					BeeLogger.Critical("ListenAndServe: ", err)
 					time.Sleep(100 * time.Microsecond)
 					endRunning <- true
 					return
 				}
 			} else {
 				if err := app.Server.ListenAndServe(); err != nil {
-					logs.Critical("ListenAndServe: ", err)
+					BeeLogger.Critical("ListenAndServe: ", err)
 					time.Sleep(100 * time.Microsecond)
 					endRunning <- true
 				}

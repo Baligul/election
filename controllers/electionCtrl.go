@@ -70,7 +70,7 @@ func init() {
 	orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
 	//orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
 	orm.RegisterModel(new(models.Account))
-	orm.RegisterModel(new(models.Voter))
+	orm.RegisterModel(new(models.Voter_21))
 }
 
 type ElectionController struct {
@@ -84,12 +84,12 @@ func (e *ElectionController) GetVoters() {
 		votersCountBijnor    int64
 		votersCountBangalore int64
 		votersCountHubli     int64
-		voters               []*models.Voter
-		votersRampur         []*models.Voter
-		votersMoradabad      []*models.Voter
-		votersBijnor         []*models.Voter
-		votersBangalore      []*models.Voter
-		votersHubli          []*models.Voter
+		voters               []*models.Voter_21
+		votersRampur         []*models.Voter_21
+		votersMoradabad      []*models.Voter_21
+		votersBijnor         []*models.Voter_21
+		votersBangalore      []*models.Voter_21
+		votersHubli          []*models.Voter_21
 		num                  int64
 		user                 []*models.Account
 		err                  error

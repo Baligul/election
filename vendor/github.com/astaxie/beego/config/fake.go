@@ -38,7 +38,7 @@ func (c *fakeConfigContainer) String(key string) string {
 }
 
 func (c *fakeConfigContainer) DefaultString(key string, defaultval string) string {
-	v := c.String(key)
+	v := c.getData(key)
 	if v == "" {
 		return defaultval
 	}
@@ -46,7 +46,7 @@ func (c *fakeConfigContainer) DefaultString(key string, defaultval string) strin
 }
 
 func (c *fakeConfigContainer) Strings(key string) []string {
-	v := c.String(key)
+	v := c.getData(key)
 	if v == "" {
 		return nil
 	}

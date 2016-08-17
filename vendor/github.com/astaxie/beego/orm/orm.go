@@ -140,14 +140,7 @@ func (o *orm) ReadOrCreate(md interface{}, col1 string, cols ...string) (bool, i
 		return (err == nil), id, err
 	}
 
-	id, vid := int64(0), ind.FieldByIndex(mi.fields.pk.fieldIndex)
-	if mi.fields.pk.fieldType&IsPositiveIntegerField > 0 {
-		id = int64(vid.Uint())
-	} else {
-		id = vid.Int()
-	}
-
-	return false, id, err
+	return false, ind.FieldByIndex(mi.fields.pk.fieldIndex).Int(), err
 }
 
 // insert model data to database
@@ -166,7 +159,7 @@ func (o *orm) Insert(md interface{}) (int64, error) {
 // set auto pk field
 func (o *orm) setPk(mi *modelInfo, ind reflect.Value, id int64) {
 	if mi.fields.pk.auto {
-		if mi.fields.pk.fieldType&IsPositiveIntegerField > 0 {
+		if mi.fields.pk.fieldType&IsPostiveIntegerField > 0 {
 			ind.FieldByIndex(mi.fields.pk.fieldIndex).SetUint(uint64(id))
 		} else {
 			ind.FieldByIndex(mi.fields.pk.fieldIndex).SetInt(id)
@@ -191,7 +184,7 @@ func (o *orm) InsertMulti(bulk int, mds interface{}) (int64, error) {
 
 	if bulk <= 1 {
 		for i := 0; i < sind.Len(); i++ {
-			ind := reflect.Indirect(sind.Index(i))
+			ind := sind.Index(i)
 			mi, _ := o.getMiInd(ind.Interface(), false)
 			id, err := o.alias.DbBaser.Insert(o.db, mi, ind, o.alias.TZ)
 			if err != nil {

@@ -82,10 +82,6 @@ func (ini *IniConfig) parseFile(name string) (*IniConfigContainer, error) {
 		if err == io.EOF {
 			break
 		}
-		//It might be a good idea to throw a error on all unknonw errors?
-		if _, ok := err.(*os.PathError); ok {
-			return nil, err
-		}
 		if bytes.Equal(line, bEmpty) {
 			continue
 		}
@@ -166,7 +162,7 @@ func (ini *IniConfig) parseFile(name string) (*IniConfigContainer, error) {
 			val = bytes.Trim(val, `"`)
 		}
 
-		cfg.data[section][key] = ExpandValueEnv(string(val))
+		cfg.data[section][key] = string(val)
 		if comment.Len() > 0 {
 			cfg.keyComment[section+"."+key] = comment.String()
 			comment.Reset()
@@ -300,9 +296,7 @@ func (c *IniConfigContainer) GetSection(section string) (map[string]string, erro
 	return nil, errors.New("not exist setction")
 }
 
-// SaveConfigFile save the config into file.
-//
-// BUG(env): The environment variable config item will be saved with real value in SaveConfigFile Funcation.
+// SaveConfigFile save the config into file
 func (c *IniConfigContainer) SaveConfigFile(filename string) (err error) {
 	// Write configuration file by filename.
 	f, err := os.Create(filename)

@@ -156,5 +156,5 @@ func (s *SMTPWriter) Destroy() {
 }
 
 func init() {
-	Register(AdapterMail, newSMTPWriter)
+	Register("smtp", newSMTPWriter)
 }

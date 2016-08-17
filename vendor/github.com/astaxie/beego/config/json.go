@@ -57,9 +57,6 @@ func (js *JSONConfig) ParseData(data []byte) (Configer, error) {
 		}
 		x.data["rootArray"] = wrappingArray
 	}
-
-	x.data = ExpandValueEnvForMap(x.data)
-
 	return x, nil
 }
 

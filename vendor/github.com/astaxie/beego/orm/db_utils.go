@@ -33,13 +33,13 @@ func getExistPk(mi *modelInfo, ind reflect.Value) (column string, value interfac
 	fi := mi.fields.pk
 
 	v := ind.FieldByIndex(fi.fieldIndex)
-	if fi.fieldType&IsPositiveIntegerField > 0 {
+	if fi.fieldType&IsPostiveIntegerField > 0 {
 		vu := v.Uint()
 		exist = vu > 0
 		value = vu
 	} else if fi.fieldType&IsIntegerField > 0 {
 		vu := v.Int()
-		exist = true
+		exist = vu > 0
 		value = vu
 	} else {
 		vu := v.String()
@@ -74,32 +74,24 @@ outFor:
 		case reflect.String:
 			v := val.String()
 			if fi != nil {
-				if fi.fieldType == TypeTimeField || fi.fieldType == TypeDateField || fi.fieldType == TypeDateTimeField {
+				if fi.fieldType == TypeDateField || fi.fieldType == TypeDateTimeField {
 					var t time.Time
 					var err error
 					if len(v) >= 19 {
 						s := v[:19]
 						t, err = time.ParseInLocation(formatDateTime, s, DefaultTimeLoc)
-					} else if len(v) >= 10 {
+					} else {
 						s := v
 						if len(v) > 10 {
 							s = v[:10]
 						}
 						t, err = time.ParseInLocation(formatDate, s, tz)
-					} else {
-						s := v
-						if len(s) > 8 {
-							s = v[:8]
-						}
-						t, err = time.ParseInLocation(formatTime, s, tz)
 					}
 					if err == nil {
 						if fi.fieldType == TypeDateField {
 							v = t.In(tz).Format(formatDate)
-						} else if fi.fieldType == TypeDateTimeField {
-							v = t.In(tz).Format(formatDateTime)
 						} else {
-							v = t.In(tz).Format(formatTime)
+							v = t.In(tz).Format(formatDateTime)
 						}
 					}
 				}
@@ -145,10 +137,8 @@ outFor:
 			if v, ok := arg.(time.Time); ok {
 				if fi != nil && fi.fieldType == TypeDateField {
 					arg = v.In(tz).Format(formatDate)
-				} else if fi.fieldType == TypeDateTimeField {
-					arg = v.In(tz).Format(formatDateTime)
 				} else {
-					arg = v.In(tz).Format(formatTime)
+					arg = v.In(tz).Format(formatDateTime)
 				}
 			} else {
 				typ := val.Type()

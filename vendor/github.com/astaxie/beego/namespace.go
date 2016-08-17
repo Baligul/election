@@ -44,7 +44,7 @@ func NewNamespace(prefix string, params ...LinkNamespace) *Namespace {
 	return ns
 }
 
-// Cond set condition function
+// Cond set condtion function
 // if cond return true can run this namespace, else can't
 // usage:
 // ns.Cond(func (ctx *context.Context) bool{
@@ -60,7 +60,7 @@ func (n *Namespace) Cond(cond namespaceCond) *Namespace {
 			exception("405", ctx)
 		}
 	}
-	if v := n.handlers.filters[BeforeRouter]; len(v) > 0 {
+	if v, ok := n.handlers.filters[BeforeRouter]; ok {
 		mr := new(FilterRouter)
 		mr.tree = NewTree()
 		mr.pattern = "*"

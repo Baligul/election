@@ -20,24 +20,28 @@ import (
 	"time"
 )
 
-var alphaNum = []byte(`0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`)
-
 // RandomCreateBytes generate random []byte by specify chars.
 func RandomCreateBytes(n int, alphabets ...byte) []byte {
-	if len(alphabets) == 0 {
-		alphabets = alphaNum
-	}
+	const alphanum = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	var bytes = make([]byte, n)
-	var randBy bool
+	var randby bool
 	if num, err := rand.Read(bytes); num != n || err != nil {
 		r.Seed(time.Now().UnixNano())
-		randBy = true
+		randby = true
 	}
 	for i, b := range bytes {
-		if randBy {
-			bytes[i] = alphabets[r.Intn(len(alphabets))]
+		if len(alphabets) == 0 {
+			if randby {
+				bytes[i] = alphanum[r.Intn(len(alphanum))]
+			} else {
+				bytes[i] = alphanum[b%byte(len(alphanum))]
+			}
 		} else {
-			bytes[i] = alphabets[b%byte(len(alphabets))]
+			if randby {
+				bytes[i] = alphabets[r.Intn(len(alphabets))]
+			} else {
+				bytes[i] = alphabets[b%byte(len(alphabets))]
+			}
 		}
 	}
 	return bytes

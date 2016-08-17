@@ -119,7 +119,6 @@ type fieldInfo struct {
 	colDefault          bool
 	initial             StrTo
 	size                int
-	toText              bool
 	autoNow             bool
 	autoNowAdd          bool
 	rel                 bool
@@ -240,24 +239,14 @@ checkType:
 		if err != nil {
 			goto end
 		}
-		if fieldType == TypeCharField {
-			switch tags["type"] {
-			case "text":
-				fieldType = TypeTextField
-			case "json":
-				fieldType = TypeJSONField
-			case "jsonb":
-				fieldType = TypeJsonbField
-			}
+		if fieldType == TypeCharField && tags["type"] == "text" {
+			fieldType = TypeTextField
 		}
 		if fieldType == TypeFloatField && (digits != "" || decimals != "") {
 			fieldType = TypeDecimalField
 		}
 		if fieldType == TypeDateTimeField && tags["type"] == "date" {
 			fieldType = TypeDateField
-		}
-		if fieldType == TypeTimeField && tags["type"] == "time" {
-			fieldType = TypeTimeField
 		}
 	}
 
@@ -350,7 +339,7 @@ checkType:
 
 	switch fieldType {
 	case TypeBooleanField:
-	case TypeCharField, TypeJSONField, TypeJsonbField:
+	case TypeCharField:
 		if size != "" {
 			v, e := StrTo(size).Int32()
 			if e != nil {
@@ -360,12 +349,11 @@ checkType:
 			}
 		} else {
 			fi.size = 255
-			fi.toText = true
 		}
 	case TypeTextField:
 		fi.index = false
 		fi.unique = false
-	case TypeTimeField, TypeDateField, TypeDateTimeField:
+	case TypeDateField, TypeDateTimeField:
 		if attrs["auto_now"] {
 			fi.autoNow = true
 		} else if attrs["auto_now_add"] {
@@ -418,7 +406,7 @@ checkType:
 		fi.index = false
 	}
 
-	if fi.auto || fi.pk || fi.unique || fieldType == TypeTimeField || fieldType == TypeDateField || fieldType == TypeDateTimeField {
+	if fi.auto || fi.pk || fi.unique || fieldType == TypeDateField || fieldType == TypeDateTimeField {
 		// can not set default
 		initial.Clear()
 	}

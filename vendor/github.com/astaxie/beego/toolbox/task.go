@@ -389,10 +389,6 @@ func dayMatches(s *Schedule, t time.Time) bool {
 
 // StartTask start all tasks
 func StartTask() {
-	if isstart {
-		//If already started， no need to start another goroutine.
-		return
-	}
 	isstart = true
 	go run()
 }
@@ -436,11 +432,8 @@ func run() {
 
 // StopTask stop all tasks
 func StopTask() {
-	if isstart {
-		isstart = false
-		stop <- true
-	}
-
+	isstart = false
+	stop <- true
 }
 
 // AddTask add task with name
