@@ -32,7 +32,7 @@ import "time"
 }
 */
 
-type Voter_21 struct {
+type Voter struct {
 	Voter_id              int    `form:"-" orm:"pk" json:"voter_id"`
 	Ac_number             int    `form:"acnumber" json:"ac_number"`
 	Part_number           int    `form:"partnumber" json:"part_number"`
@@ -57,7 +57,7 @@ type Voter_21 struct {
 
 type Voters struct {
 	Total  int64    `json:"total"`
-	Voters []*Voter_21 `json:"voters"`
+	Voters []*Voter `json:"voters"`
 }
 
 /* account
@@ -265,24 +265,22 @@ func NewResponseStatus() *ResponseStatus {
 func GetTableName(districtName string) string {
 	switch districtName {
 	case "Rampur":
-        return "voter_21"
-		//return "voter_20"
+		return "voter_20"
 	case "Moradabad":
-		return "voter_21"
-        //return "voter_19"
+		return "voter_19"
 	case "Bangalore":
 		return "voter_21"
-        //return "voter"
+		//return "voter"
 	case "Bijnor":
 		return "voter_21"
 	case "Hubli":
 		return "voter_21"
-        //return "voter"
+		//return "voter"
 	default:
 		return "voter_21"
-        //return "voter"
+		//return "voter"
 	}
-    return "voter_21"
+	return "voter_21"
 	//return "voter"
 }
 
