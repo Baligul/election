@@ -57,7 +57,7 @@ import (
 	"strings"
 	"time"
 
-	models "github.com/Baligul/election/models"
+	modelVoters "github.com/Baligul/election/models/voters"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -69,8 +69,7 @@ func init() {
 	orm.RegisterDriver("postgres", orm.DRPostgres)
 	orm.RegisterDataBase("default", "postgres", "postgres://ggxssikrsehequ:sQElIpN-CHqcFFNAx7mJO31Y3v@ec2-54-225-93-34.compute-1.amazonaws.com:5432/da6obv8tnlvcev")
 	//orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
-	orm.RegisterModel(new(models.Account))
-	orm.RegisterModel(new(models.Voter))
+	orm.RegisterModel(new(modelVoters.Account), new(modelVoters.Voter), new(modelVoters.Voter_19), new(modelVoters.Voter_20), new(modelVoters.Voter_21))
 }
 
 type ElectionController struct {
@@ -84,18 +83,16 @@ func (e *ElectionController) GetVoters() {
 		votersCountBijnor    int64
 		votersCountBangalore int64
 		votersCountHubli     int64
-		voters               []*models.Voter
-		votersRampur         []*models.Voter
-		votersMoradabad      []*models.Voter
-		votersBijnor         []*models.Voter
-		votersBangalore      []*models.Voter
-		votersHubli          []*models.Voter
+		voters               modelVoters.Voters
+		votersMoradabad      []*modelVoters.Voter_19
+		votersRampur         []*modelVoters.Voter_20
+		votersBijnor         []*modelVoters.Voter_21
+		votersBangalore      []*modelVoters.Voter
+		votersHubli          []*modelVoters.Voter
 		num                  int64
-		user                 []*models.Account
+		user                 []*modelVoters.Account
 		err                  error
 	)
-
-	votersWithTotal := new(models.Voters)
 
 	limit, _ := e.GetInt("limit")
 	offset, _ := e.GetInt("offset")
@@ -110,7 +107,7 @@ func (e *ElectionController) GetVoters() {
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
@@ -120,7 +117,7 @@ func (e *ElectionController) GetVoters() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		responseStatus.Error = err.Error()
@@ -130,7 +127,7 @@ func (e *ElectionController) GetVoters() {
 
 	if num > 0 {
 		if user[0].Token != token {
-			responseStatus := models.NewResponseStatus()
+			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
 			e.Data["json"] = &responseStatus
@@ -138,7 +135,7 @@ func (e *ElectionController) GetVoters() {
 		}
 
 	} else {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
@@ -150,11 +147,11 @@ func (e *ElectionController) GetVoters() {
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
-	query := new(models.Query)
+	query := new(modelVoters.Query)
 
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
 		responseStatus.Error = err.Error()
@@ -163,11 +160,11 @@ func (e *ElectionController) GetVoters() {
 	}
 
 	// Create query string for each and every district
-	qsRampur := o.QueryTable(models.GetTableName("Rampur"))
-	qsMoradabad := o.QueryTable(models.GetTableName("Moradabad"))
-	qsBijnor := o.QueryTable(models.GetTableName("Bijnor"))
-	qsBangalore := o.QueryTable(models.GetTableName("Bangalore"))
-	qsHubli := o.QueryTable(models.GetTableName("Hubli"))
+	qsRampur := o.QueryTable(modelVoters.GetTableName("Rampur"))
+	qsMoradabad := o.QueryTable(modelVoters.GetTableName("Moradabad"))
+	qsBijnor := o.QueryTable(modelVoters.GetTableName("Bijnor"))
+	qsBangalore := o.QueryTable(modelVoters.GetTableName("Bangalore"))
+	qsHubli := o.QueryTable(modelVoters.GetTableName("Hubli"))
 
 	cond := orm.NewCondition()
 	condVoterId := orm.NewCondition()
@@ -466,17 +463,57 @@ func (e *ElectionController) GetVoters() {
 			if state == 27 {
 				votersCountRampur, _ = qsRampur.Count()
 				_, err = qsRampur.Limit(limit, offset).All(&votersRampur)
+				if err != nil {
+					responseStatus := modelVoters.NewResponseStatus()
+					responseStatus.Response = "error"
+					responseStatus.Message = fmt.Sprintf("Db Error Rampur. Unable to get the voters.")
+					responseStatus.Error = err.Error()
+					e.Data["json"] = &responseStatus
+					e.ServeJSON()
+				}
 				votersCountMoradabad, _ = qsMoradabad.Count()
 				_, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
+				if err != nil {
+					responseStatus := modelVoters.NewResponseStatus()
+					responseStatus.Response = "error"
+					responseStatus.Message = fmt.Sprintf("Db Error Moradabad. Unable to get the voters.")
+					responseStatus.Error = err.Error()
+					e.Data["json"] = &responseStatus
+					e.ServeJSON()
+				}
 				votersCountBijnor, _ = qsBijnor.Count()
 				_, err = qsBijnor.Limit(limit, offset).All(&votersBijnor)
+				if err != nil {
+					responseStatus := modelVoters.NewResponseStatus()
+					responseStatus.Response = "error"
+					responseStatus.Message = fmt.Sprintf("Db Error Bijnor. Unable to get the voters.")
+					responseStatus.Error = err.Error()
+					e.Data["json"] = &responseStatus
+					e.ServeJSON()
+				}
 			}
 
 			if state == 12 {
 				votersCountBangalore, _ = qsBangalore.Count()
 				_, err = qsBangalore.Limit(limit, offset).All(&votersBangalore)
+				if err != nil {
+					responseStatus := modelVoters.NewResponseStatus()
+					responseStatus.Response = "error"
+					responseStatus.Message = fmt.Sprintf("Db Error Bangalore. Unable to get the voters.")
+					responseStatus.Error = err.Error()
+					e.Data["json"] = &responseStatus
+					e.ServeJSON()
+				}
 				votersCountHubli, _ = qsHubli.Count()
 				_, err = qsHubli.Limit(limit, offset).All(&votersHubli)
+				if err != nil {
+					responseStatus := modelVoters.NewResponseStatus()
+					responseStatus.Response = "error"
+					responseStatus.Message = fmt.Sprintf("Db Error Hubli. Unable to get the voters.")
+					responseStatus.Error = err.Error()
+					e.Data["json"] = &responseStatus
+					e.ServeJSON()
+				}
 			}
 
 		}
@@ -487,16 +524,40 @@ func (e *ElectionController) GetVoters() {
 		if districtNameHindi == "मुरादाबाद" {
 			votersCountMoradabad, _ = qsMoradabad.Count()
 			_, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Moradabad. Unable to get the voters.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
 		}
 
 		if districtNameHindi == "रामपुर" {
 			votersCountRampur, _ = qsRampur.Count()
 			_, err = qsRampur.Limit(limit, offset).All(&votersRampur)
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Rampur. Unable to get the voters.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
 		}
 
 		if districtNameHindi == "बिजनौर" {
 			votersCountBijnor, _ = qsBijnor.Count()
 			_, err = qsBijnor.Limit(limit, offset).All(&votersBijnor)
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Bijnor. Unable to get the voters.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
 		}
 	}
 
@@ -505,16 +566,40 @@ func (e *ElectionController) GetVoters() {
 		if districtNameEnglish == "Moradabad" || districtNameEnglish == "moradabad" {
 			votersCountMoradabad, _ = qsMoradabad.Count()
 			_, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Moradabad. Unable to get the voters.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
 		}
 
 		if districtNameEnglish == "Rampur" || districtNameEnglish == "rampur" {
 			votersCountRampur, _ = qsRampur.Count()
 			_, err = qsRampur.Limit(limit, offset).All(&votersRampur)
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Rampur. Unable to get the voters.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
 		}
 
 		if districtNameEnglish == "Bijnor" || districtNameEnglish == "bijnor" {
 			votersCountBijnor, _ = qsBijnor.Count()
 			_, err = qsBijnor.Limit(limit, offset).All(&votersBijnor)
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Bijnor. Unable to get the voters.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
 		}
 	}
 
@@ -523,32 +608,54 @@ func (e *ElectionController) GetVoters() {
 		if district == 19 {
 			votersCountMoradabad, _ = qsMoradabad.Count()
 			_, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Moradabad. Unable to get the voters.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
 		}
 
 		if district == 20 {
 			votersCountRampur, _ = qsRampur.Count()
 			_, err = qsRampur.Limit(limit, offset).All(&votersRampur)
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Rampur. Unable to get the voters.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
 		}
 
 		if district == 21 {
 			votersCountBijnor, _ = qsBijnor.Count()
 			_, err = qsBijnor.Limit(limit, offset).All(&votersBijnor)
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Bijnor. Unable to get the voters.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
 		}
 	}
 
-	voters = append(votersRampur, votersMoradabad...)
-	voters = append(votersRampur, votersBijnor...)
-	voters = append(voters, votersBangalore...)
-	voters = append(voters, votersHubli...)
+	voters.Populate_19(votersMoradabad)
+	voters.Populate_20(votersRampur)
+	voters.Populate_21(votersBijnor)
 
 	totalVotersCount := votersCountRampur + votersCountMoradabad + votersCountBangalore + votersCountHubli + votersCountBijnor
 
 	if votersCountRampur > 0 || votersCountMoradabad > 0 || votersCountBijnor > 0 || votersCountBangalore > 0 || votersCountHubli > 0 {
-		votersWithTotal.Total = totalVotersCount
-		votersWithTotal.Voters = voters
-		e.Data["json"] = votersWithTotal
+		voters.Total = totalVotersCount
+		e.Data["json"] = voters
 	} else {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "ok"
 		responseStatus.Message = "No voters found with this criteria."
 		if err != nil {
@@ -628,7 +735,7 @@ func (e *ElectionController) GetStatistic() {
 		otherFemaleVotersCountBangalore  int64
 		otherFemaleVotersCountHubli      int64
 		num                              int64
-		user                             []*models.Account
+		user                             []*modelVoters.Account
 		err                              error
 	)
 
@@ -643,7 +750,7 @@ func (e *ElectionController) GetStatistic() {
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
@@ -653,7 +760,7 @@ func (e *ElectionController) GetStatistic() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		responseStatus.Error = err.Error()
@@ -663,7 +770,7 @@ func (e *ElectionController) GetStatistic() {
 
 	if num > 0 {
 		if user[0].Token != token {
-			responseStatus := models.NewResponseStatus()
+			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
 			e.Data["json"] = &responseStatus
@@ -671,7 +778,7 @@ func (e *ElectionController) GetStatistic() {
 		}
 
 	} else {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
@@ -679,12 +786,12 @@ func (e *ElectionController) GetStatistic() {
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
-	query := new(models.Query)
-	statistic := new(models.Statistic)
+	query := new(modelVoters.Query)
+	statistic := new(modelVoters.Statistic)
 
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = "Invalid Json. Unable to parse."
 		responseStatus.Error = err.Error()
@@ -693,11 +800,11 @@ func (e *ElectionController) GetStatistic() {
 	}
 
 	// Create query string for each and every district
-	qsRampur := o.QueryTable(models.GetTableName("Rampur"))
-	qsMoradabad := o.QueryTable(models.GetTableName("Moradabad"))
-	qsBijnor := o.QueryTable(models.GetTableName("Bijnor"))
-	qsBangalore := o.QueryTable(models.GetTableName("Bangalore"))
-	qsHubli := o.QueryTable(models.GetTableName("Hubli"))
+	qsRampur := o.QueryTable(modelVoters.GetTableName("Rampur"))
+	qsMoradabad := o.QueryTable(modelVoters.GetTableName("Moradabad"))
+	qsBijnor := o.QueryTable(modelVoters.GetTableName("Bijnor"))
+	qsBangalore := o.QueryTable(modelVoters.GetTableName("Bangalore"))
+	qsHubli := o.QueryTable(modelVoters.GetTableName("Hubli"))
 
 	cond := orm.NewCondition()
 	condAcNumber := orm.NewCondition()
@@ -1063,7 +1170,7 @@ func (e *ElectionController) GetStatistic() {
 
 		e.Data["json"] = statistic
 	} else {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "ok"
 		responseStatus.Message = "No statistic found with this criteria. Please try again!"
 		if err != nil {
@@ -1146,7 +1253,7 @@ func (e *ElectionController) GetStatistics() {
 		otherFemaleVotersCountBangalore  int64
 		otherFemaleVotersCountHubli      int64
 		num                              int64
-		user                             []*models.Account
+		user                             []*modelVoters.Account
 		err                              error
 	)
 
@@ -1161,7 +1268,7 @@ func (e *ElectionController) GetStatistics() {
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
@@ -1171,7 +1278,7 @@ func (e *ElectionController) GetStatistics() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		responseStatus.Error = err.Error()
@@ -1181,7 +1288,7 @@ func (e *ElectionController) GetStatistics() {
 
 	if num > 0 {
 		if user[0].Token != token {
-			responseStatus := models.NewResponseStatus()
+			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
 			e.Data["json"] = &responseStatus
@@ -1189,7 +1296,7 @@ func (e *ElectionController) GetStatistics() {
 		}
 
 	} else {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
@@ -1197,12 +1304,12 @@ func (e *ElectionController) GetStatistics() {
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
-	queries := new(models.Queries)
-	statistics := new(models.Statistics)
+	queries := new(modelVoters.Queries)
+	statistics := new(modelVoters.Statistics)
 
 	err = json.Unmarshal(inputJson, &queries)
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = "Invalid Json. Unable to parse."
 		responseStatus.Error = err.Error()
@@ -1212,18 +1319,18 @@ func (e *ElectionController) GetStatistics() {
 
 	// Create query string for each and every district
 	// Query
-	qsRampur := o.QueryTable(models.GetTableName("Rampur"))
-	qsMoradabad := o.QueryTable(models.GetTableName("Moradabad"))
-	qsBijnor := o.QueryTable(models.GetTableName("Bijnor"))
-	qsBangalore := o.QueryTable(models.GetTableName("Bangalore"))
-	qsHubli := o.QueryTable(models.GetTableName("Hubli"))
+	qsRampur := o.QueryTable(modelVoters.GetTableName("Rampur"))
+	qsMoradabad := o.QueryTable(modelVoters.GetTableName("Moradabad"))
+	qsBijnor := o.QueryTable(modelVoters.GetTableName("Bijnor"))
+	qsBangalore := o.QueryTable(modelVoters.GetTableName("Bangalore"))
+	qsHubli := o.QueryTable(modelVoters.GetTableName("Hubli"))
 
 	// Scope
-	qsScopeRampur := o.QueryTable(models.GetTableName("Rampur"))
-	qsScopeMoradabad := o.QueryTable(models.GetTableName("Moradabad"))
-	qsScopeBijnor := o.QueryTable(models.GetTableName("Bijnor"))
-	qsScopeBangalore := o.QueryTable(models.GetTableName("Bangalore"))
-	qsScopeHubli := o.QueryTable(models.GetTableName("Hubli"))
+	qsScopeRampur := o.QueryTable(modelVoters.GetTableName("Rampur"))
+	qsScopeMoradabad := o.QueryTable(modelVoters.GetTableName("Moradabad"))
+	qsScopeBijnor := o.QueryTable(modelVoters.GetTableName("Bijnor"))
+	qsScopeBangalore := o.QueryTable(modelVoters.GetTableName("Bangalore"))
+	qsScopeHubli := o.QueryTable(modelVoters.GetTableName("Hubli"))
 
 	condQuery := orm.NewCondition()
 	condScope := orm.NewCondition()
@@ -2458,7 +2565,7 @@ func (e *ElectionController) GetStatistics() {
 	if votersCount > 0 && votersResult > 0 {
 		e.Data["json"] = statistics
 	} else {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "ok"
 		responseStatus.Message = "No statistics found with this criteria. Please try again!"
 		if err != nil {
@@ -2473,7 +2580,7 @@ func (e *ElectionController) GetStatistics() {
 }
 
 func (e *ElectionController) Home() {
-	responseStatus := models.NewResponseStatus()
+	responseStatus := modelVoters.NewResponseStatus()
 	responseStatus.Response = "ok"
 	responseStatus.Message = "This API is up and running!"
 	e.Data["json"] = &responseStatus
@@ -2484,7 +2591,7 @@ func (e *ElectionController) OTP() {
 	var (
 		otp       int32
 		num       int64
-		recipient []*models.Account
+		recipient []*modelVoters.Account
 	)
 
 	o := orm.NewOrm()
@@ -2495,11 +2602,11 @@ func (e *ElectionController) OTP() {
 	qsRecipient := o.QueryTable("account")
 
 	inputJson := e.Ctx.Input.RequestBody
-	account := new(models.Account)
+	account := new(modelVoters.Account)
 
 	err := json.Unmarshal(inputJson, &account)
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
 		responseStatus.Error = err.Error()
@@ -2509,7 +2616,7 @@ func (e *ElectionController) OTP() {
 
 	exist := qsAccount.Filter("Mobile_no__exact", account.Mobile_no).Exist()
 	if !exist {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid mobile number or mobile number does not exists in our database. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
@@ -2518,7 +2625,7 @@ func (e *ElectionController) OTP() {
 
 	otp, err = generateOTP()
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't generate the otp. Please contact electionubda.com team for assistance.")
 		responseStatus.Error = err.Error()
@@ -2531,7 +2638,7 @@ func (e *ElectionController) OTP() {
 	})
 
 	if err != nil || num != 1 {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Error occur while updating the otp. Please contact electionubda.com team for assistance.")
 		if err != nil {
@@ -2544,7 +2651,7 @@ func (e *ElectionController) OTP() {
 	_, err = qsRecipient.Filter("Mobile_no__exact", account.Mobile_no).All(&recipient)
 
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't send the otp. Please contact electionubda.com team for assistance.")
 		responseStatus.Error = err.Error()
@@ -2556,7 +2663,7 @@ func (e *ElectionController) OTP() {
 		err = sendOTP(recipient[0].Otp, recipient[0].Email, recipient[0].Display_name, recipient[0].Mobile_no)
 
 		if err != nil {
-			responseStatus := models.NewResponseStatus()
+			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Couldn't send the otp. Please contact electionubda.com team for assistance.")
 			responseStatus.Error = err.Error()
@@ -2564,14 +2671,14 @@ func (e *ElectionController) OTP() {
 			e.ServeJSON()
 		}
 
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "ok"
 		responseStatus.Message = fmt.Sprintf("One time password has been generated and sent to %s successfully.", recipient[0].Email)
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 
 	} else {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't send the otp. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
@@ -2648,7 +2755,7 @@ func (e *ElectionController) Register() {
 	var (
 		token string
 		num   int64
-		users []*models.Account
+		users []*modelVoters.Account
 	)
 
 	o := orm.NewOrm()
@@ -2658,11 +2765,11 @@ func (e *ElectionController) Register() {
 	qsAccount := o.QueryTable("account")
 
 	inputJson := e.Ctx.Input.RequestBody
-	account := new(models.Account)
+	account := new(modelVoters.Account)
 
 	err := json.Unmarshal(inputJson, &account)
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
 		responseStatus.Error = err.Error()
@@ -2672,7 +2779,7 @@ func (e *ElectionController) Register() {
 
 	exist := qsAccount.Filter("Mobile_no__exact", account.Mobile_no).Exist()
 	if !exist {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid mobile number or mobile number does not exists in our database. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
@@ -2681,7 +2788,7 @@ func (e *ElectionController) Register() {
 
 	_, err = qsAccount.Filter("Mobile_no__exact", account.Mobile_no).All(&users)
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't generate the token. Please contact electionubda.com team for assistance.")
 		responseStatus.Error = err.Error()
@@ -2691,7 +2798,7 @@ func (e *ElectionController) Register() {
 
 	if len(users) > 0 {
 		if users[0].Otp != account.Otp || users[0].Otp == 0 {
-			responseStatus := models.NewResponseStatus()
+			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Invalid Otp. Please try with a correct otp sent to you or contact electionubda.com team for assistance.")
 			e.Data["json"] = &responseStatus
@@ -2706,7 +2813,7 @@ func (e *ElectionController) Register() {
 		})
 
 		if err != nil || num != 1 {
-			responseStatus := models.NewResponseStatus()
+			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Error occur while updating the token. Please contact electionubda.com team for assistance.")
 			if err != nil {
@@ -2715,13 +2822,13 @@ func (e *ElectionController) Register() {
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
-		user := new(models.Account)
+		user := new(modelVoters.Account)
 		users[0].Token = token
 		user = users[0]
 		e.Data["json"] = &user
 		e.ServeJSON()
 	} else {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't generate the token. Please contact electionubda.com team for assistance.")
 		responseStatus.Error = err.Error()
@@ -2733,7 +2840,7 @@ func (e *ElectionController) Register() {
 func (e *ElectionController) GetList() {
 	var (
 		num  int64
-		user []*models.Account
+		user []*modelVoters.Account
 		err  error
 	)
 
@@ -2748,7 +2855,7 @@ func (e *ElectionController) GetList() {
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
@@ -2758,7 +2865,7 @@ func (e *ElectionController) GetList() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		responseStatus.Error = err.Error()
@@ -2768,7 +2875,7 @@ func (e *ElectionController) GetList() {
 
 	if num > 0 {
 		if user[0].Token != token {
-			responseStatus := models.NewResponseStatus()
+			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
 			e.Data["json"] = &responseStatus
@@ -2776,7 +2883,7 @@ func (e *ElectionController) GetList() {
 		}
 
 	} else {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
@@ -2784,11 +2891,11 @@ func (e *ElectionController) GetList() {
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
-	list := new(models.List)
+	list := new(modelVoters.List)
 
 	err = json.Unmarshal(inputJson, &list)
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
 		responseStatus.Error = err.Error()
@@ -2815,13 +2922,13 @@ func (e *ElectionController) GetList() {
 
 func (e *ElectionController) ReadJson() {
 	inputJson := e.Ctx.Input.RequestBody
-	readJsons := new(models.ReadJsons)
+	readJsons := new(modelVoters.ReadJsons)
 
 	acNameSectionName := make(map[string]string)
 
 	err := json.Unmarshal(inputJson, &readJsons)
 	if err != nil {
-		responseStatus := models.NewResponseStatus()
+		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent")
 		responseStatus.Error = err.Error()

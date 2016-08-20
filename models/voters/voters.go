@@ -1,4 +1,4 @@
-package models
+package voters
 
 import "time"
 
@@ -56,8 +56,8 @@ type Voter struct {
 }
 
 type Voters struct {
-	Total  int64    `json:"total"`
-	Voters []*Voter `json:"voters"`
+	Total  int64   `json:"total"`
+	Voters []Voter `json:"voters"`
 }
 
 /* account
