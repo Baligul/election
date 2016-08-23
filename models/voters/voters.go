@@ -223,21 +223,21 @@ type Query struct {
 type Statistic struct {
 	Total         int64   `json:"total"`
 	Muslim        int64   `json:"muslim"`
-	Other         int64   `json:"other"`
+	Others        int64   `json:"other"`
 	Male          int64   `json:"male"`
 	Female        int64   `json:"female"`
 	MuslimMale    int64   `json:"muslim_male"`
 	MuslimFemale  int64   `json:"muslim_female"`
-	OtherMale     int64   `json:"other_male"`
-	OtherFemale   int64   `json:"other_female"`
+	OthersMale    int64   `json:"other_male"`
+	OthersFemale  int64   `json:"other_female"`
 	MuslimP       float64 `json:"muslim_p"`
-	OtherP        float64 `json:"other_p"`
+	OthersP       float64 `json:"other_p"`
 	MaleP         float64 `json:"male_p"`
 	FemaleP       float64 `json:"female_p"`
 	MuslimMaleP   float64 `json:"muslim_male_p"`
 	MuslimFemaleP float64 `json:"muslim_female_p"`
-	OtherMaleP    float64 `json:"other_male_p"`
-	OtherFemaleP  float64 `json:"other_female_p"`
+	OthersMaleP   float64 `json:"other_male_p"`
+	OthersFemaleP float64 `json:"other_female_p"`
 }
 
 type Statistics struct {
