@@ -679,31 +679,31 @@ func (e *ElectionController) GetStatistic() {
 		votersCountBangalore             int64
 		votersCountHubli                 int64
 		muslimVotersCount                int64
-		otherVotersCount                 int64
+		OthersVotersCount                int64
 		maleVotersCount                  int64
 		femaleVotersCount                int64
 		muslimMaleVotersCount            int64
 		muslimFemaleVotersCount          int64
-		otherMaleVotersCount             int64
-		otherFemaleVotersCount           int64
+		OthersMaleVotersCount            int64
+		OthersFemaleVotersCount          int64
 		muslimVotersP                    float64
-		otherVotersP                     float64
+		OthersVotersP                    float64
 		maleVotersP                      float64
 		femaleVotersP                    float64
 		muslimMaleVotersP                float64
 		muslimFemaleVotersP              float64
-		otherMaleVotersP                 float64
-		otherFemaleVotersP               float64
+		OthersMaleVotersP                float64
+		OthersFemaleVotersP              float64
 		muslimVotersCountRampur          int64
 		muslimVotersCountMoradabad       int64
 		muslimVotersCountBijnor          int64
 		muslimVotersCountBangalore       int64
 		muslimVotersCountHubli           int64
-		otherVotersCountRampur           int64
-		otherVotersCountMoradabad        int64
-		otherVotersCountBijnor           int64
-		otherVotersCountBangalore        int64
-		otherVotersCountHubli            int64
+		OthersVotersCountRampur          int64
+		OthersVotersCountMoradabad       int64
+		OthersVotersCountBijnor          int64
+		OthersVotersCountBangalore       int64
+		OthersVotersCountHubli           int64
 		maleVotersCountRampur            int64
 		maleVotersCountMoradabad         int64
 		maleVotersCountBijnor            int64
@@ -724,16 +724,16 @@ func (e *ElectionController) GetStatistic() {
 		muslimFemaleVotersCountBijnor    int64
 		muslimFemaleVotersCountBangalore int64
 		muslimFemaleVotersCountHubli     int64
-		otherMaleVotersCountRampur       int64
-		otherMaleVotersCountMoradabad    int64
-		otherMaleVotersCountBijnor       int64
-		otherMaleVotersCountBangalore    int64
-		otherMaleVotersCountHubli        int64
-		otherFemaleVotersCountRampur     int64
-		otherFemaleVotersCountMoradabad  int64
-		otherFemaleVotersCountBijnor     int64
-		otherFemaleVotersCountBangalore  int64
-		otherFemaleVotersCountHubli      int64
+		OthersMaleVotersCountRampur      int64
+		OthersMaleVotersCountMoradabad   int64
+		OthersMaleVotersCountBijnor      int64
+		OthersMaleVotersCountBangalore   int64
+		OthersMaleVotersCountHubli       int64
+		OthersFemaleVotersCountRampur    int64
+		OthersFemaleVotersCountMoradabad int64
+		OthersFemaleVotersCountBijnor    int64
+		OthersFemaleVotersCountBangalore int64
+		OthersFemaleVotersCountHubli     int64
 		num                              int64
 		user                             []*modelVoters.Account
 		err                              error
@@ -950,8 +950,8 @@ func (e *ElectionController) GetStatistic() {
 				votersCountBijnor, err = qsBijnor.Count()
 				muslimVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Muslim").Count()
 				muslimVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Muslim").Count()
-				otherVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Other").Count()
-				otherVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Other").Count()
+				OthersVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Others").Count()
+				OthersVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Others").Count()
 				maleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Count()
 				maleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Count()
 				femaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Count()
@@ -960,18 +960,18 @@ func (e *ElectionController) GetStatistic() {
 				muslimMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-				otherMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-				otherMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+				OthersMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+				OthersMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 				muslimVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Muslim").Count()
-				otherVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Other").Count()
+				OthersVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Others").Count()
 				maleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Count()
 				femaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Count()
 				muslimMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-				otherMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+				OthersMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 			}
 
 			if state == 12 {
@@ -979,8 +979,8 @@ func (e *ElectionController) GetStatistic() {
 				votersCountHubli, err = qsHubli.Count()
 				muslimVotersCountBangalore, _ = qsBangalore.Filter("Religion_english__exact", "Muslim").Count()
 				muslimVotersCountHubli, _ = qsHubli.Filter("Religion_english__exact", "Muslim").Count()
-				otherVotersCountBangalore, _ = qsBangalore.Filter("Religion_english__exact", "Other").Count()
-				otherVotersCountHubli, _ = qsHubli.Filter("Religion_english__exact", "Other").Count()
+				OthersVotersCountBangalore, _ = qsBangalore.Filter("Religion_english__exact", "Others").Count()
+				OthersVotersCountHubli, _ = qsHubli.Filter("Religion_english__exact", "Others").Count()
 				maleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "M").Count()
 				maleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "M").Count()
 				femaleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "F").Count()
@@ -989,10 +989,10 @@ func (e *ElectionController) GetStatistic() {
 				muslimMaleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-				otherMaleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-				otherMaleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+				OthersMaleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+				OthersMaleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 			}
 
 		}
@@ -1003,37 +1003,37 @@ func (e *ElectionController) GetStatistic() {
 		if districtNameHindi == "मुरादाबाद" {
 			votersCountMoradabad, err = qsMoradabad.Count()
 			muslimVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Count()
 			femaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if districtNameHindi == "रामपुर" {
 			votersCountRampur, err = qsRampur.Count()
 			muslimVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Count()
 			femaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if districtNameHindi == "बिजनौर" {
 			votersCountBijnor, err = qsBijnor.Count()
 			muslimVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Count()
 			femaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 	}
 
@@ -1042,37 +1042,37 @@ func (e *ElectionController) GetStatistic() {
 		if districtNameEnglish == "Moradabad" || districtNameEnglish == "moradabad" {
 			votersCountMoradabad, err = qsMoradabad.Count()
 			muslimVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Count()
 			femaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if districtNameEnglish == "Rampur" || districtNameEnglish == "rampur" {
 			votersCountRampur, err = qsRampur.Count()
 			muslimVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Count()
 			femaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if districtNameEnglish == "Bijnor" || districtNameEnglish == "bijnor" {
 			votersCountBijnor, err = qsBijnor.Count()
 			muslimVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Count()
 			femaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 	}
 
@@ -1081,37 +1081,37 @@ func (e *ElectionController) GetStatistic() {
 		if district == 19 {
 			votersCountMoradabad, err = qsMoradabad.Count()
 			muslimVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Count()
 			femaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if district == 20 {
 			votersCountRampur, err = qsRampur.Count()
 			muslimVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Count()
 			femaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if district == 21 {
 			votersCountBijnor, err = qsBijnor.Count()
 			muslimVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Count()
 			femaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 	}
 
@@ -1123,8 +1123,8 @@ func (e *ElectionController) GetStatistic() {
 		muslimVotersCount = muslimVotersCountRampur + muslimVotersCountMoradabad + muslimVotersCountBijnor + muslimVotersCountBangalore + muslimVotersCountHubli
 		statistic.Muslim = muslimVotersCount
 
-		otherVotersCount = otherVotersCountRampur + otherVotersCountMoradabad + otherVotersCountBijnor + otherVotersCountBangalore + otherVotersCountHubli
-		statistic.Other = otherVotersCount
+		OthersVotersCount = OthersVotersCountRampur + OthersVotersCountMoradabad + OthersVotersCountBijnor + OthersVotersCountBangalore + OthersVotersCountHubli
+		statistic.Others = OthersVotersCount
 
 		maleVotersCount = maleVotersCountRampur + maleVotersCountMoradabad + maleVotersCountBijnor + maleVotersCountBangalore + maleVotersCountHubli
 		statistic.Male = maleVotersCount
@@ -1138,17 +1138,17 @@ func (e *ElectionController) GetStatistic() {
 		muslimFemaleVotersCount = muslimFemaleVotersCountRampur + muslimFemaleVotersCountMoradabad + muslimFemaleVotersCountBijnor + muslimFemaleVotersCountBangalore + muslimFemaleVotersCountHubli
 		statistic.MuslimFemale = muslimFemaleVotersCount
 
-		otherMaleVotersCount = otherMaleVotersCountRampur + otherMaleVotersCountMoradabad + otherMaleVotersCountBijnor + otherMaleVotersCountBangalore + otherMaleVotersCountHubli
-		statistic.OtherMale = otherMaleVotersCount
+		OthersMaleVotersCount = OthersMaleVotersCountRampur + OthersMaleVotersCountMoradabad + OthersMaleVotersCountBijnor + OthersMaleVotersCountBangalore + OthersMaleVotersCountHubli
+		statistic.OthersMale = OthersMaleVotersCount
 
-		otherFemaleVotersCount = otherFemaleVotersCountRampur + otherFemaleVotersCountMoradabad + otherFemaleVotersCountBijnor + otherFemaleVotersCountBangalore + otherFemaleVotersCountHubli
-		statistic.OtherFemale = otherFemaleVotersCount
+		OthersFemaleVotersCount = OthersFemaleVotersCountRampur + OthersFemaleVotersCountMoradabad + OthersFemaleVotersCountBijnor + OthersFemaleVotersCountBangalore + OthersFemaleVotersCountHubli
+		statistic.OthersFemale = OthersFemaleVotersCount
 
 		muslimVotersP = (float64(muslimVotersCount) / float64(votersCount)) * 100
 		statistic.MuslimP = muslimVotersP
 
-		otherVotersP = (float64(otherVotersCount) / float64(votersCount)) * 100
-		statistic.OtherP = otherVotersP
+		OthersVotersP = (float64(OthersVotersCount) / float64(votersCount)) * 100
+		statistic.OthersP = OthersVotersP
 
 		maleVotersP = (float64(maleVotersCount) / float64(votersCount)) * 100
 		statistic.MaleP = maleVotersP
@@ -1162,11 +1162,11 @@ func (e *ElectionController) GetStatistic() {
 		muslimFemaleVotersP = (float64(muslimFemaleVotersCount) / float64(votersCount)) * 100
 		statistic.MuslimFemaleP = muslimFemaleVotersP
 
-		otherMaleVotersP = (float64(otherMaleVotersCount) / float64(votersCount)) * 100
-		statistic.OtherMaleP = otherMaleVotersP
+		OthersMaleVotersP = (float64(OthersMaleVotersCount) / float64(votersCount)) * 100
+		statistic.OthersMaleP = OthersMaleVotersP
 
-		otherFemaleVotersP = (float64(otherFemaleVotersCount) / float64(votersCount)) * 100
-		statistic.OtherFemaleP = otherFemaleVotersP
+		OthersFemaleVotersP = (float64(OthersFemaleVotersCount) / float64(votersCount)) * 100
+		statistic.OthersFemaleP = OthersFemaleVotersP
 
 		e.Data["json"] = statistic
 	} else {
@@ -1197,31 +1197,31 @@ func (e *ElectionController) GetStatistics() {
 		votersCountBangalore             int64
 		votersCountHubli                 int64
 		muslimVotersCount                int64
-		otherVotersCount                 int64
+		OthersVotersCount                int64
 		maleVotersCount                  int64
 		femaleVotersCount                int64
 		muslimMaleVotersCount            int64
 		muslimFemaleVotersCount          int64
-		otherMaleVotersCount             int64
-		otherFemaleVotersCount           int64
+		OthersMaleVotersCount            int64
+		OthersFemaleVotersCount          int64
 		muslimVotersP                    float64
-		otherVotersP                     float64
+		OthersVotersP                    float64
 		maleVotersP                      float64
 		femaleVotersP                    float64
 		muslimMaleVotersP                float64
 		muslimFemaleVotersP              float64
-		otherMaleVotersP                 float64
-		otherFemaleVotersP               float64
+		OthersMaleVotersP                float64
+		OthersFemaleVotersP              float64
 		muslimVotersCountRampur          int64
 		muslimVotersCountMoradabad       int64
 		muslimVotersCountBijnor          int64
 		muslimVotersCountBangalore       int64
 		muslimVotersCountHubli           int64
-		otherVotersCountRampur           int64
-		otherVotersCountMoradabad        int64
-		otherVotersCountBijnor           int64
-		otherVotersCountBangalore        int64
-		otherVotersCountHubli            int64
+		OthersVotersCountRampur          int64
+		OthersVotersCountMoradabad       int64
+		OthersVotersCountBijnor          int64
+		OthersVotersCountBangalore       int64
+		OthersVotersCountHubli           int64
 		maleVotersCountRampur            int64
 		maleVotersCountMoradabad         int64
 		maleVotersCountBijnor            int64
@@ -1242,16 +1242,16 @@ func (e *ElectionController) GetStatistics() {
 		muslimFemaleVotersCountBijnor    int64
 		muslimFemaleVotersCountBangalore int64
 		muslimFemaleVotersCountHubli     int64
-		otherMaleVotersCountRampur       int64
-		otherMaleVotersCountMoradabad    int64
-		otherMaleVotersCountBijnor       int64
-		otherMaleVotersCountBangalore    int64
-		otherMaleVotersCountHubli        int64
-		otherFemaleVotersCountRampur     int64
-		otherFemaleVotersCountMoradabad  int64
-		otherFemaleVotersCountBijnor     int64
-		otherFemaleVotersCountBangalore  int64
-		otherFemaleVotersCountHubli      int64
+		OthersMaleVotersCountRampur      int64
+		OthersMaleVotersCountMoradabad   int64
+		OthersMaleVotersCountBijnor      int64
+		OthersMaleVotersCountBangalore   int64
+		OthersMaleVotersCountHubli       int64
+		OthersFemaleVotersCountRampur    int64
+		OthersFemaleVotersCountMoradabad int64
+		OthersFemaleVotersCountBijnor    int64
+		OthersFemaleVotersCountBangalore int64
+		OthersFemaleVotersCountHubli     int64
 		num                              int64
 		user                             []*modelVoters.Account
 		err                              error
@@ -1608,8 +1608,8 @@ func (e *ElectionController) GetStatistics() {
 				votersCountMoradabad, err = qsMoradabad.Count()
 				muslimVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Muslim").Count()
 				muslimVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Muslim").Count()
-				otherVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Other").Count()
-				otherVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Other").Count()
+				OthersVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Others").Count()
+				OthersVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Others").Count()
 				maleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Count()
 				maleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Count()
 				femaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Count()
@@ -1618,19 +1618,19 @@ func (e *ElectionController) GetStatistics() {
 				muslimMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-				otherMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-				otherMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+				OthersMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+				OthersMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 				votersCountBijnor, err = qsBijnor.Count()
 				muslimVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Muslim").Count()
-				otherVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Other").Count()
+				OthersVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Others").Count()
 				maleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Count()
 				femaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Count()
 				muslimMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-				otherMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+				OthersMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 			}
 
 			if state == 12 {
@@ -1638,8 +1638,8 @@ func (e *ElectionController) GetStatistics() {
 				votersCountHubli, err = qsHubli.Count()
 				muslimVotersCountBangalore, _ = qsBangalore.Filter("Religion_english__exact", "Muslim").Count()
 				muslimVotersCountHubli, _ = qsHubli.Filter("Religion_english__exact", "Muslim").Count()
-				otherVotersCountBangalore, _ = qsBangalore.Filter("Religion_english__exact", "Other").Count()
-				otherVotersCountHubli, _ = qsHubli.Filter("Religion_english__exact", "Other").Count()
+				OthersVotersCountBangalore, _ = qsBangalore.Filter("Religion_english__exact", "Others").Count()
+				OthersVotersCountHubli, _ = qsHubli.Filter("Religion_english__exact", "Others").Count()
 				maleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "M").Count()
 				maleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "M").Count()
 				femaleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "F").Count()
@@ -1648,10 +1648,10 @@ func (e *ElectionController) GetStatistics() {
 				muslimMaleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-				otherMaleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-				otherMaleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+				OthersMaleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+				OthersMaleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountBangalore, _ = qsBangalore.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountHubli, _ = qsHubli.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 			}
 
 		}
@@ -1662,37 +1662,37 @@ func (e *ElectionController) GetStatistics() {
 		if districtNameHindi == "मुरादाबाद" {
 			votersCountMoradabad, err = qsMoradabad.Count()
 			muslimVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Count()
 			femaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if districtNameHindi == "रामपुर" {
 			votersCountRampur, err = qsRampur.Count()
 			muslimVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Count()
 			femaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if districtNameHindi == "बिजनौर" {
 			votersCountBijnor, err = qsBijnor.Count()
 			muslimVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Count()
 			femaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 	}
 
@@ -1701,37 +1701,37 @@ func (e *ElectionController) GetStatistics() {
 		if districtNameEnglish == "Moradabad" || districtNameEnglish == "moradabad" {
 			votersCountMoradabad, err = qsMoradabad.Count()
 			muslimVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Count()
 			femaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if districtNameEnglish == "Rampur" || districtNameEnglish == "rampur" {
 			votersCountRampur, err = qsRampur.Count()
 			muslimVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Count()
 			femaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if districtNameEnglish == "Bijnor" || districtNameEnglish == "bijnor" {
 			votersCountBijnor, err = qsBijnor.Count()
 			muslimVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Count()
 			femaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 	}
 
@@ -1740,37 +1740,37 @@ func (e *ElectionController) GetStatistics() {
 		if district == 19 {
 			votersCountMoradabad, err = qsMoradabad.Count()
 			muslimVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountMoradabad, _ = qsMoradabad.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Count()
 			femaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountMoradabad, _ = qsMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if district == 20 {
 			votersCountRampur, err = qsRampur.Count()
 			muslimVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountRampur, _ = qsRampur.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Count()
 			femaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountRampur, _ = qsRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if district == 21 {
 			votersCountBijnor, err = qsBijnor.Count()
 			muslimVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountBijnor, _ = qsBijnor.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Count()
 			femaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 	}
 
@@ -1782,8 +1782,8 @@ func (e *ElectionController) GetStatistics() {
 		muslimVotersCount = muslimVotersCountRampur + muslimVotersCountMoradabad + muslimVotersCountBijnor + muslimVotersCountBangalore + muslimVotersCountHubli
 		statistics.Query.Muslim = muslimVotersCount
 
-		otherVotersCount = otherVotersCountRampur + otherVotersCountMoradabad + otherVotersCountBijnor + otherVotersCountBangalore + otherVotersCountHubli
-		statistics.Query.Other = otherVotersCount
+		OthersVotersCount = OthersVotersCountRampur + OthersVotersCountMoradabad + OthersVotersCountBijnor + OthersVotersCountBangalore + OthersVotersCountHubli
+		statistics.Query.Others = OthersVotersCount
 
 		maleVotersCount = maleVotersCountRampur + maleVotersCountMoradabad + maleVotersCountBijnor + maleVotersCountBangalore + maleVotersCountHubli
 		statistics.Query.Male = maleVotersCount
@@ -1797,17 +1797,17 @@ func (e *ElectionController) GetStatistics() {
 		muslimFemaleVotersCount = muslimFemaleVotersCountRampur + muslimFemaleVotersCountMoradabad + muslimFemaleVotersCountBijnor + muslimFemaleVotersCountBangalore + muslimFemaleVotersCountHubli
 		statistics.Query.MuslimFemale = muslimFemaleVotersCount
 
-		otherMaleVotersCount = otherMaleVotersCountRampur + otherMaleVotersCountMoradabad + otherMaleVotersCountBijnor + otherMaleVotersCountBangalore + otherMaleVotersCountHubli
-		statistics.Query.OtherMale = otherMaleVotersCount
+		OthersMaleVotersCount = OthersMaleVotersCountRampur + OthersMaleVotersCountMoradabad + OthersMaleVotersCountBijnor + OthersMaleVotersCountBangalore + OthersMaleVotersCountHubli
+		statistics.Query.OthersMale = OthersMaleVotersCount
 
-		otherFemaleVotersCount = otherFemaleVotersCountRampur + otherFemaleVotersCountMoradabad + otherFemaleVotersCountBijnor + otherFemaleVotersCountBangalore + otherFemaleVotersCountHubli
-		statistics.Query.OtherFemale = otherFemaleVotersCount
+		OthersFemaleVotersCount = OthersFemaleVotersCountRampur + OthersFemaleVotersCountMoradabad + OthersFemaleVotersCountBijnor + OthersFemaleVotersCountBangalore + OthersFemaleVotersCountHubli
+		statistics.Query.OthersFemale = OthersFemaleVotersCount
 
 		muslimVotersP = (float64(muslimVotersCount) / float64(votersCountQuery)) * 100
 		statistics.Query.MuslimP = muslimVotersP
 
-		otherVotersP = (float64(otherVotersCount) / float64(votersCountQuery)) * 100
-		statistics.Query.OtherP = otherVotersP
+		OthersVotersP = (float64(OthersVotersCount) / float64(votersCountQuery)) * 100
+		statistics.Query.OthersP = OthersVotersP
 
 		maleVotersP = (float64(maleVotersCount) / float64(votersCountQuery)) * 100
 		statistics.Query.MaleP = maleVotersP
@@ -1821,11 +1821,11 @@ func (e *ElectionController) GetStatistics() {
 		muslimFemaleVotersP = (float64(muslimFemaleVotersCount) / float64(votersCountQuery)) * 100
 		statistics.Query.MuslimFemaleP = muslimFemaleVotersP
 
-		otherMaleVotersP = (float64(otherMaleVotersCount) / float64(votersCountQuery)) * 100
-		statistics.Query.OtherMaleP = otherMaleVotersP
+		OthersMaleVotersP = (float64(OthersMaleVotersCount) / float64(votersCountQuery)) * 100
+		statistics.Query.OthersMaleP = OthersMaleVotersP
 
-		otherFemaleVotersP = (float64(otherFemaleVotersCount) / float64(votersCountQuery)) * 100
-		statistics.Query.OtherFemaleP = otherFemaleVotersP
+		OthersFemaleVotersP = (float64(OthersFemaleVotersCount) / float64(votersCountQuery)) * 100
+		statistics.Query.OthersFemaleP = OthersFemaleVotersP
 	}
 
 	//Reset all counters
@@ -1833,8 +1833,8 @@ func (e *ElectionController) GetStatistics() {
 	votersCountMoradabad = 0
 	muslimVotersCountRampur = 0
 	muslimVotersCountMoradabad = 0
-	otherVotersCountRampur = 0
-	otherVotersCountMoradabad = 0
+	OthersVotersCountRampur = 0
+	OthersVotersCountMoradabad = 0
 	maleVotersCountRampur = 0
 	maleVotersCountMoradabad = 0
 	femaleVotersCountRampur = 0
@@ -1843,24 +1843,24 @@ func (e *ElectionController) GetStatistics() {
 	muslimMaleVotersCountMoradabad = 0
 	muslimFemaleVotersCountRampur = 0
 	muslimFemaleVotersCountMoradabad = 0
-	otherMaleVotersCountRampur = 0
-	otherMaleVotersCountMoradabad = 0
-	otherFemaleVotersCountRampur = 0
-	otherFemaleVotersCountMoradabad = 0
+	OthersMaleVotersCountRampur = 0
+	OthersMaleVotersCountMoradabad = 0
+	OthersFemaleVotersCountRampur = 0
+	OthersFemaleVotersCountMoradabad = 0
 	muslimVotersCountBijnor = 0
-	otherVotersCountBijnor = 0
+	OthersVotersCountBijnor = 0
 	maleVotersCountBijnor = 0
 	femaleVotersCountBijnor = 0
 	muslimMaleVotersCountBijnor = 0
 	muslimFemaleVotersCountBijnor = 0
-	otherMaleVotersCountBijnor = 0
-	otherFemaleVotersCountBijnor = 0
+	OthersMaleVotersCountBijnor = 0
+	OthersFemaleVotersCountBijnor = 0
 	votersCountBangalore = 0
 	votersCountHubli = 0
 	muslimVotersCountBangalore = 0
 	muslimVotersCountHubli = 0
-	otherVotersCountBangalore = 0
-	otherVotersCountHubli = 0
+	OthersVotersCountBangalore = 0
+	OthersVotersCountHubli = 0
 	maleVotersCountBangalore = 0
 	maleVotersCountHubli = 0
 	femaleVotersCountBangalore = 0
@@ -1869,10 +1869,10 @@ func (e *ElectionController) GetStatistics() {
 	muslimMaleVotersCountHubli = 0
 	muslimFemaleVotersCountBangalore = 0
 	muslimFemaleVotersCountHubli = 0
-	otherMaleVotersCountBangalore = 0
-	otherMaleVotersCountHubli = 0
-	otherFemaleVotersCountBangalore = 0
-	otherFemaleVotersCountHubli = 0
+	OthersMaleVotersCountBangalore = 0
+	OthersMaleVotersCountHubli = 0
+	OthersFemaleVotersCountBangalore = 0
+	OthersFemaleVotersCountHubli = 0
 
 	// CALCULATIONS FOR SCOPE
 	// Get voters for each state
@@ -1883,8 +1883,8 @@ func (e *ElectionController) GetStatistics() {
 				votersCountMoradabad, err = qsScopeMoradabad.Count()
 				muslimVotersCountRampur, _ = qsScopeRampur.Filter("Religion_english__exact", "Muslim").Count()
 				muslimVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Religion_english__exact", "Muslim").Count()
-				otherVotersCountRampur, _ = qsScopeRampur.Filter("Religion_english__exact", "Other").Count()
-				otherVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Religion_english__exact", "Other").Count()
+				OthersVotersCountRampur, _ = qsScopeRampur.Filter("Religion_english__exact", "Others").Count()
+				OthersVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Religion_english__exact", "Others").Count()
 				maleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Count()
 				maleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Count()
 				femaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Count()
@@ -1893,19 +1893,19 @@ func (e *ElectionController) GetStatistics() {
 				muslimMaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-				otherMaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-				otherMaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+				OthersMaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+				OthersMaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 				votersCountBijnor, err = qsScopeBijnor.Count()
 				muslimVotersCountBijnor, _ = qsScopeBijnor.Filter("Religion_english__exact", "Muslim").Count()
-				otherVotersCountBijnor, _ = qsScopeBijnor.Filter("Religion_english__exact", "Other").Count()
+				OthersVotersCountBijnor, _ = qsScopeBijnor.Filter("Religion_english__exact", "Others").Count()
 				maleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Count()
 				femaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Count()
 				muslimMaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-				otherMaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+				OthersMaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 			}
 
 			if state == 12 {
@@ -1913,8 +1913,8 @@ func (e *ElectionController) GetStatistics() {
 				votersCountHubli, err = qsScopeHubli.Count()
 				muslimVotersCountBangalore, _ = qsScopeBangalore.Filter("Religion_english__exact", "Muslim").Count()
 				muslimVotersCountHubli, _ = qsScopeHubli.Filter("Religion_english__exact", "Muslim").Count()
-				otherVotersCountBangalore, _ = qsScopeBangalore.Filter("Religion_english__exact", "Other").Count()
-				otherVotersCountHubli, _ = qsScopeHubli.Filter("Religion_english__exact", "Other").Count()
+				OthersVotersCountBangalore, _ = qsScopeBangalore.Filter("Religion_english__exact", "Others").Count()
+				OthersVotersCountHubli, _ = qsScopeHubli.Filter("Religion_english__exact", "Others").Count()
 				maleVotersCountBangalore, _ = qsScopeBangalore.Filter("Gender__exact", "M").Count()
 				maleVotersCountHubli, _ = qsScopeHubli.Filter("Gender__exact", "M").Count()
 				femaleVotersCountBangalore, _ = qsScopeBangalore.Filter("Gender__exact", "F").Count()
@@ -1923,10 +1923,10 @@ func (e *ElectionController) GetStatistics() {
 				muslimMaleVotersCountHubli, _ = qsScopeHubli.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountBangalore, _ = qsScopeBangalore.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
 				muslimFemaleVotersCountHubli, _ = qsScopeHubli.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-				otherMaleVotersCountBangalore, _ = qsScopeBangalore.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-				otherMaleVotersCountHubli, _ = qsScopeHubli.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountBangalore, _ = qsScopeBangalore.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
-				otherFemaleVotersCountHubli, _ = qsScopeHubli.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+				OthersMaleVotersCountBangalore, _ = qsScopeBangalore.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+				OthersMaleVotersCountHubli, _ = qsScopeHubli.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountBangalore, _ = qsScopeBangalore.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
+				OthersFemaleVotersCountHubli, _ = qsScopeHubli.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 			}
 
 		}
@@ -1937,37 +1937,37 @@ func (e *ElectionController) GetStatistics() {
 		if districtNameHindi == "मुरादाबाद" {
 			votersCountMoradabad, err = qsScopeMoradabad.Count()
 			muslimVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Count()
 			femaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if districtNameHindi == "रामपुर" {
 			votersCountRampur, err = qsScopeRampur.Count()
 			muslimVotersCountRampur, _ = qsScopeRampur.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountRampur, _ = qsScopeRampur.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountRampur, _ = qsScopeRampur.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Count()
 			femaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if districtNameHindi == "बिजनौर" {
 			votersCountBijnor, err = qsScopeBijnor.Count()
 			muslimVotersCountBijnor, _ = qsScopeBijnor.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountBijnor, _ = qsScopeBijnor.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountBijnor, _ = qsScopeBijnor.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Count()
 			femaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 	}
 
@@ -1976,37 +1976,37 @@ func (e *ElectionController) GetStatistics() {
 		if districtNameEnglish == "Moradabad" || districtNameEnglish == "moradabad" {
 			votersCountMoradabad, err = qsScopeMoradabad.Count()
 			muslimVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Count()
 			femaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if districtNameEnglish == "Rampur" || districtNameEnglish == "rampur" {
 			votersCountRampur, err = qsScopeRampur.Count()
 			muslimVotersCountRampur, _ = qsScopeRampur.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountRampur, _ = qsScopeRampur.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountRampur, _ = qsScopeRampur.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Count()
 			femaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if districtNameEnglish == "Bijnor" || districtNameEnglish == "bijnor" {
 			votersCountBijnor, err = qsScopeBijnor.Count()
 			muslimVotersCountBijnor, _ = qsScopeBijnor.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountBijnor, _ = qsScopeBijnor.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountBijnor, _ = qsScopeBijnor.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Count()
 			femaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 	}
 
@@ -2015,37 +2015,37 @@ func (e *ElectionController) GetStatistics() {
 		if district == 19 {
 			votersCountMoradabad, err = qsScopeMoradabad.Count()
 			muslimVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Count()
 			femaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountMoradabad, _ = qsScopeMoradabad.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if district == 20 {
 			votersCountRampur, err = qsScopeRampur.Count()
 			muslimVotersCountRampur, _ = qsScopeRampur.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountRampur, _ = qsScopeRampur.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountRampur, _ = qsScopeRampur.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Count()
 			femaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountRampur, _ = qsScopeRampur.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 
 		if district == 21 {
 			votersCountBijnor, err = qsScopeBijnor.Count()
 			muslimVotersCountBijnor, _ = qsScopeBijnor.Filter("Religion_english__exact", "Muslim").Count()
-			otherVotersCountBijnor, _ = qsScopeBijnor.Filter("Religion_english__exact", "Other").Count()
+			OthersVotersCountBijnor, _ = qsScopeBijnor.Filter("Religion_english__exact", "Others").Count()
 			maleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Count()
 			femaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Count()
 			muslimMaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
-			otherMaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Other").Count()
-			otherFemaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Other").Count()
+			OthersMaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
+			OthersFemaleVotersCountBijnor, _ = qsScopeBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
 	}
 
@@ -2057,8 +2057,8 @@ func (e *ElectionController) GetStatistics() {
 		muslimVotersCount = muslimVotersCountRampur + muslimVotersCountMoradabad + muslimVotersCountBijnor + muslimVotersCountBangalore + muslimVotersCountHubli
 		statistics.Scope.Muslim = muslimVotersCount
 
-		otherVotersCount = otherVotersCountRampur + otherVotersCountMoradabad + otherVotersCountBijnor + otherVotersCountBangalore + otherVotersCountHubli
-		statistics.Scope.Other = otherVotersCount
+		OthersVotersCount = OthersVotersCountRampur + OthersVotersCountMoradabad + OthersVotersCountBijnor + OthersVotersCountBangalore + OthersVotersCountHubli
+		statistics.Scope.Others = OthersVotersCount
 
 		maleVotersCount = maleVotersCountRampur + maleVotersCountMoradabad + maleVotersCountBijnor + maleVotersCountBangalore + maleVotersCountHubli
 		statistics.Scope.Male = maleVotersCount
@@ -2072,17 +2072,17 @@ func (e *ElectionController) GetStatistics() {
 		muslimFemaleVotersCount = muslimFemaleVotersCountRampur + muslimFemaleVotersCountMoradabad + muslimFemaleVotersCountBijnor + muslimFemaleVotersCountBangalore + muslimFemaleVotersCountHubli
 		statistics.Scope.MuslimFemale = muslimFemaleVotersCount
 
-		otherMaleVotersCount = otherMaleVotersCountRampur + otherMaleVotersCountMoradabad + otherMaleVotersCountBijnor + otherMaleVotersCountBangalore + otherMaleVotersCountHubli
-		statistics.Scope.OtherMale = otherMaleVotersCount
+		OthersMaleVotersCount = OthersMaleVotersCountRampur + OthersMaleVotersCountMoradabad + OthersMaleVotersCountBijnor + OthersMaleVotersCountBangalore + OthersMaleVotersCountHubli
+		statistics.Scope.OthersMale = OthersMaleVotersCount
 
-		otherFemaleVotersCount = otherFemaleVotersCountRampur + otherFemaleVotersCountMoradabad + otherFemaleVotersCountBijnor + otherFemaleVotersCountBangalore + otherFemaleVotersCountHubli
-		statistics.Scope.OtherFemale = otherFemaleVotersCount
+		OthersFemaleVotersCount = OthersFemaleVotersCountRampur + OthersFemaleVotersCountMoradabad + OthersFemaleVotersCountBijnor + OthersFemaleVotersCountBangalore + OthersFemaleVotersCountHubli
+		statistics.Scope.OthersFemale = OthersFemaleVotersCount
 
 		muslimVotersP = (float64(muslimVotersCount) / float64(votersCountScope)) * 100
 		statistics.Scope.MuslimP = muslimVotersP
 
-		otherVotersP = (float64(otherVotersCount) / float64(votersCountScope)) * 100
-		statistics.Scope.OtherP = otherVotersP
+		OthersVotersP = (float64(OthersVotersCount) / float64(votersCountScope)) * 100
+		statistics.Scope.OthersP = OthersVotersP
 
 		maleVotersP = (float64(maleVotersCount) / float64(votersCountScope)) * 100
 		statistics.Scope.MaleP = maleVotersP
@@ -2096,11 +2096,11 @@ func (e *ElectionController) GetStatistics() {
 		muslimFemaleVotersP = (float64(muslimFemaleVotersCount) / float64(votersCountScope)) * 100
 		statistics.Scope.MuslimFemaleP = muslimFemaleVotersP
 
-		otherMaleVotersP = (float64(otherMaleVotersCount) / float64(votersCountScope)) * 100
-		statistics.Scope.OtherMaleP = otherMaleVotersP
+		OthersMaleVotersP = (float64(OthersMaleVotersCount) / float64(votersCountScope)) * 100
+		statistics.Scope.OthersMaleP = OthersMaleVotersP
 
-		otherFemaleVotersP = (float64(otherFemaleVotersCount) / float64(votersCountScope)) * 100
-		statistics.Scope.OtherFemaleP = otherFemaleVotersP
+		OthersFemaleVotersP = (float64(OthersFemaleVotersCount) / float64(votersCountScope)) * 100
+		statistics.Scope.OthersFemaleP = OthersFemaleVotersP
 	}
 
 	condNameEnglishQuery := orm.NewCondition()
@@ -2341,8 +2341,8 @@ func (e *ElectionController) GetStatistics() {
 	votersCountMoradabad = 0
 	muslimVotersCountRampur = 0
 	muslimVotersCountMoradabad = 0
-	otherVotersCountRampur = 0
-	otherVotersCountMoradabad = 0
+	OthersVotersCountRampur = 0
+	OthersVotersCountMoradabad = 0
 	maleVotersCountRampur = 0
 	maleVotersCountMoradabad = 0
 	femaleVotersCountRampur = 0
@@ -2351,25 +2351,25 @@ func (e *ElectionController) GetStatistics() {
 	muslimMaleVotersCountMoradabad = 0
 	muslimFemaleVotersCountRampur = 0
 	muslimFemaleVotersCountMoradabad = 0
-	otherMaleVotersCountRampur = 0
-	otherMaleVotersCountMoradabad = 0
-	otherFemaleVotersCountRampur = 0
-	otherFemaleVotersCountMoradabad = 0
+	OthersMaleVotersCountRampur = 0
+	OthersMaleVotersCountMoradabad = 0
+	OthersFemaleVotersCountRampur = 0
+	OthersFemaleVotersCountMoradabad = 0
 	votersCountBijnor = 0
 	muslimVotersCountBijnor = 0
-	otherVotersCountBijnor = 0
+	OthersVotersCountBijnor = 0
 	maleVotersCountBijnor = 0
 	femaleVotersCountBijnor = 0
 	muslimMaleVotersCountBijnor = 0
 	muslimFemaleVotersCountBijnor = 0
-	otherMaleVotersCountBijnor = 0
-	otherFemaleVotersCountBijnor = 0
+	OthersMaleVotersCountBijnor = 0
+	OthersFemaleVotersCountBijnor = 0
 	votersCountBangalore = 0
 	votersCountHubli = 0
 	muslimVotersCountBangalore = 0
 	muslimVotersCountHubli = 0
-	otherVotersCountBangalore = 0
-	otherVotersCountHubli = 0
+	OthersVotersCountBangalore = 0
+	OthersVotersCountHubli = 0
 	maleVotersCountBangalore = 0
 	maleVotersCountHubli = 0
 	femaleVotersCountBangalore = 0
@@ -2378,10 +2378,10 @@ func (e *ElectionController) GetStatistics() {
 	muslimMaleVotersCountHubli = 0
 	muslimFemaleVotersCountBangalore = 0
 	muslimFemaleVotersCountHubli = 0
-	otherMaleVotersCountBangalore = 0
-	otherMaleVotersCountHubli = 0
-	otherFemaleVotersCountBangalore = 0
-	otherFemaleVotersCountHubli = 0
+	OthersMaleVotersCountBangalore = 0
+	OthersMaleVotersCountHubli = 0
+	OthersFemaleVotersCountBangalore = 0
+	OthersFemaleVotersCountHubli = 0
 
 	// CALCULATIONS FOR QUERY
 	// Get voters Count for each state
@@ -2454,8 +2454,8 @@ func (e *ElectionController) GetStatistics() {
 	votersCountMoradabad = 0
 	muslimVotersCountRampur = 0
 	muslimVotersCountMoradabad = 0
-	otherVotersCountRampur = 0
-	otherVotersCountMoradabad = 0
+	OthersVotersCountRampur = 0
+	OthersVotersCountMoradabad = 0
 	maleVotersCountRampur = 0
 	maleVotersCountMoradabad = 0
 	femaleVotersCountRampur = 0
@@ -2464,25 +2464,25 @@ func (e *ElectionController) GetStatistics() {
 	muslimMaleVotersCountMoradabad = 0
 	muslimFemaleVotersCountRampur = 0
 	muslimFemaleVotersCountMoradabad = 0
-	otherMaleVotersCountRampur = 0
-	otherMaleVotersCountMoradabad = 0
-	otherFemaleVotersCountRampur = 0
-	otherFemaleVotersCountMoradabad = 0
+	OthersMaleVotersCountRampur = 0
+	OthersMaleVotersCountMoradabad = 0
+	OthersFemaleVotersCountRampur = 0
+	OthersFemaleVotersCountMoradabad = 0
 	votersCountBijnor = 0
 	muslimVotersCountBijnor = 0
-	otherVotersCountBijnor = 0
+	OthersVotersCountBijnor = 0
 	maleVotersCountBijnor = 0
 	femaleVotersCountBijnor = 0
 	muslimMaleVotersCountBijnor = 0
 	muslimFemaleVotersCountBijnor = 0
-	otherMaleVotersCountBijnor = 0
-	otherFemaleVotersCountBijnor = 0
+	OthersMaleVotersCountBijnor = 0
+	OthersFemaleVotersCountBijnor = 0
 	votersCountBangalore = 0
 	votersCountHubli = 0
 	muslimVotersCountBangalore = 0
 	muslimVotersCountHubli = 0
-	otherVotersCountBangalore = 0
-	otherVotersCountHubli = 0
+	OthersVotersCountBangalore = 0
+	OthersVotersCountHubli = 0
 	maleVotersCountBangalore = 0
 	maleVotersCountHubli = 0
 	femaleVotersCountBangalore = 0
@@ -2491,10 +2491,10 @@ func (e *ElectionController) GetStatistics() {
 	muslimMaleVotersCountHubli = 0
 	muslimFemaleVotersCountBangalore = 0
 	muslimFemaleVotersCountHubli = 0
-	otherMaleVotersCountBangalore = 0
-	otherMaleVotersCountHubli = 0
-	otherFemaleVotersCountBangalore = 0
-	otherFemaleVotersCountHubli = 0
+	OthersMaleVotersCountBangalore = 0
+	OthersMaleVotersCountHubli = 0
+	OthersFemaleVotersCountBangalore = 0
+	OthersFemaleVotersCountHubli = 0
 
 	// CALCULATIONS FOR SCOPE
 	// Get voters count for each state
