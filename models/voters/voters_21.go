@@ -1,7 +1,5 @@
 package voters
 
-import "fmt"
-
 type Voter_21 struct {
 	Voter_id              int    `form:"-" orm:"pk" json:"voter_id"`
 	Ac_number             int    `form:"acnumber" json:"ac_number"`
@@ -52,7 +50,6 @@ func (voter_21 *Voter_21) transpose() Voter {
 }
 
 func (voters *Voters) Populate_21(voters_21 []*Voter_21) {
-	fmt.Println("Bijnor Voters length = ", len(voters_21))
 	for _, voter_21 := range voters_21 {
 		voter := voter_21.transpose()
 		voters.Voters = append(voters.Voters, voter)

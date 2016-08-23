@@ -267,21 +267,21 @@ func (e *ElectionController) GetVoters() {
 	// Ac Name English
 	for _, acNameEnglish := range query.AcNameEnglish {
 		if len(strings.TrimSpace(acNameEnglish)) > 0 {
-			condAcNameEnglish = condAcNameEnglish.Or("Ac_name_english__icontains", acNameEnglish)
+			condAcNameEnglish = condAcNameEnglish.Or("Ac_name_english__exact", acNameEnglish)
 		}
 	}
 
 	// Ac Name Hindi
 	for _, acNameHindi := range query.AcNameHindi {
 		if len(strings.TrimSpace(acNameHindi)) > 0 {
-			condAcNameHindi = condAcNameHindi.Or("Ac_name_hindi__icontains", acNameHindi)
+			condAcNameHindi = condAcNameHindi.Or("Ac_name_hindi__exact", acNameHindi)
 		}
 	}
 
 	// Section Name English
 	for _, sectionNameEnglish := range query.SectionNameEnglish {
 		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
-			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__icontains", sectionNameEnglish)
+			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__exact", sectionNameEnglish)
 		}
 	}
 
@@ -841,21 +841,21 @@ func (e *ElectionController) GetStatistic() {
 	// Ac Name English
 	for _, acNameEnglish := range query.AcNameEnglish {
 		if len(strings.TrimSpace(acNameEnglish)) > 0 {
-			condAcNameEnglish = condAcNameEnglish.Or("Ac_name_english__icontains", acNameEnglish)
+			condAcNameEnglish = condAcNameEnglish.Or("Ac_name_english__exact", acNameEnglish)
 		}
 	}
 
 	// Ac Name Hindi
 	for _, acNameHindi := range query.AcNameHindi {
 		if len(strings.TrimSpace(acNameHindi)) > 0 {
-			condAcNameHindi = condAcNameHindi.Or("Ac_name_hindi__icontains", acNameHindi)
+			condAcNameHindi = condAcNameHindi.Or("Ac_name_hindi__exact", acNameHindi)
 		}
 	}
 
 	// Section Name English
 	for _, sectionNameEnglish := range query.SectionNameEnglish {
 		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
-			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__icontains", sectionNameEnglish)
+			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__exact", sectionNameEnglish)
 		}
 	}
 
@@ -1398,42 +1398,42 @@ func (e *ElectionController) GetStatistics() {
 	// Ac Name English Query
 	for _, acNameEnglish := range queries.Query.AcNameEnglish {
 		if len(strings.TrimSpace(acNameEnglish)) > 0 {
-			condAcNameEnglishQuery = condAcNameEnglishQuery.Or("Ac_name_english__icontains", acNameEnglish)
+			condAcNameEnglishQuery = condAcNameEnglishQuery.Or("Ac_name_english__exact", acNameEnglish)
 		}
 	}
 
 	// Ac Name English Scope
 	for _, acNameEnglish := range queries.Scope.AcNameEnglish {
 		if len(strings.TrimSpace(acNameEnglish)) > 0 {
-			condAcNameEnglishScope = condAcNameEnglishScope.Or("Ac_name_english__icontains", acNameEnglish)
+			condAcNameEnglishScope = condAcNameEnglishScope.Or("Ac_name_english__exact", acNameEnglish)
 		}
 	}
 
 	// Ac Name Hindi Query
 	for _, acNameHindi := range queries.Query.AcNameHindi {
 		if len(strings.TrimSpace(acNameHindi)) > 0 {
-			condAcNameHindiQuery = condAcNameHindiQuery.Or("Ac_name_hindi__icontains", acNameHindi)
+			condAcNameHindiQuery = condAcNameHindiQuery.Or("Ac_name_hindi__exact", acNameHindi)
 		}
 	}
 
 	// Ac Name Hindi Scope
 	for _, acNameHindi := range queries.Scope.AcNameHindi {
 		if len(strings.TrimSpace(acNameHindi)) > 0 {
-			condAcNameHindiScope = condAcNameHindiScope.Or("Ac_name_hindi__icontains", acNameHindi)
+			condAcNameHindiScope = condAcNameHindiScope.Or("Ac_name_hindi__exact", acNameHindi)
 		}
 	}
 
 	// Section Name English Query
 	for _, sectionNameEnglish := range queries.Query.SectionNameEnglish {
 		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
-			condSectionNameEnglishQuery = condSectionNameEnglishQuery.Or("Section_name_english__icontains", sectionNameEnglish)
+			condSectionNameEnglishQuery = condSectionNameEnglishQuery.Or("Section_name_english__exact", sectionNameEnglish)
 		}
 	}
 
 	// Section Name English Scope
 	for _, sectionNameEnglish := range queries.Scope.SectionNameEnglish {
 		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
-			condSectionNameEnglishScope = condSectionNameEnglishScope.Or("Section_name_english__icontains", sectionNameEnglish)
+			condSectionNameEnglishScope = condSectionNameEnglishScope.Or("Section_name_english", sectionNameEnglish)
 		}
 	}
 
