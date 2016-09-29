@@ -27,6 +27,7 @@ import "time"
             "religion_english":"Muslim",
             "religion_hindi":"मुसलमान",
             "age":34
+            "vote":0
         }
     ]
 }
@@ -53,6 +54,7 @@ type Voter struct {
 	Religion_english      string `form:"religionenglish json:"religion_english"`
 	Religion_hindi        string `form:"religionhindi json:"religion_hindi"`
 	Age                   int    `form:"age json:"age"`
+	Vote                  int    `form:"vote json:"vote"`
 }
 
 type Voters struct {
@@ -114,7 +116,8 @@ type Account struct {
         "section_name_hindi":["",""],
         "religion_english":["",""],
         "religion_hindi":["",""],
-        "age":[22,18,34]
+        "age":[22,18,34],
+        "vote":[0,1]
     },
     "scope":{
         "state_number":[2,3],
@@ -138,7 +141,8 @@ type Account struct {
         "section_name_hindi":["",""],
         "religion_english":["",""],
         "religion_hindi":["",""],
-        "age":[22,18,34]
+        "age":[22,18,34],
+        "vote":[0,1]
     }
 }*/
 
@@ -170,7 +174,8 @@ type Queries struct {
     "section_name_hindi":["",""],
     "religion_english":["",""],
     "religion_hindi":["",""],
-    "age":[22,18,34]
+    "age":[22,18,34],
+    "vote":[0,1]
 }*/
 
 type Query struct {
@@ -196,6 +201,7 @@ type Query struct {
 	ReligionEnglish     []string `json:"religion_english"`
 	ReligionHindi       []string `json:"religion_hindi"`
 	Age                 []int    `json:"age"`
+	Vote                []int    `json:"vote"`
 }
 
 /* Statistic
