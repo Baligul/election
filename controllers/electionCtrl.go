@@ -39,6 +39,9 @@
    Get List
    curl -X POST -H "Content-Type: application/json" -d '{"districts": [19,20], "acs":[34, 43]}' http://localhost:8080/api/list
 
+   Set Vote
+   curl -X POST -H "Content-Type: application/json" -d '{"district_id":19, "voter_id": [12345,20045], "vote":1}' http://localhost:8080/api/vote
+
    Read Json
    curl -X POST -H "Content-Type: application/json" -d @json/data.json http://localhost:8080/api/read/json
 */
@@ -3123,4 +3126,166 @@ func contains(sliceString []string, item string) bool {
 		}
 	}
 	return false
+}
+
+func (e *ElectionController) SetVote() {
+	var (
+		num  int64
+		user []*modelVoters.Account
+		err  error
+	)
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	// Create query string for each and every district
+	qsRampur := o.QueryTable(modelVoters.GetTableName("Rampur"))
+	qsMoradabad := o.QueryTable(modelVoters.GetTableName("Moradabad"))
+	qsBijnor := o.QueryTable(modelVoters.GetTableName("Bijnor"))
+	//qsBangalore := o.QueryTable(modelVoters.GetTableName("Bangalore"))
+	//qsHubli := o.QueryTable(modelVoters.GetTableName("Hubli"))
+
+	condVoterId := orm.NewCondition()
+
+	mobileNo, _ := e.GetInt("mobile_no")
+	token := e.GetString("token")
+
+	// Create query string for account table
+	qsAccount := o.QueryTable("account")
+
+	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
+	if !exist {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
+
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	if num > 0 {
+		if user[0].Token != token {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+	} else {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	inputJson := e.Ctx.Input.RequestBody
+	vote := new(modelVoters.Vote)
+
+	err = json.Unmarshal(inputJson, &vote)
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	// Apply filters for each query string
+	// Voter Id
+	for _, voterId := range vote.VoterID {
+		if voterId > 0 {
+			condVoterId = condVoterId.Or("Voter_id__exact", voterId)
+		}
+	}
+
+	if vote.DistrictID == 19 {
+		qsMoradabad = qsMoradabad.SetCond(condVoterId)
+		updatedRows, err := qsMoradabad.Update(orm.Params{
+			"vote": vote.Vote,
+		})
+		if err != nil {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+		if updatedRows < 1 {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
+			responseStatus.Error = "The voter id(s) provided is/are not valid."
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+	}
+
+	if vote.DistrictID == 20 {
+		qsRampur = qsRampur.SetCond(condVoterId)
+		qsRampur = qsRampur.SetCond(condVoterId)
+		updatedRows, err := qsRampur.Update(orm.Params{
+			"vote": vote.Vote,
+		})
+		if err != nil {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+		if updatedRows < 1 {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
+			responseStatus.Error = "The voter id(s) provided is/are not valid."
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+	}
+
+	if vote.DistrictID == 21 {
+		qsBijnor = qsBijnor.SetCond(condVoterId)
+		qsBijnor = qsBijnor.SetCond(condVoterId)
+		qsBijnor = qsBijnor.SetCond(condVoterId)
+		updatedRows, err := qsBijnor.Update(orm.Params{
+			"vote": vote.Vote,
+		})
+		if err != nil {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+		if updatedRows < 1 {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
+			responseStatus.Error = "The voter id(s) provided is/are not valid."
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+	}
+
+	responseStatus := modelVoters.NewResponseStatus()
+	responseStatus.Response = "ok"
+	responseStatus.Message = fmt.Sprintf("The vote value has been set to %d.", vote.Vote)
+	e.Data["json"] = &responseStatus
+	e.ServeJSON()
 }

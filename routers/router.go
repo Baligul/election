@@ -21,5 +21,6 @@ func init() {
 	beego.Router("/api/otp", &controllers.ElectionController{}, "post:OTP")
 	beego.Router("/api/register", &controllers.ElectionController{}, "post:Register")
 	beego.Router("/api/list", &controllers.ElectionController{}, "post:GetList")
+	beego.Router("/api/vote", &controllers.ElectionController{}, "post:SetVote")
 	beego.Router("/api/read/json", &controllers.ElectionController{}, "post:ReadJson")
 }

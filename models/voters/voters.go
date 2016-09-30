@@ -264,6 +264,12 @@ type List struct {
 	Acs       []string `json:"acs"`
 }
 
+type Vote struct {
+	DistrictID int   `json:"district_id"`
+	VoterID    []int `json:"voter_id"`
+	Vote       int   `json:"vote"`
+}
+
 func NewResponseStatus() *ResponseStatus {
 	return new(ResponseStatus)
 }
