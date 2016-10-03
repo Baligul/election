@@ -265,9 +265,9 @@ type List struct {
 }
 
 type Vote struct {
-	DistrictID int   `json:"district_id"`
-	VoterID    []int `json:"voter_id"`
-	Vote       int   `json:"vote"`
+	District string `json:"district"`
+	VoterID  []int  `json:"voter_id"`
+	Vote     int    `json:"vote"`
 }
 
 func NewResponseStatus() *ResponseStatus {

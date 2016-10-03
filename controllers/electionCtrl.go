@@ -40,7 +40,7 @@
    curl -X POST -H "Content-Type: application/json" -d '{"districts": [19,20], "acs":[34, 43]}' http://localhost:8080/api/list
 
    Set Vote
-   curl -X POST -H "Content-Type: application/json" -d '{"district_id":19, "voter_id": [12345,20045], "vote":1}' http://localhost:8080/api/vote
+   curl -X POST -H "Content-Type: application/json" -d '{"district":"Moradabad", "voter_id": [12345,20045], "vote":1}' http://localhost:8080/api/vote
 
    Read Json
    curl -X POST -H "Content-Type: application/json" -d @json/data.json http://localhost:8080/api/read/json
@@ -3211,7 +3211,7 @@ func (e *ElectionController) SetVote() {
 		}
 	}
 
-	if vote.DistrictID == 19 {
+	if vote.District == "Moradabad" {
 		qsMoradabad = qsMoradabad.SetCond(condVoterId)
 		updatedRows, err := qsMoradabad.Update(orm.Params{
 			"vote": vote.Vote,
@@ -3234,7 +3234,7 @@ func (e *ElectionController) SetVote() {
 		}
 	}
 
-	if vote.DistrictID == 20 {
+	if vote.District == "Rampur" {
 		qsRampur = qsRampur.SetCond(condVoterId)
 		qsRampur = qsRampur.SetCond(condVoterId)
 		updatedRows, err := qsRampur.Update(orm.Params{
@@ -3258,7 +3258,7 @@ func (e *ElectionController) SetVote() {
 		}
 	}
 
-	if vote.DistrictID == 21 {
+	if vote.District == "Bijnor" {
 		qsBijnor = qsBijnor.SetCond(condVoterId)
 		qsBijnor = qsBijnor.SetCond(condVoterId)
 		qsBijnor = qsBijnor.SetCond(condVoterId)
