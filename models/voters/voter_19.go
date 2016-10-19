@@ -22,6 +22,9 @@ type Voter_19 struct {
 	Religion_hindi        string `form:"religionhindi json:"religion_hindi"`
 	Age                   int    `form:"age json:"age"`
 	Vote                  int    `form:"vote json:"vote"`
+    Email                 string `form:"email" json:"email"`
+    Mobile_no             int    `form:"mobile_no" json:"mobile_no"`
+    Image                 string `form:"image" json:"image"`
 }
 
 func (voter_19 *Voter_19) transpose() Voter {
@@ -47,6 +50,9 @@ func (voter_19 *Voter_19) transpose() Voter {
 	voter.Religion_hindi = voter_19.Religion_hindi
 	voter.Age = voter_19.Age
 	voter.Vote = voter_19.Vote
+	voter.Email = voter_19.Email
+	voter.Mobile_no = voter_19.Mobile_no
+	voter.Image = voter_19.Image
 
 	return *voter
 }

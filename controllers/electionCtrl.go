@@ -1,49 +1,49 @@
 /*
    GET VOTERS
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}' http://localhost:8080/api/voters
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' http://localhost:80/api/voters
 
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[2882],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}' http://localhost:8080/api/voters
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[2882],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' http://localhost:80/api/voters
 
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":["Rampur"],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}' http://localhost:8080/api/voters
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":["Rampur"],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' http://localhost:80/api/voters
 
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":["रामपुर"],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}' http://localhost:8080/api/voters
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":["रामपुर"],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' http://localhost:80/api/voters
 
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":["मुरादाबाद"],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}' http://localhost:8080/api/voters
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":["मुरादाबाद"],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' http://localhost:80/api/voters
 
    GET STATISTIC
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}' http://localhost:8080/api/statistic
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' http://localhost:80/api/statistic
 
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[2882],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}' http://localhost:8080/api/statistic
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[2882],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' http://localhost:80/api/statistic
 
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":["Rampur"],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}' http://localhost:8080/api/statistic
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":["Rampur"],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' http://localhost:80/api/statistic
 
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":["रामपुर"],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}' http://localhost:8080/api/statistic
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":["रामपुर"],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' http://localhost:80/api/statistic
 
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":["रामपुर"],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}' http://localhost:8080/api/statistic
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":["रामपुर"],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' http://localhost:80/api/statistic
 
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":["मुरादाबाद"],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}' http://localhost:8080/api/statistic
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":["मुरादाबाद"],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' http://localhost:80/api/statistic
 
    GET STATISTICS
-   curl -X POST -H "Content-Type: application/json" -d '{"query":{"state_number":[],"district_number":[20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]},"scope":{"state_number":[],"district_number":[19,20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}}' http://localhost:8080/api/statistics
+   curl -X POST -H "Content-Type: application/json" -d '{"query":{"state_number":[],"district_number":[20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]},"scope":{"state_number":[],"district_number":[19,20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}}' http://localhost:80/api/statistics
 
-   curl -X POST -H "Content-Type: application/json" -d '{"query":{"state_number":[],"district_number":[20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]},"scope":{"state_number":[],"district_number":[20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}}' http://localhost:8080/api/statistics
+   curl -X POST -H "Content-Type: application/json" -d '{"query":{"state_number":[],"district_number":[20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]},"scope":{"state_number":[],"district_number":[20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}}' http://localhost:80/api/statistics
 
-   curl -X POST -H "Content-Type: application/json" -d '{"query":{"state_number":[],"district_number":[20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":["M"],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":["Muslim"],"religion_hindi":[],"age":[],"vote":[]},"scope":{"state_number":[],"district_number":[20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":["M"],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[]}}' http://localhost:8080/api/statistics
+   curl -X POST -H "Content-Type: application/json" -d '{"query":{"state_number":[],"district_number":[20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":["M"],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":["Muslim"],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]},"scope":{"state_number":[],"district_number":[20],"voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":["M"],"id_card_number":[],"district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":[],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}}' http://localhost:80/api/statistics
 
    GET OTP
-   curl -X POST -H "Content-Type: application/json" -d '{"mobile_no": 9564783954}' http://localhost:8080/api/otp
+   curl -X POST -H "Content-Type: application/json" -d '{"mobile_no": 9564783954}' http://localhost:80/api/otp
 
    Register
-   curl -X POST -H "Content-Type: application/json" -d '{"mobile_no": 9343352734, "otp":23435}' http://localhost:8080/api/register
+   curl -X POST -H "Content-Type: application/json" -d '{"mobile_no": 9343352734, "otp":23435}' http://localhost:80/api/register
 
    Get List
-   curl -X POST -H "Content-Type: application/json" -d '{"districts": [19,20], "acs":[34, 43]}' http://localhost:8080/api/list
+   curl -X POST -H "Content-Type: application/json" -d '{"districts": [19,20], "acs":[34, 43]}' http://localhost:80/api/list
 
-   Set Vote
-   curl -X POST -H "Content-Type: application/json" -d '{"district":"Moradabad", "voter_id": [12345,20045], "vote":1}' http://localhost:8080/api/vote
+   Set Voter
+   curl -X POST -H "Content-Type: application/json" -d '{"district":"Moradabad", "voter_id": [12345,20045], "vote":1, "email":"example@example.com","mobile_no":9456732819,"image":"jsdjsd22ksndsndsnk22knknlcxx"}' http://localhost:80/api/voter
 
    Read Json
-   curl -X POST -H "Content-Type: application/json" -d @json/data.json http://localhost:8080/api/read/json
+   curl -X POST -H "Content-Type: application/json" -d @json/data.json http://localhost:80/api/read/json
 */
 
 package controllers
@@ -61,6 +61,7 @@ import (
 	"time"
 
 	modelVoters "github.com/Baligul/election/models/voters"
+	modelTasks "github.com/Baligul/election/models/tasks"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -72,7 +73,12 @@ func init() {
 	orm.RegisterDriver("postgres", orm.DRPostgres)
 	//orm.RegisterDataBase("default", "postgres", "postgres://member:hu123*Member@http://104.197.6.26:5432/election")
 	orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
-	orm.RegisterModel(new(modelVoters.Account), new(modelVoters.Voter), new(modelVoters.Voter_19), new(modelVoters.Voter_20), new(modelVoters.Voter_21))
+	orm.RegisterModel(new(modelVoters.Account), 
+					  new(modelVoters.Voter), 
+					  new(modelVoters.Voter_19), 
+					  new(modelVoters.Voter_20), 
+					  new(modelVoters.Voter_21), 
+					  new(modelTasks.Task))
 }
 
 type ElectionController struct {
@@ -189,6 +195,9 @@ func (e *ElectionController) GetVoters() {
 	condReligionHindi := orm.NewCondition()
 	condAge := orm.NewCondition()
 	condVote := orm.NewCondition()
+	condEmail := orm.NewCondition()
+	condMobileNo := orm.NewCondition()
+	condImage := orm.NewCondition()
 
 	// Apply filters for each query string
 	// Voter Id
@@ -321,6 +330,27 @@ func (e *ElectionController) GetVoters() {
 	for _, vote := range query.Vote {
 		if vote == 0 || vote == 1 {
 			condVote = condVote.Or("Vote__exact", vote)
+		}
+	}
+
+	// Email
+	for _, email := range query.Email {
+		if len(strings.TrimSpace(email)) > 0 {
+			condEmail = condEmail.Or("Email__exact", email)
+		}
+	}
+
+	// Mobile Number
+	for _, mobileNo := range query.MobileNo {
+		if mobileNo > 0 {
+			condMobileNo = condMobileNo.Or("MobileNo__exact", mobileNo)
+		}
+	}
+
+	// Image
+	for _, image := range query.Image {
+		if len(strings.TrimSpace(image)) > 0 {
+			condImage = condImage.Or("Image__exact", image)
 		}
 	}
 
@@ -469,6 +499,30 @@ func (e *ElectionController) GetVoters() {
 			cond = cond.AndCond(condVote)
 		} else {
 			cond = condVote
+		}
+	}
+
+	if condEmail != nil && !condEmail.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condEmail)
+		} else {
+			cond = condEmail
+		}
+	}
+
+	if condMobileNo != nil && !condMobileNo.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condMobileNo)
+		} else {
+			cond = condMobileNo
+		}
+	}
+
+	if condImage != nil && !condImage.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condImage)
+		} else {
+			cond = condImage
 		}
 	}
 
@@ -3128,7 +3182,306 @@ func contains(sliceString []string, item string) bool {
 	return false
 }
 
-func (e *ElectionController) SetVote() {
+func (e *ElectionController) UpdateVoter() {
+	var (
+		num  int64
+		user []*modelVoters.Account
+		err  error
+	)
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	// Create query string for each and every district
+	qsRampur := o.QueryTable(modelVoters.GetTableName("Rampur"))
+	qsMoradabad := o.QueryTable(modelVoters.GetTableName("Moradabad"))
+	qsBijnor := o.QueryTable(modelVoters.GetTableName("Bijnor"))
+	//qsBangalore := o.QueryTable(modelVoters.GetTableName("Bangalore"))
+	//qsHubli := o.QueryTable(modelVoters.GetTableName("Hubli"))
+
+	condVoterId := orm.NewCondition()
+
+	mobileNo, _ := e.GetInt("mobile_no")
+	token := e.GetString("token")
+
+	// Create query string for account table
+	qsAccount := o.QueryTable("account")
+
+	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
+	if !exist {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
+
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	if num > 0 {
+		if user[0].Token != token {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+	} else {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	inputJson := e.Ctx.Input.RequestBody
+	vote := new(modelVoters.Vote)
+
+	err = json.Unmarshal(inputJson, &vote)
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	// Apply filters for each query string
+	// Voter Id
+	for _, voterId := range vote.VoterID {
+		if voterId > 0 {
+			condVoterId = condVoterId.Or("Voter_id__exact", voterId)
+		}
+	}
+
+	if vote.District == "Moradabad" {
+		qsMoradabad = qsMoradabad.SetCond(condVoterId)
+		if vote.Vote == 1 || vote.Vote == 0 {
+			updatedRows, err := qsMoradabad.Update(orm.Params{
+			"vote": vote.Vote,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+
+		if len(strings.TrimSpace(vote.Email)) > 0 {
+			updatedRows, err := qsMoradabad.Update(orm.Params{
+			"email": vote.Email,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the email.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the email.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+
+		if vote.MobileNo > 0 {
+			updatedRows, err := qsMoradabad.Update(orm.Params{
+			"mobile_no": vote.MobileNo,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the mobile number.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the mobile number.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+	}
+
+	if vote.District == "Rampur" {
+		qsRampur = qsRampur.SetCond(condVoterId)
+		if vote.Vote == 1 || vote.Vote == 0 {
+			updatedRows, err := qsRampur.Update(orm.Params{
+			"vote": vote.Vote,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+
+		if len(strings.TrimSpace(vote.Email)) > 0 {
+			updatedRows, err := qsRampur.Update(orm.Params{
+			"email": vote.Email,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the email.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the email.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+
+		if vote.MobileNo > 0 {
+			updatedRows, err := qsRampur.Update(orm.Params{
+			"mobile_no": vote.MobileNo,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the mobile number.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the mobile number.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+		
+	}
+
+	if vote.District == "Bijnor" {
+		qsBijnor = qsBijnor.SetCond(condVoterId)
+		if vote.Vote == 1 || vote.Vote == 0 {
+			updatedRows, err := qsBijnor.Update(orm.Params{
+			"vote": vote.Vote,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+
+		if len(strings.TrimSpace(vote.Email)) > 0 {
+			updatedRows, err := qsBijnor.Update(orm.Params{
+			"email": vote.Email,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the email.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the email.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+
+		if vote.MobileNo > 0 {
+			updatedRows, err := qsBijnor.Update(orm.Params{
+			"mobile_no": vote.MobileNo,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the mobile number.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the mobile number.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+	}
+
+	responseStatus := modelVoters.NewResponseStatus()
+	responseStatus.Response = "ok"
+	responseStatus.Message = fmt.Sprintf("The vote value has been set to %d.", vote.Vote)
+	e.Data["json"] = &responseStatus
+	e.ServeJSON()
+}
+
+/*
+func (e *ElectionController) CreateTask() {
 	var (
 		num  int64
 		user []*modelVoters.Account
@@ -3289,3 +3642,4 @@ func (e *ElectionController) SetVote() {
 	e.Data["json"] = &responseStatus
 	e.ServeJSON()
 }
+*/
