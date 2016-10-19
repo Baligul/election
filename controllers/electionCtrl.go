@@ -3245,7 +3245,7 @@ func (e *ElectionController) UpdateVoter() {
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
-	vote := new(modelVoters.Vote)
+	vote := new(modelVoters.UpdateVote)
 
 	err = json.Unmarshal(inputJson, &vote)
 	if err != nil {
