@@ -3475,7 +3475,7 @@ func (e *ElectionController) UpdateVoter() {
 
 	responseStatus := modelVoters.NewResponseStatus()
 	responseStatus.Response = "ok"
-	responseStatus.Message = fmt.Sprintf("The vote value has been set to %d.", vote.Vote)
+	responseStatus.Message = fmt.Sprintf("The voter data has been successfully updated.")
 	e.Data["json"] = &responseStatus
 	e.ServeJSON()
 }
