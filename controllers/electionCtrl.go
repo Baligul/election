@@ -3245,9 +3245,9 @@ func (e *ElectionController) UpdateVoter() {
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
-	vote := new(modelVoters.UpdateVote)
+	voter := new(modelVoters.UpdateVoter)
 
-	err = json.Unmarshal(inputJson, &vote)
+	err = json.Unmarshal(inputJson, &voter)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -3259,17 +3259,17 @@ func (e *ElectionController) UpdateVoter() {
 
 	// Apply filters for each query string
 	// Voter Id
-	for _, voterId := range vote.VoterID {
+	for _, voterId := range voter.VoterID {
 		if voterId > 0 {
 			condVoterId = condVoterId.Or("Voter_id__exact", voterId)
 		}
 	}
 
-	if vote.District == "Moradabad" {
+	if voter.District == "Moradabad" {
 		qsMoradabad = qsMoradabad.SetCond(condVoterId)
-		if vote.Vote == 1 || vote.Vote == 0 {
+		if voter.Vote == 1 || voter.Vote == 0 {
 			updatedRows, err := qsMoradabad.Update(orm.Params{
-			"vote": vote.Vote,
+			"vote": voter.Vote,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3289,9 +3289,9 @@ func (e *ElectionController) UpdateVoter() {
 			}
 		}
 
-		if len(strings.TrimSpace(vote.Email)) > 0 {
+		if len(strings.TrimSpace(voter.Email)) > 0 {
 			updatedRows, err := qsMoradabad.Update(orm.Params{
-			"email": vote.Email,
+			"email": voter.Email,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3311,9 +3311,9 @@ func (e *ElectionController) UpdateVoter() {
 			}
 		}
 
-		if vote.MobileNo > 0 {
+		if voter.MobileNo > 0 {
 			updatedRows, err := qsMoradabad.Update(orm.Params{
-			"mobile_no": vote.MobileNo,
+			"mobile_no": voter.MobileNo,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3332,13 +3332,18 @@ func (e *ElectionController) UpdateVoter() {
 				e.ServeJSON()
 			}
 		}
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "ok"
+		responseStatus.Message = fmt.Sprintf("The voter data has been successfully updated.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
 	}
 
-	if vote.District == "Rampur" {
+	if voter.District == "Rampur" {
 		qsRampur = qsRampur.SetCond(condVoterId)
-		if vote.Vote == 1 || vote.Vote == 0 {
+		if voter.Vote == 1 || voter.Vote == 0 {
 			updatedRows, err := qsRampur.Update(orm.Params{
-			"vote": vote.Vote,
+			"vote": voter.Vote,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3358,9 +3363,9 @@ func (e *ElectionController) UpdateVoter() {
 			}
 		}
 
-		if len(strings.TrimSpace(vote.Email)) > 0 {
+		if len(strings.TrimSpace(voter.Email)) > 0 {
 			updatedRows, err := qsRampur.Update(orm.Params{
-			"email": vote.Email,
+			"email": voter.Email,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3380,9 +3385,9 @@ func (e *ElectionController) UpdateVoter() {
 			}
 		}
 
-		if vote.MobileNo > 0 {
+		if voter.MobileNo > 0 {
 			updatedRows, err := qsRampur.Update(orm.Params{
-			"mobile_no": vote.MobileNo,
+			"mobile_no": voter.MobileNo,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3401,14 +3406,18 @@ func (e *ElectionController) UpdateVoter() {
 				e.ServeJSON()
 			}
 		}
-		
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "ok"
+		responseStatus.Message = fmt.Sprintf("The voter data has been successfully updated.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()	
 	}
 
-	if vote.District == "Bijnor" {
+	if voter.District == "Bijnor" {
 		qsBijnor = qsBijnor.SetCond(condVoterId)
-		if vote.Vote == 1 || vote.Vote == 0 {
+		if voter.Vote == 1 || voter.Vote == 0 {
 			updatedRows, err := qsBijnor.Update(orm.Params{
-			"vote": vote.Vote,
+			"vote": voter.Vote,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3428,9 +3437,9 @@ func (e *ElectionController) UpdateVoter() {
 			}
 		}
 
-		if len(strings.TrimSpace(vote.Email)) > 0 {
+		if len(strings.TrimSpace(voter.Email)) > 0 {
 			updatedRows, err := qsBijnor.Update(orm.Params{
-			"email": vote.Email,
+			"email": voter.Email,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3450,9 +3459,9 @@ func (e *ElectionController) UpdateVoter() {
 			}
 		}
 
-		if vote.MobileNo > 0 {
+		if voter.MobileNo > 0 {
 			updatedRows, err := qsBijnor.Update(orm.Params{
-			"mobile_no": vote.MobileNo,
+			"mobile_no": voter.MobileNo,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3471,11 +3480,15 @@ func (e *ElectionController) UpdateVoter() {
 				e.ServeJSON()
 			}
 		}
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "ok"
+		responseStatus.Message = fmt.Sprintf("The voter data has been successfully updated.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
 	}
-
 	responseStatus := modelVoters.NewResponseStatus()
-	responseStatus.Response = "ok"
-	responseStatus.Message = fmt.Sprintf("The voter data has been successfully updated.")
+	responseStatus.Response = "error"
+	responseStatus.Message = fmt.Sprintf("The voter data didn't get updated. Please check your JSON sent as: %s", inputJson)
 	e.Data["json"] = &responseStatus
 	e.ServeJSON()
 }
@@ -3558,16 +3571,16 @@ func (e *ElectionController) CreateTask() {
 
 	// Apply filters for each query string
 	// Voter Id
-	for _, voterId := range vote.VoterID {
+	for _, voterId := range voter.VoterID {
 		if voterId > 0 {
 			condVoterId = condVoterId.Or("Voter_id__exact", voterId)
 		}
 	}
 
-	if vote.District == "Moradabad" {
+	if voter.District == "Moradabad" {
 		qsMoradabad = qsMoradabad.SetCond(condVoterId)
 		updatedRows, err := qsMoradabad.Update(orm.Params{
-			"vote": vote.Vote,
+			"vote": voter.Vote,
 		})
 		if err != nil {
 			responseStatus := modelVoters.NewResponseStatus()
@@ -3587,11 +3600,11 @@ func (e *ElectionController) CreateTask() {
 		}
 	}
 
-	if vote.District == "Rampur" {
+	if voter.District == "Rampur" {
 		qsRampur = qsRampur.SetCond(condVoterId)
 		qsRampur = qsRampur.SetCond(condVoterId)
 		updatedRows, err := qsRampur.Update(orm.Params{
-			"vote": vote.Vote,
+			"vote": voter.Vote,
 		})
 		if err != nil {
 			responseStatus := modelVoters.NewResponseStatus()
@@ -3611,12 +3624,12 @@ func (e *ElectionController) CreateTask() {
 		}
 	}
 
-	if vote.District == "Bijnor" {
+	if voter.District == "Bijnor" {
 		qsBijnor = qsBijnor.SetCond(condVoterId)
 		qsBijnor = qsBijnor.SetCond(condVoterId)
 		qsBijnor = qsBijnor.SetCond(condVoterId)
 		updatedRows, err := qsBijnor.Update(orm.Params{
-			"vote": vote.Vote,
+			"vote": voter.Vote,
 		})
 		if err != nil {
 			responseStatus := modelVoters.NewResponseStatus()
@@ -3638,7 +3651,7 @@ func (e *ElectionController) CreateTask() {
 
 	responseStatus := modelVoters.NewResponseStatus()
 	responseStatus.Response = "ok"
-	responseStatus.Message = fmt.Sprintf("The vote value has been set to %d.", vote.Vote)
+	responseStatus.Message = fmt.Sprintf("The vote value has been set to %d.", voter.Vote)
 	e.Data["json"] = &responseStatus
 	e.ServeJSON()
 }

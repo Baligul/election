@@ -282,7 +282,7 @@ type List struct {
 	Acs       []string `json:"acs"`
 }
 
-type UpdateVote struct {
+type UpdateVoter struct {
 	District string `json:"district"`
 	VoterID  []int  `json:"voter_id"`
 	Vote     int    `json:"vote"`
