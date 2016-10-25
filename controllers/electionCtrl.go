@@ -61,25 +61,12 @@ import (
 	"time"
 
 	modelVoters "github.com/Baligul/election/models/voters"
-	modelTasks "github.com/Baligul/election/models/tasks"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/craigmj/gototp"
 	_ "github.com/lib/pq"
 )
-
-func init() {
-	orm.RegisterDriver("postgres", orm.DRPostgres)
-	//orm.RegisterDataBase("default", "postgres", "postgres://member:hu123*Member@http://104.197.6.26:5432/election")
-	orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
-	orm.RegisterModel(new(modelVoters.Account), 
-					  new(modelVoters.Voter), 
-					  new(modelVoters.Voter_19), 
-					  new(modelVoters.Voter_20), 
-					  new(modelVoters.Voter_21), 
-					  new(modelTasks.Task))
-}
 
 type ElectionController struct {
 	beego.Controller
