@@ -9,6 +9,7 @@ package routers
 
 import (
 	"github.com/Baligul/election/controllers"
+	"github.com/Baligul/election/controllers/groups"
 
 	"github.com/astaxie/beego"
 )
@@ -22,6 +23,10 @@ func init() {
 	beego.Router("/api/register", &controllers.ElectionController{}, "post:Register")
 	beego.Router("/api/list", &controllers.ElectionController{}, "post:GetList")
 	beego.Router("/api/voter", &controllers.ElectionController{}, "post:UpdateVoter")
+	//beego.Router("/api/group", &groups.GroupCtrl{}, "post:CreateGroup")
+	beego.Router("/api/group", &groups.GroupCtrl{}, "get:GetGroups")
+//	beego.Router("/api/group", &groups.GroupCtrl{}, "put:UpdateGroup")
+//	beego.Router("/api/group", &groups.GroupCtrl{}, "delete:DeleteGroup"
 	//beego.Router("/api/task", &controllers.ElectionController{}, "post:CreateTask")
 	//beego.Router("/api/task", &controllers.ElectionController{}, "get:GetTasks")
 	//beego.Router("/api/task", &controllers.ElectionController{}, "put:UpdateTask")
