@@ -24,7 +24,7 @@ func init() {
 	beego.Router("/api/list", &controllers.ElectionController{}, "post:GetList")
 	beego.Router("/api/voter", &controllers.ElectionController{}, "post:UpdateVoter")
 	//beego.Router("/api/group", &groups.GroupCtrl{}, "post:CreateGroup")
-	beego.Router("/api/group", &groups.GroupCtrl{}, "get:GetGroups")
+	beego.Router("/api/groups", &groups.GroupCtrl{}, "get,post:GetGroups")
 //	beego.Router("/api/group", &groups.GroupCtrl{}, "put:UpdateGroup")
 //	beego.Router("/api/group", &groups.GroupCtrl{}, "delete:DeleteGroup"
 	//beego.Router("/api/task", &controllers.ElectionController{}, "post:CreateTask")

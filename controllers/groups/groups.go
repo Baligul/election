@@ -1,6 +1,6 @@
 /*
    GET GROUPS
-   curl -X GET -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4]}' http://localhost:80/api/group
+   curl -X GET -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4]}' http://localhost:80/api/groups
 
    Update GROUP
    curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description"}' http://localhost:80/api/group
