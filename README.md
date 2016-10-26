@@ -6,3 +6,12 @@ To run server in background
 To make service foreground
 ----------------------------
 fg ./election <enter>
+
+
+==========  start PostgreSQL Server===========================
+
+sudo su root
+
+su - postgres
+
+/usr/local/pgsql/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start
