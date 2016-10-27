@@ -96,6 +96,9 @@ type Account struct {
 	Last_login         time.Time `json:"last_login"`
 	Updated_on         time.Time `json:"updated_on"`
 	Created_on         time.Time `json:"created_on"`
+    Role               string    `json:"role"`
+    Image              string    `json:"image"`
+    Group_id           int       `json:"group_id"`
 }
 
 // Queries

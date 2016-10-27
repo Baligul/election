@@ -14,7 +14,7 @@ import "time"
 }
 */
 
-type UserGroup struct {
+type Usergroup struct {
 	Group_id    int       `form:"-" orm:"pk" json:"group_id"`
     Title       string    `json:"title"`
     Description string    `json:"description"`
@@ -64,5 +64,11 @@ type GroupQuery struct {
 
 type Groups struct {
 	Total  int64       `json:"total"`
-	Groups []UserGroup `json:"groups"`
+	Groups []Usergroup `json:"groups"`
+}
+
+func (groups *Groups) Populate(usergroups []*Usergroup) {
+	for _, group := range usergroups {
+		groups.Groups = append(groups.Groups, *group)
+	}
 }

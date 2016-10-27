@@ -22,13 +22,13 @@ func init() {
 					  new(modelVoters.Voter_19), 
 					  new(modelVoters.Voter_20), 
 					  new(modelVoters.Voter_21),
-					  new(modelGroups.UserGroup))
+					  new(modelGroups.Usergroup))
 }
 
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "80"
+		port = "8080"
 	}
 
 	beego.BConfig.Listen.HTTPPort, _ = strconv.Atoi(port)
