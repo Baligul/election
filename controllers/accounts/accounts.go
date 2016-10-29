@@ -244,7 +244,7 @@ func (e *AccountCtrl) CreateAccount() {
 	if user[0].Role != "Leader" && user[0].Role != "leader" && user[0].Role != "group lead" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised to create group.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised to create account.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
