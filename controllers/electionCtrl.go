@@ -37,7 +37,7 @@
    curl -X POST -H "Content-Type: application/json" -d '{"mobile_no": 9343352734, "otp":23435}' http://localhost:80/api/register
 
    Get List
-   curl -X POST -H "Content-Type: application/json" -d '{"districts": [19,20], "acs":[34, 43]}' http://localhost:80/api/list
+   curl -X POST -H "Content-Type: application/json" -d '{"districts": ["Moradabad"], "acs":["Kanth", "Bilari"]}' http://localhost:80/api/list
 
    Set Voter
    curl -X POST -H "Content-Type: application/json" -d '{"district":"Moradabad", "voter_id": [12345,20045], "vote":1, "email":"example@example.com","mobile_no":9456732819,"image":"jsdjsd22ksndsndsnk22knknlcxx"}' http://localhost:80/api/voter
@@ -61,6 +61,7 @@ import (
 	"time"
 
 	modelVoters "github.com/Baligul/election/models/voters"
+	modelAccounts "github.com/Baligul/election/models/accounts"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -86,7 +87,7 @@ func (e *ElectionController) GetVoters() {
 		votersBangalore      []*modelVoters.Voter
 		votersHubli          []*modelVoters.Voter
 		num                  int64
-		user                 []*modelVoters.Account
+		user                 []*modelAccounts.Account
 		err                  error
 	)
 
@@ -795,7 +796,7 @@ func (e *ElectionController) GetStatistic() {
 		OthersFemaleVotersCountBangalore int64
 		OthersFemaleVotersCountHubli     int64
 		num                              int64
-		user                             []*modelVoters.Account
+		user                             []*modelAccounts.Account
 		err                              error
 	)
 
@@ -1329,7 +1330,7 @@ func (e *ElectionController) GetStatistics() {
 		OthersFemaleVotersCountBangalore int64
 		OthersFemaleVotersCountHubli     int64
 		num                              int64
-		user                             []*modelVoters.Account
+		user                             []*modelAccounts.Account
 		err                              error
 	)
 
@@ -2699,7 +2700,7 @@ func (e *ElectionController) OTP() {
 	var (
 		otp       int32
 		num       int64
-		recipient []*modelVoters.Account
+		recipient []*modelAccounts.Account
 	)
 
 	o := orm.NewOrm()
@@ -2710,7 +2711,7 @@ func (e *ElectionController) OTP() {
 	qsRecipient := o.QueryTable("account")
 
 	inputJson := e.Ctx.Input.RequestBody
-	account := new(modelVoters.Account)
+	account := new(modelAccounts.Account)
 
 	err := json.Unmarshal(inputJson, &account)
 	if err != nil {
@@ -2863,7 +2864,7 @@ func (e *ElectionController) Register() {
 	var (
 		token string
 		num   int64
-		users []*modelVoters.Account
+		users []*modelAccounts.Account
 	)
 
 	o := orm.NewOrm()
@@ -2873,7 +2874,7 @@ func (e *ElectionController) Register() {
 	qsAccount := o.QueryTable("account")
 
 	inputJson := e.Ctx.Input.RequestBody
-	account := new(modelVoters.Account)
+	account := new(modelAccounts.Account)
 
 	err := json.Unmarshal(inputJson, &account)
 	if err != nil {
@@ -2930,7 +2931,7 @@ func (e *ElectionController) Register() {
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
-		user := new(modelVoters.Account)
+		user := new(modelAccounts.Account)
 		users[0].Token = token
 		user = users[0]
 		e.Data["json"] = &user
@@ -2948,7 +2949,7 @@ func (e *ElectionController) Register() {
 func (e *ElectionController) GetList() {
 	var (
 		num  int64
-		user []*modelVoters.Account
+		user []*modelAccounts.Account
 		err  error
 	)
 
@@ -3172,7 +3173,7 @@ func contains(sliceString []string, item string) bool {
 func (e *ElectionController) UpdateVoter() {
 	var (
 		num  int64
-		user []*modelVoters.Account
+		user []*modelAccounts.Account
 		err  error
 	)
 
@@ -3479,167 +3480,3 @@ func (e *ElectionController) UpdateVoter() {
 	e.Data["json"] = &responseStatus
 	e.ServeJSON()
 }
-
-/*
-func (e *ElectionController) CreateTask() {
-	var (
-		num  int64
-		user []*modelVoters.Account
-		err  error
-	)
-
-	o := orm.NewOrm()
-	o.Using("default")
-
-	// Create query string for each and every district
-	qsRampur := o.QueryTable(modelVoters.GetTableName("Rampur"))
-	qsMoradabad := o.QueryTable(modelVoters.GetTableName("Moradabad"))
-	qsBijnor := o.QueryTable(modelVoters.GetTableName("Bijnor"))
-	//qsBangalore := o.QueryTable(modelVoters.GetTableName("Bangalore"))
-	//qsHubli := o.QueryTable(modelVoters.GetTableName("Hubli"))
-
-	condVoterId := orm.NewCondition()
-
-	mobileNo, _ := e.GetInt("mobile_no")
-	token := e.GetString("token")
-
-	// Create query string for account table
-	qsAccount := o.QueryTable("account")
-
-	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
-	if !exist {
-		responseStatus := modelVoters.NewResponseStatus()
-		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
-		e.Data["json"] = &responseStatus
-		e.ServeJSON()
-	}
-
-	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
-
-	if err != nil {
-		responseStatus := modelVoters.NewResponseStatus()
-		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
-		responseStatus.Error = err.Error()
-		e.Data["json"] = &responseStatus
-		e.ServeJSON()
-	}
-
-	if num > 0 {
-		if user[0].Token != token {
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-
-	} else {
-		responseStatus := modelVoters.NewResponseStatus()
-		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
-		e.Data["json"] = &responseStatus
-		e.ServeJSON()
-	}
-
-	inputJson := e.Ctx.Input.RequestBody
-	vote := new(modelVoters.Vote)
-
-	err = json.Unmarshal(inputJson, &vote)
-	if err != nil {
-		responseStatus := modelVoters.NewResponseStatus()
-		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
-		responseStatus.Error = err.Error()
-		e.Data["json"] = &responseStatus
-		e.ServeJSON()
-	}
-
-	// Apply filters for each query string
-	// Voter Id
-	for _, voterId := range voter.VoterID {
-		if voterId > 0 {
-			condVoterId = condVoterId.Or("Voter_id__exact", voterId)
-		}
-	}
-
-	if voter.District == "Moradabad" {
-		qsMoradabad = qsMoradabad.SetCond(condVoterId)
-		updatedRows, err := qsMoradabad.Update(orm.Params{
-			"vote": voter.Vote,
-		})
-		if err != nil {
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
-			responseStatus.Error = err.Error()
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-		if updatedRows < 1 {
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
-			responseStatus.Error = "The voter id(s) provided is/are not valid."
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-	}
-
-	if voter.District == "Rampur" {
-		qsRampur = qsRampur.SetCond(condVoterId)
-		qsRampur = qsRampur.SetCond(condVoterId)
-		updatedRows, err := qsRampur.Update(orm.Params{
-			"vote": voter.Vote,
-		})
-		if err != nil {
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
-			responseStatus.Error = err.Error()
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-		if updatedRows < 1 {
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
-			responseStatus.Error = "The voter id(s) provided is/are not valid."
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-	}
-
-	if voter.District == "Bijnor" {
-		qsBijnor = qsBijnor.SetCond(condVoterId)
-		qsBijnor = qsBijnor.SetCond(condVoterId)
-		qsBijnor = qsBijnor.SetCond(condVoterId)
-		updatedRows, err := qsBijnor.Update(orm.Params{
-			"vote": voter.Vote,
-		})
-		if err != nil {
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
-			responseStatus.Error = err.Error()
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-		if updatedRows < 1 {
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
-			responseStatus.Error = "The voter id(s) provided is/are not valid."
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-	}
-
-	responseStatus := modelVoters.NewResponseStatus()
-	responseStatus.Response = "ok"
-	responseStatus.Message = fmt.Sprintf("The vote value has been set to %d.", voter.Vote)
-	e.Data["json"] = &responseStatus
-	e.ServeJSON()
-}
-*/

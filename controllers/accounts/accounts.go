@@ -1,28 +1,27 @@
 /*
-   GET GROUPS
-   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4]}, "group_lead_id":[1,2,4]}' http://localhost:80/api/groups
-   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://104.197.6.26:80/api/groups?mobile_no=9343352734&token=91e3b703fc84b455"
+   GET ACCOUNTS
+   curl -X POST -H "Content-Type: application/json" -d '{"account_id":[1,2,4], "group_id":[1,2,4], "leader_id":[1,2,4]}' http://localhost:80/api/accounts
+   curl -X POST -H "Content-Type: application/json" -d '{"account_id":[1,2,4], "group_id":[1,2,4], "leader_id":[1,2,4]}' "http://104.197.6.26:80/api/accounts?mobile_no=9343352734&token=91e3b703fc84b455"
 
-   Update GROUP
-   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' http://localhost:80/api/group
-   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=91e3b703fc84b455"
+   Update ACCOUNT
+   curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' http://localhost:80/api/account
+   curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' "http://104.197.6.26:80/api/account?mobile_no=9343352734&token=91e3b703fc84b455"
 
-   Create GROUP
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' http://localhost:80/api/group
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=91e3b703fc84b455"
+   Create ACCOUNT
+   curl -X POST -H "Content-Type: application/json" -d '{display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' http://localhost:80/api/account
+   curl -X POST -H "Content-Type: application/json" -d '{display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' "http://104.197.6.26:80/api/account?mobile_no=9343352734&token=91e3b703fc84b455"
 
-   Delete GROUP
-   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' http://localhost:80/api/group
-   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=91e3b703fc84b455"
+   Delete ACCOUNT
+   curl -X DELETE -H "Content-Type: application/json" -d '{"account_id":1, "group_id":1, "leader_id":2}' http://localhost:80/api/account
+   curl -X DELETE -H "Content-Type: application/json" -d '{"account_id":1, "group_id":1, "leader_id":2}' "http://104.197.6.26:80/api/account?mobile_no=9343352734&token=91e3b703fc84b455"
 */
 
-package groups
+package accounts
 
 import (
 	"encoding/json"
 	"fmt"
 
-	modelGroups "github.com/Baligul/election/models/groups"
 	modelVoters "github.com/Baligul/election/models/voters"
 	modelAccounts "github.com/Baligul/election/models/accounts"
 
@@ -31,18 +30,18 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type GroupCtrl struct {
+type AccountCtrl struct {
 	beego.Controller
 }
 
-func (e *GroupCtrl) GetGroups() {
+func (e *AccountCtrl) GetAccounts() {
 	var (
-		groupsCount int64
-		groups		modelGroups.Groups
-		userGroups  []*modelGroups.Usergroup
-		err         error
-		num         int64
-		user        []*modelAccounts.Account
+		accountsCount int64
+		accounts	  modelAccounts.Accounts
+		userAccounts  []*modelAccounts.Account
+		err           error
+		num           int64
+		user          []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -54,8 +53,8 @@ func (e *GroupCtrl) GetGroups() {
 	// Create query string for account table
 	qsAccount := o.QueryTable("account")
 
-	// Create query string for usergroup table
-	qsGroup := o.QueryTable("usergroup")
+	// Create query string for account table
+	qsUserAccount := o.QueryTable("account")
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
@@ -95,7 +94,7 @@ func (e *GroupCtrl) GetGroups() {
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
-	query := new(modelGroups.GroupQuery)
+	query := new(modelAccounts.AccountQuery)
 
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
@@ -108,11 +107,19 @@ func (e *GroupCtrl) GetGroups() {
 	}
 
 	cond := orm.NewCondition()
+	condAccountId := orm.NewCondition()
 	condGroupId := orm.NewCondition()
-	condCreatedBy := orm.NewCondition()
-	condGroupLeadId := orm.NewCondition()
+	condLeaderId := orm.NewCondition()
 
 	// Apply filters for each query string
+
+	// Account Id
+	for _, accountId := range query.AccountId {
+		if accountId > 0 {
+			condAccountId = condAccountId.Or("Account_id__exact", accountId)
+		}
+	}
+
 	// Group Id
 	for _, groupId := range query.GroupId {
 		if groupId > 0 {
@@ -120,62 +127,55 @@ func (e *GroupCtrl) GetGroups() {
 		}
 	}
 
-	// Created By
-	for _, createdBy := range query.CreatedBy {
-		if createdBy > 0 {
-			condCreatedBy = condCreatedBy.Or("Created_by__exact", createdBy)
+	// Leader Id
+	for _, leaderId := range query.LeaderId {
+		if leaderId > 0 {
+			condLeaderId = condLeaderId.Or("Leader_id__exact", leaderId)
 		}
 	}
 
-	// Group Lead Id
-	for _, groupLeadId := range query.GroupLeadId {
-		if groupLeadId > 0 {
-			condGroupLeadId = condGroupLeadId.Or("Group_lead_id__exact", groupLeadId)
-		}
+	if condAccountId != nil && !condAccountId.IsEmpty() {
+		cond = condAccountId
 	}
 
 	if condGroupId != nil && !condGroupId.IsEmpty() {
-		cond = condGroupId
-	}
-
-	if condCreatedBy != nil && !condCreatedBy.IsEmpty() {
 		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condCreatedBy)
+			cond = cond.AndCond(condGroupId)
 		} else {
-			cond = condCreatedBy
+			cond = condGroupId
 		}
 	}
 
-	if condGroupLeadId != nil && !condGroupLeadId.IsEmpty() {
+	if condLeaderId != nil && !condLeaderId.IsEmpty() {
 		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condGroupLeadId)
+			cond = cond.AndCond(condLeaderId)
 		} else {
-			cond = condGroupLeadId
+			cond = condLeaderId
 		}
 	}
 
-	qsGroup = qsGroup.SetCond(cond)
+	qsUserAccount = qsUserAccount.SetCond(cond)
 
-	// Get groups
-	groupsCount, _ = qsGroup.Count()
-	_, err = qsGroup.All(&userGroups)
+	// Get accounts
+	accountsCount, _ = qsUserAccount.Count()
+	_, err = qsUserAccount.All(&userAccounts)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to get the groups.")
+		responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	groups.Populate(userGroups)
+	accounts.Populate(userAccounts)
 
-	if groupsCount > 0 {
-		groups.Total = groupsCount
-		e.Data["json"] = groups
+	if accountsCount > 0 {
+		accounts.Total = accountsCount
+		e.Data["json"] = accounts
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "ok"
-		responseStatus.Message = "No groups found with this criteria."
+		responseStatus.Message = "No accounts found with this criteria."
 		if err != nil {
 			responseStatus.Error = err.Error()
 		} else {
@@ -188,7 +188,7 @@ func (e *GroupCtrl) GetGroups() {
 	e.ServeJSON()
 }
 
-func (e *GroupCtrl) CreateGroup() {
+func (e *AccountCtrl) CreateAccount() {
 	var (
 		err         error
 		num         int64
@@ -241,7 +241,7 @@ func (e *GroupCtrl) CreateGroup() {
 		e.ServeJSON()
 	}
 
-	if user[0].Role != "Leader" && user[0].Role != "leader" {
+	if user[0].Role != "Leader" && user[0].Role != "leader" && user[0].Role != "group lead" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("You are not authorised to create group.")
@@ -250,8 +250,8 @@ func (e *GroupCtrl) CreateGroup() {
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
-	userGroup := new(modelGroups.Usergroup)
-	err = json.Unmarshal(inputJson, &userGroup)
+	userAccount := new(modelAccounts.Account)
+	err = json.Unmarshal(inputJson, &userAccount)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -261,9 +261,8 @@ func (e *GroupCtrl) CreateGroup() {
 		e.ServeJSON()
 	}
 
-	userGroup.Updated_by = user[0].Account_id
-	userGroup.Created_by = user[0].Account_id
-	id, err := o.Insert(&userGroup)
+	userAccount.Leader_id = user[0].Account_id
+	id, err := o.Insert(&userAccount)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -272,17 +271,17 @@ func (e *GroupCtrl) CreateGroup() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	userGroup.Group_id = int(id)
-	e.Data["json"] = &userGroup
+	userAccount.Account_id = int(id)
+	e.Data["json"] = &userAccount
 	e.ServeJSON()
 }
 
-func (e *GroupCtrl) UpdateGroup() {
+func (e *AccountCtrl) UpdateAccount() {
 	var (
 		err         error
 		num         int64
 		user        []*modelAccounts.Account
-		userGroups  []*modelGroups.Usergroup
+		userAccounts  []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -294,9 +293,9 @@ func (e *GroupCtrl) UpdateGroup() {
 	// Create query string for account table
 	qsAccount := o.QueryTable("account")
 
-	// Create query string for usergroup table
-	qsGroup := o.QueryTable("usergroup")
-	condGroupId := orm.NewCondition()
+	// Create query string for account table
+	qsUserAccount := o.QueryTable("account")
+	condAccountId := orm.NewCondition()
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
@@ -335,17 +334,17 @@ func (e *GroupCtrl) UpdateGroup() {
 		e.ServeJSON()
 	}
 
-	if user[0].Role != "Leader" && user[0].Role != "leader" {
+	if user[0].Role != "Leader" && user[0].Role != "leader" && user[0].Role != "group lead" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised to update any group.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised to update any account.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
-	userGroup := new(modelGroups.Usergroup)
-	err = json.Unmarshal(inputJson, &userGroup)
+	userAccount := new(modelAccounts.Account)
+	err = json.Unmarshal(inputJson, &userAccount)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -355,34 +354,34 @@ func (e *GroupCtrl) UpdateGroup() {
 		e.ServeJSON()
 	}
 
-	condGroupId = condGroupId.And("Group_id__exact", userGroup.Group_id)
-	qsGroup = qsGroup.SetCond(condGroupId)
-	num, err = qsGroup.All(&userGroups)
+	condAccountId = condAccountId.And("Account_id__exact", userAccount.Account_id)
+	qsUserAccount = qsUserAccount.SetCond(condAccountId)
+	num, err = qsUserAccount.All(&userAccounts)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to find the group.")
+		responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to find the account.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
 
 	if num > 0 {
-		if user[0].Account_id != userGroups[0].Created_by {
+		if user[0].Account_id != userAccounts[0].Leader_id {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not the owner of this group.")
+			responseStatus.Message = fmt.Sprintf("You are not the leader for this account.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to find the group.")
+		responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to find the account.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	num, err = o.Update(&userGroup, "Title", "Description")
+	num, err = o.Update(&userAccount, "Display_name", "Email", "Mobile_no", "Approved_districts", "Approved_acs", "Updated_on", "Role", "Image", "Group_id")
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -396,12 +395,12 @@ func (e *GroupCtrl) UpdateGroup() {
 	e.ServeJSON()
 }
 
-func (e *GroupCtrl) DeleteGroup() {
+func (e *AccountCtrl) DeleteAccount() {
 	var (
 		err         error
 		num         int64
 		user        []*modelAccounts.Account
-		userGroups  []*modelGroups.Usergroup
+		userAccounts  []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -413,9 +412,9 @@ func (e *GroupCtrl) DeleteGroup() {
 	// Create query string for account table
 	qsAccount := o.QueryTable("account")
 
-	// Create query string for usergroup table
-	qsGroup := o.QueryTable("usergroup")
-	condGroupId := orm.NewCondition()
+	// Create query string for account table
+	qsUserAccount := o.QueryTable("account")
+	condAccountId := orm.NewCondition()
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
@@ -454,17 +453,17 @@ func (e *GroupCtrl) DeleteGroup() {
 		e.ServeJSON()
 	}
 
-	if user[0].Role != "Leader" && user[0].Role != "leader" {
+	if user[0].Role != "Leader" && user[0].Role != "leader" && user[0].Role != "group lead" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised to delete any group.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised to delete any account.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
-	userGroup := new(modelGroups.Usergroup)
-	err = json.Unmarshal(inputJson, &userGroup)
+	userAccount := new(modelAccounts.Account)
+	err = json.Unmarshal(inputJson, &userAccount)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -474,37 +473,37 @@ func (e *GroupCtrl) DeleteGroup() {
 		e.ServeJSON()
 	}
 
-	if userGroup.Group_id != 0 {
-		condGroupId = condGroupId.And("Group_id__exact", userGroup.Group_id)
-		qsGroup = qsGroup.SetCond(condGroupId)
-		num, err = qsGroup.All(&userGroups)
+	if userAccount.Account_id != 0 {
+		condAccountId = condAccountId.And("Account_id__exact", userAccount.Account_id)
+		qsUserAccount = qsUserAccount.SetCond(condAccountId)
+		num, err = qsUserAccount.All(&userAccounts)
 		if err != nil {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to find the group.")
+			responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to find the account.")
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
 
 		if num > 0 {
-			if user[0].Account_id != userGroups[0].Created_by {
+			if user[0].Account_id != userAccounts[0].Leader_id {
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
-				responseStatus.Message = fmt.Sprintf("You are not the owner of this group.")
+				responseStatus.Message = fmt.Sprintf("You are not the leader for this account.")
 				e.Data["json"] = &responseStatus
 				e.ServeJSON()
 			}
 		} else {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to find the group.")
+			responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to find the account.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
 	}
 
-	num, err = o.Delete(&userGroup)
+	num, err = o.Delete(&userAccount)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"

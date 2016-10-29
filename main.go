@@ -9,6 +9,7 @@ import (
 	
 	modelGroups "github.com/Baligul/election/models/groups"
 	modelVoters "github.com/Baligul/election/models/voters"
+	modelAccounts "github.com/Baligul/election/models/accounts"
 	
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -17,7 +18,7 @@ import (
 func init() {
 	orm.RegisterDriver("postgres", orm.DRPostgres)
 	orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
-	orm.RegisterModel(new(modelVoters.Account), 
+	orm.RegisterModel(new(modelAccounts.Account), 
 					  new(modelVoters.Voter), 
 					  new(modelVoters.Voter_19), 
 					  new(modelVoters.Voter_20), 
@@ -28,7 +29,7 @@ func init() {
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "80"
 	}
 
 	beego.BConfig.Listen.HTTPPort, _ = strconv.Atoi(port)
