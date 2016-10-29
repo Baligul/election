@@ -6,11 +6,11 @@ import (
 
 	_ "github.com/Baligul/election/docs"
 	_ "github.com/Baligul/election/routers"
-	
+
+	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
 	modelVoters "github.com/Baligul/election/models/voters"
-	modelAccounts "github.com/Baligul/election/models/accounts"
-	
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
@@ -18,12 +18,12 @@ import (
 func init() {
 	orm.RegisterDriver("postgres", orm.DRPostgres)
 	orm.RegisterDataBase("default", "postgres", "user=member dbname=election sslmode=disable")
-	orm.RegisterModel(new(modelAccounts.Account), 
-					  new(modelVoters.Voter), 
-					  new(modelVoters.Voter_19), 
-					  new(modelVoters.Voter_20), 
-					  new(modelVoters.Voter_21),
-					  new(modelGroups.Usergroup))
+	orm.RegisterModel(new(modelAccounts.Account),
+		new(modelVoters.Voter),
+		new(modelVoters.Voter_19),
+		new(modelVoters.Voter_20),
+		new(modelVoters.Voter_21),
+		new(modelGroups.Usergroup))
 }
 
 func main() {

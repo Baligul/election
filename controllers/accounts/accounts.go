@@ -22,8 +22,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	modelVoters "github.com/Baligul/election/models/voters"
 	modelAccounts "github.com/Baligul/election/models/accounts"
+	modelVoters "github.com/Baligul/election/models/voters"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -37,7 +37,7 @@ type AccountCtrl struct {
 func (e *AccountCtrl) GetAccounts() {
 	var (
 		accountsCount int64
-		accounts	  modelAccounts.Accounts
+		accounts      modelAccounts.Accounts
 		userAccounts  []*modelAccounts.Account
 		err           error
 		num           int64
@@ -190,9 +190,9 @@ func (e *AccountCtrl) GetAccounts() {
 
 func (e *AccountCtrl) CreateAccount() {
 	var (
-		err         error
-		num         int64
-		user        []*modelAccounts.Account
+		err  error
+		num  int64
+		user []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -278,10 +278,10 @@ func (e *AccountCtrl) CreateAccount() {
 
 func (e *AccountCtrl) UpdateAccount() {
 	var (
-		err         error
-		num         int64
-		user        []*modelAccounts.Account
-		userAccounts  []*modelAccounts.Account
+		err          error
+		num          int64
+		user         []*modelAccounts.Account
+		userAccounts []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -397,10 +397,10 @@ func (e *AccountCtrl) UpdateAccount() {
 
 func (e *AccountCtrl) DeleteAccount() {
 	var (
-		err         error
-		num         int64
-		user        []*modelAccounts.Account
-		userAccounts  []*modelAccounts.Account
+		err          error
+		num          int64
+		user         []*modelAccounts.Account
+		userAccounts []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")

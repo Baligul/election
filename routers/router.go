@@ -9,8 +9,8 @@ package routers
 
 import (
 	"github.com/Baligul/election/controllers"
-	"github.com/Baligul/election/controllers/groups"
 	"github.com/Baligul/election/controllers/accounts"
+	"github.com/Baligul/election/controllers/groups"
 
 	"github.com/astaxie/beego"
 )

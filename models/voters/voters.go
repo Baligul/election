@@ -56,9 +56,9 @@ type Voter struct {
 	Religion_hindi        string `form:"religionhindi" json:"religion_hindi"`
 	Age                   int    `form:"age" json:"age"`
 	Vote                  int    `form:"vote" json:"vote"`
-    Email                 string `form:"email" json:"email"`
-    Mobile_no             int    `form:"mobile_no" json:"mobile_no"`
-    Image                 string `form:"image" json:"image"`
+	Email                 string `form:"email" json:"email"`
+	Mobile_no             int    `form:"mobile_no" json:"mobile_no"`
+	Image                 string `form:"image" json:"image"`
 }
 
 type Voters struct {
@@ -185,9 +185,9 @@ type Query struct {
 	ReligionHindi       []string `json:"religion_hindi"`
 	Age                 []int    `json:"age"`
 	Vote                []int    `json:"vote"`
-    Email               []string `json:"email"`
-    MobileNo            []int    `json:"mobile_no"`
-    Image               []string `json:"image"`
+	Email               []string `json:"email"`
+	MobileNo            []int    `json:"mobile_no"`
+	Image               []string `json:"image"`
 }
 
 /* Statistic
@@ -254,9 +254,9 @@ type UpdateVoter struct {
 	District string `json:"district"`
 	VoterID  []int  `json:"voter_id"`
 	Vote     int    `json:"vote"`
-    Email    string `json:"email"`
+	Email    string `json:"email"`
 	MobileNo int64  `json:"mobile_no"`
-    Image    string `json:"image"`
+	Image    string `json:"image"`
 }
 
 func NewResponseStatus() *ResponseStatus {

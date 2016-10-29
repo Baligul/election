@@ -22,9 +22,9 @@ import (
 	"encoding/json"
 	"fmt"
 
+	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
 	modelVoters "github.com/Baligul/election/models/voters"
-	modelAccounts "github.com/Baligul/election/models/accounts"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -38,7 +38,7 @@ type GroupCtrl struct {
 func (e *GroupCtrl) GetGroups() {
 	var (
 		groupsCount int64
-		groups		modelGroups.Groups
+		groups      modelGroups.Groups
 		userGroups  []*modelGroups.Usergroup
 		err         error
 		num         int64
@@ -190,9 +190,9 @@ func (e *GroupCtrl) GetGroups() {
 
 func (e *GroupCtrl) CreateGroup() {
 	var (
-		err         error
-		num         int64
-		user        []*modelAccounts.Account
+		err  error
+		num  int64
+		user []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -279,10 +279,10 @@ func (e *GroupCtrl) CreateGroup() {
 
 func (e *GroupCtrl) UpdateGroup() {
 	var (
-		err         error
-		num         int64
-		user        []*modelAccounts.Account
-		userGroups  []*modelGroups.Usergroup
+		err        error
+		num        int64
+		user       []*modelAccounts.Account
+		userGroups []*modelGroups.Usergroup
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -398,10 +398,10 @@ func (e *GroupCtrl) UpdateGroup() {
 
 func (e *GroupCtrl) DeleteGroup() {
 	var (
-		err         error
-		num         int64
-		user        []*modelAccounts.Account
-		userGroups  []*modelGroups.Usergroup
+		err        error
+		num        int64
+		user       []*modelAccounts.Account
+		userGroups []*modelGroups.Usergroup
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
