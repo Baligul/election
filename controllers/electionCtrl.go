@@ -60,8 +60,8 @@ import (
 	"strings"
 	"time"
 
-	modelVoters "github.com/Baligul/election/models/voters"
 	modelAccounts "github.com/Baligul/election/models/accounts"
+	modelVoters "github.com/Baligul/election/models/voters"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -3257,7 +3257,7 @@ func (e *ElectionController) UpdateVoter() {
 		qsMoradabad = qsMoradabad.SetCond(condVoterId)
 		if voter.Vote == 1 || voter.Vote == 0 {
 			updatedRows, err := qsMoradabad.Update(orm.Params{
-			"vote": voter.Vote,
+				"vote": voter.Vote,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3279,7 +3279,7 @@ func (e *ElectionController) UpdateVoter() {
 
 		if len(strings.TrimSpace(voter.Email)) > 0 {
 			updatedRows, err := qsMoradabad.Update(orm.Params{
-			"email": voter.Email,
+				"email": voter.Email,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3301,7 +3301,7 @@ func (e *ElectionController) UpdateVoter() {
 
 		if voter.MobileNo > 0 {
 			updatedRows, err := qsMoradabad.Update(orm.Params{
-			"mobile_no": voter.MobileNo,
+				"mobile_no": voter.MobileNo,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3331,7 +3331,7 @@ func (e *ElectionController) UpdateVoter() {
 		qsRampur = qsRampur.SetCond(condVoterId)
 		if voter.Vote == 1 || voter.Vote == 0 {
 			updatedRows, err := qsRampur.Update(orm.Params{
-			"vote": voter.Vote,
+				"vote": voter.Vote,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3353,7 +3353,7 @@ func (e *ElectionController) UpdateVoter() {
 
 		if len(strings.TrimSpace(voter.Email)) > 0 {
 			updatedRows, err := qsRampur.Update(orm.Params{
-			"email": voter.Email,
+				"email": voter.Email,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3375,7 +3375,7 @@ func (e *ElectionController) UpdateVoter() {
 
 		if voter.MobileNo > 0 {
 			updatedRows, err := qsRampur.Update(orm.Params{
-			"mobile_no": voter.MobileNo,
+				"mobile_no": voter.MobileNo,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3398,14 +3398,14 @@ func (e *ElectionController) UpdateVoter() {
 		responseStatus.Response = "ok"
 		responseStatus.Message = fmt.Sprintf("The voter data has been successfully updated.")
 		e.Data["json"] = &responseStatus
-		e.ServeJSON()	
+		e.ServeJSON()
 	}
 
 	if voter.District == "Bijnor" {
 		qsBijnor = qsBijnor.SetCond(condVoterId)
 		if voter.Vote == 1 || voter.Vote == 0 {
 			updatedRows, err := qsBijnor.Update(orm.Params{
-			"vote": voter.Vote,
+				"vote": voter.Vote,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3427,7 +3427,7 @@ func (e *ElectionController) UpdateVoter() {
 
 		if len(strings.TrimSpace(voter.Email)) > 0 {
 			updatedRows, err := qsBijnor.Update(orm.Params{
-			"email": voter.Email,
+				"email": voter.Email,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
@@ -3449,7 +3449,7 @@ func (e *ElectionController) UpdateVoter() {
 
 		if voter.MobileNo > 0 {
 			updatedRows, err := qsBijnor.Update(orm.Params{
-			"mobile_no": voter.MobileNo,
+				"mobile_no": voter.MobileNo,
 			})
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()

@@ -16,20 +16,20 @@ import "time"
 */
 
 type Usergroup struct {
-	Group_id        int       `form:"-" orm:"pk" json:"group_id"`
-    Title           string    `json:"title"`
-    Description     string    `json:"description"`
-    Group_lead_id   int       `json:"group_lead_id"`
-    Updated_by      int       `json:"updated_by"`
-    Created_by      int       `json:"created_by"`  
-    Updated_on      time.Time `json:"updated_on"`
-	Created_on      time.Time `json:"created_on"`
+	Group_id      int       `form:"-" orm:"pk" json:"group_id"`
+	Title         string    `json:"title"`
+	Description   string    `json:"description"`
+	Group_lead_id int       `json:"group_lead_id"`
+	Updated_by    int       `json:"updated_by"`
+	Created_by    int       `json:"created_by"`
+	Updated_on    time.Time `json:"updated_on"`
+	Created_on    time.Time `json:"created_on"`
 }
 
 type GroupQuery struct {
-	GroupId     []int     `json:"group_id"`
-    CreatedBy   []int     `json:"created_by"`
-    GroupLeadId []int     `json:"group_lead_id"`
+	GroupId     []int `json:"group_id"`
+	CreatedBy   []int `json:"created_by"`
+	GroupLeadId []int `json:"group_lead_id"`
 }
 
 /*GroupQuery
@@ -59,7 +59,7 @@ type GroupQuery struct {
             "description":"description goes here.",
             "group_lead_id":2,
             "updated_by":2,
-            "created_by":2,            
+            "created_by":2,
             "updated_on":"2014-05-16T08:28:06.801064-04:00",
             "created_on":"2014-05-16T08:28:06.801064-04:00"
         }

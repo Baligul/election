@@ -34,16 +34,16 @@ type Account struct {
 	Last_login         time.Time `json:"last_login"`
 	Updated_on         time.Time `json:"updated_on"`
 	Created_on         time.Time `json:"created_on"`
-    Role               string    `json:"role"`
-    Image              string    `json:"image"`
-    Group_id           int       `json:"group_id"`
-    Leader_id          int       `json:"leader_id"`
+	Role               string    `json:"role"`
+	Image              string    `json:"image"`
+	Group_id           int       `json:"group_id"`
+	Leader_id          int       `json:"leader_id"`
 }
 
 type AccountQuery struct {
-    AccountId   []int     `json:"account_id"`
-	GroupId     []int     `json:"group_id"`
-    LeaderId    []int     `json:"leader_id"`
+	AccountId []int `json:"account_id"`
+	GroupId   []int `json:"group_id"`
+	LeaderId  []int `json:"leader_id"`
 }
 
 /*AccountQuery
@@ -97,7 +97,7 @@ type AccountQuery struct {
 */
 
 type Accounts struct {
-	Total  int64       `json:"total"`
+	Total    int64     `json:"total"`
 	Accounts []Account `json:"accounts"`
 }
 
