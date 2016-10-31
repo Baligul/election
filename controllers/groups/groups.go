@@ -1,19 +1,19 @@
 /*
    GET GROUPS
    curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4]}, "group_lead_id":[1,2,4]}' http://localhost:80/api/groups
-   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://104.197.6.26:80/api/groups?mobile_no=9343352734&token=91e3b703fc84b455"
+   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://104.197.6.26:80/api/groups?mobile_no=9343352734&token=3964d6b3fb85f787"
 
    Update GROUP
    curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' http://localhost:80/api/group
-   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=91e3b703fc84b455"
+   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=3964d6b3fb85f787"
 
    Create GROUP
    curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' http://localhost:80/api/group
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=91e3b703fc84b455"
+   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=3964d6b3fb85f787"
 
    Delete GROUP
    curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' http://localhost:80/api/group
-   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=91e3b703fc84b455"
+   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=3964d6b3fb85f787"
 */
 
 package groups
@@ -21,6 +21,8 @@ package groups
 import (
 	"encoding/json"
 	"fmt"
+	"time"
+	"strings"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
@@ -267,7 +269,7 @@ func (e *GroupCtrl) CreateGroup() {
 
 	userGroup.Updated_by = user[0].Account_id
 	userGroup.Created_by = user[0].Account_id
-	id, err := o.Insert(&userGroup)
+	id, err := o.Insert(userGroup)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -283,10 +285,13 @@ func (e *GroupCtrl) CreateGroup() {
 
 func (e *GroupCtrl) UpdateGroup() {
 	var (
-		err        error
-		num        int64
-		user       []*modelAccounts.Account
-		userGroups []*modelGroups.Usergroup
+		err        	error
+		num        	int64
+		user       	[]*modelAccounts.Account
+		userGroups 	[]*modelGroups.Usergroup
+		title	   	string
+		description	string
+		groupLeadId	int64
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -386,7 +391,28 @@ func (e *GroupCtrl) UpdateGroup() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	num, err = o.Update(&userGroup, "Title", "Description")
+	if strings.TrimSpace(userGroup.Title) != "" {
+		title = strings.TrimSpace(userGroup.Title)
+	} else {
+		title = userGroups[0].Title
+	}
+	if strings.TrimSpace(userGroup.Description) != "" {
+		description = strings.TrimSpace(userGroup.Description)
+	} else {
+		description = userGroups[0].Description
+	}
+	if userGroup.Group_lead_id != 0 {
+		groupLeadId = userGroup.Group_lead_id
+	} else {
+		groupLeadId = userGroups[0].Group_lead_id
+	}
+	num, err = qsGroup.Update(orm.Params{
+		"Title": title,
+		"Description": description,
+		"Group_lead_id": groupLeadId,
+		"Updated_by": user[0].Account_id,
+		"Updated_on": time.Now().Unix(),
+	})
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -406,6 +432,7 @@ func (e *GroupCtrl) DeleteGroup() {
 		num        int64
 		user       []*modelAccounts.Account
 		userGroups []*modelGroups.Usergroup
+		totalNum   int64
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -507,17 +534,52 @@ func (e *GroupCtrl) DeleteGroup() {
 			e.ServeJSON()
 		}
 	}
+	totalNum = 0
+	if userGroup.Group_id != 0 {
+		num, err = o.QueryTable("usergroup").Filter("Group_id__exact", userGroup.Group_id).Delete()
+	}
 
-	num, err = o.Delete(&userGroup)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on group_id. Please contact electionubda.com team for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	} else {
+		totalNum = totalNum + num
 	}
 
-	e.Data["json"] = fmt.Sprintf("%d rows deleted.", num)
+	if userGroup.Created_by != 0 {
+		num, err = o.QueryTable("usergroup").Filter("Created_by__exact", userGroup.Created_by).Delete()
+	}
+
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on created_by. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	} else {
+		totalNum = totalNum + num
+	}
+
+	if userGroup.Group_lead_id != 0 {
+		num, err = o.QueryTable("usergroup").Filter("Group_lead_id__exact", userGroup.Group_lead_id).Delete()
+	}
+
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on group_lead_id. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	} else {
+		totalNum = totalNum + num
+	}
+
+	e.Data["json"] = fmt.Sprintf("%d rows deleted.", totalNum)
 	e.ServeJSON()
 }
