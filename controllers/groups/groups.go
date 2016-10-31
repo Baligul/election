@@ -291,7 +291,7 @@ func (e *GroupCtrl) UpdateGroup() {
 		userGroups 	[]*modelGroups.Usergroup
 		title	   	string
 		description	string
-		groupLeadId	int64
+		groupLeadId	int
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
