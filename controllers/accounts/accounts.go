@@ -30,6 +30,10 @@ import (
 	_ "github.com/lib/pq"
 )
 
+func init() {
+	orm.RegisterModel(new(modelAccounts.Account))
+}
+
 type AccountCtrl struct {
 	beego.Controller
 }

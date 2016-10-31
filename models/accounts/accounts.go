@@ -1,10 +1,6 @@
 package accounts
 
-import (
-	"github.com/astaxie/beego/orm"
-	"time"
-	//modelAccounts "github.com/Baligul/election/models/accounts"
-)
+import "time"
 
 /* account
 {
@@ -25,10 +21,6 @@ import (
     "leader_id":2
 }
 */
-
-func init() {
-	orm.RegisterModel(new(Account))
-}
 
 type Account struct {
 	Account_id         int       `orm:"pk" json:"account_id"`

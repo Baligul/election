@@ -31,6 +31,10 @@ import (
 	_ "github.com/lib/pq"
 )
 
+func init() {
+	orm.RegisterModel(new(modelGroups.Usergroup))
+}
+
 type GroupCtrl struct {
 	beego.Controller
 }

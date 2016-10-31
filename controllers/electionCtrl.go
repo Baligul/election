@@ -69,6 +69,12 @@ import (
 	_ "github.com/lib/pq"
 )
 
+func init() {
+	orm.RegisterModel(new(modelVoters.Voter_19),
+		new(modelVoters.Voter_20),
+		new(modelVoters.Voter_21))
+}
+
 type ElectionController struct {
 	beego.Controller
 }
