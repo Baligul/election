@@ -27,6 +27,7 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	_ "github.com/lib/pq"
 )
 
 type AccountCtrl struct {

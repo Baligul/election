@@ -1,6 +1,10 @@
 package groups
 
-import "time"
+import (
+	"github.com/astaxie/beego/orm"
+	"time"
+	//modelGroups "github.com/Baligul/election/models/groups"
+)
 
 /* user_group
 {
@@ -14,6 +18,10 @@ import "time"
     "created_on":"2014-05-16T08:28:06.801064-04:00"
 }
 */
+
+func init() {
+	orm.RegisterModel(new(Usergroup))
+}
 
 type Usergroup struct {
 	Group_id      int       `form:"-" orm:"pk" json:"group_id"`

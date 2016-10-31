@@ -1,6 +1,10 @@
 package accounts
 
-import "time"
+import (
+	"github.com/astaxie/beego/orm"
+	"time"
+	//modelAccounts "github.com/Baligul/election/models/accounts"
+)
 
 /* account
 {
@@ -22,6 +26,10 @@ import "time"
 }
 */
 
+func init() {
+	orm.RegisterModel(new(Account))
+}
+
 type Account struct {
 	Account_id         int       `orm:"pk" json:"account_id"`
 	Otp                int       `json:"otp"`
@@ -38,9 +46,9 @@ type Account struct {
 	Image              string    `json:"image"`
 	Group_id           int       `json:"group_id"`
 	Leader_id          int       `json:"leader_id"`
-    Age                int       `json:"age"`
-    Sex                string    `json:"sex"`
-    Religion           string    `json:"religion"`
+	Age                int       `json:"age"`
+	Sex                string    `json:"sex"`
+	Religion           string    `json:"religion"`
 }
 
 type AccountQuery struct {

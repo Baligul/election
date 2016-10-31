@@ -1,5 +1,9 @@
 package voters
 
+import "github.com/astaxie/beego/orm"
+
+//import modelVoters "github.com/Baligul/election/models/voters"
+
 /* Voters
 {
     total:1900234
@@ -33,6 +37,10 @@ package voters
     ]
 }
 */
+
+func init() {
+	orm.RegisterModel(new(Voter))
+}
 
 type Voter struct {
 	Voter_id              int    `form:"-" orm:"pk" json:"voter_id"`
