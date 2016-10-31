@@ -38,6 +38,9 @@ type Account struct {
 	Image              string    `json:"image"`
 	Group_id           int       `json:"group_id"`
 	Leader_id          int       `json:"leader_id"`
+    Age                int       `json:"age"`
+    Sex                string    `json:"sex"`
+    Religion           string    `json:"religion"`
 }
 
 type AccountQuery struct {

@@ -20,15 +20,16 @@ import "time"
 */
 
 type Task struct {
-	Task_id     int       `form:"-" orm:"pk" json:"task_id"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	Assigned_to int       `json:"assigned_to"`
-	Status      string    `json:"status"`
-	Updated_by  int       `json:"updated_by"`
-	Created_by  int       `json:"created_by"`
-	Updated_on  time.Time `json:"updated_on"`
-	Created_on  time.Time `json:"created_on"`
+	Task_id              int       `form:"-" orm:"pk" json:"task_id"`
+	Title                string    `json:"title"`
+	Description          string    `json:"description"`
+	Groups_assigned      string    `json:"groups_assigned"`
+    Accounts_assigned    string    `json:"tasks_assigned"`
+	Status               string    `json:"status"`
+	Updated_by           int       `json:"updated_by"`
+	Created_by           int       `json:"created_by"`
+	Updated_on           time.Time `json:"updated_on"`
+	Created_on           time.Time `json:"created_on"`
 }
 
 /* Tasks
