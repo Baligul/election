@@ -66,7 +66,6 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/craigmj/gototp"
-	_ "github.com/lib/pq"
 )
 
 type ElectionController struct {
