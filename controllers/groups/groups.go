@@ -270,13 +270,13 @@ func (e *GroupCtrl) CreateGroup() {
 
 	userGroup.Updated_by = user[0].Account_id
 	userGroup.Created_by = user[0].Account_id
-	if userGroup.Group_id == 0 {
-		groupId, _ = o.QueryTable("usergroup").Count()
-		groupId = groupId + 1
-		userGroup.Group_id = int(groupId)
-	}
+
+	groupId, _ = o.QueryTable("usergroup").Count()
+	groupId = groupId + 1
+	userGroup.Group_id = int(groupId)
+
 	id, err := o.Insert(userGroup)
-	if err != nil {
+	if err != nil && err.Error() != "no LastInsertId available" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
