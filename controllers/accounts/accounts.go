@@ -274,7 +274,7 @@ func (e *AccountCtrl) CreateAccount() {
 	accountId, _ = o.QueryTable("account").Count()
 	accountId = accountId + 1
 	userAccount.Account_id = int(accountId)
-	id, err := o.Insert(userAccount)
+	_, err = o.Insert(userAccount)
 	if err != nil && err.Error() != "no LastInsertId available" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"

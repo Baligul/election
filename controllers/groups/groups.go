@@ -275,7 +275,7 @@ func (e *GroupCtrl) CreateGroup() {
 	groupId = groupId + 1
 	userGroup.Group_id = int(groupId)
 
-	id, err := o.Insert(userGroup)
+	_, err = o.Insert(userGroup)
 	if err != nil && err.Error() != "no LastInsertId available" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
