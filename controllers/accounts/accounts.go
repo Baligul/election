@@ -283,7 +283,7 @@ func (e *AccountCtrl) CreateAccount() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	userAccount.Account_id = int(id)
+	userAccount.Account_id = int(accountId)
 	e.Data["json"] = &userAccount
 	e.ServeJSON()
 }
@@ -296,7 +296,7 @@ func (e *AccountCtrl) UpdateAccount() {
 		userAccounts []*modelAccounts.Account
 		displayName  string
 		email        string
-		mobNo     	 int64
+		mobNo        int64
 		role         string
 		image        string
 		groupId      int

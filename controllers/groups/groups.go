@@ -284,7 +284,7 @@ func (e *GroupCtrl) CreateGroup() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	userGroup.Group_id = int(id)
+	userGroup.Group_id = int(groupId)
 	e.Data["json"] = &userGroup
 	e.ServeJSON()
 }
