@@ -21,8 +21,8 @@ package groups
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 	"strings"
+	"time"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
@@ -196,9 +196,10 @@ func (e *GroupCtrl) GetGroups() {
 
 func (e *GroupCtrl) CreateGroup() {
 	var (
-		err  error
-		num  int64
-		user []*modelAccounts.Account
+		err     error
+		num     int64
+		user    []*modelAccounts.Account
+		groupId int64
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -269,6 +270,11 @@ func (e *GroupCtrl) CreateGroup() {
 
 	userGroup.Updated_by = user[0].Account_id
 	userGroup.Created_by = user[0].Account_id
+	if userGroup.Group_id == 0 {
+		groupId, _ = o.QueryTable("usergroup").Count()
+		groupId = groupId + 1
+		userGroup.Group_id = int(groupId)
+	}
 	id, err := o.Insert(userGroup)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
@@ -285,13 +291,13 @@ func (e *GroupCtrl) CreateGroup() {
 
 func (e *GroupCtrl) UpdateGroup() {
 	var (
-		err        	error
-		num        	int64
-		user       	[]*modelAccounts.Account
-		userGroups 	[]*modelGroups.Usergroup
-		title	   	string
-		description	string
-		groupLeadId	int
+		err         error
+		num         int64
+		user        []*modelAccounts.Account
+		userGroups  []*modelGroups.Usergroup
+		title       string
+		description string
+		groupLeadId int
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -394,12 +400,12 @@ func (e *GroupCtrl) UpdateGroup() {
 	if strings.TrimSpace(userGroup.Title) != "" {
 		title = strings.TrimSpace(userGroup.Title)
 	} else {
-		title = userGroups[0].Title
+		title = strings.TrimSpace(userGroups[0].Title)
 	}
 	if strings.TrimSpace(userGroup.Description) != "" {
 		description = strings.TrimSpace(userGroup.Description)
 	} else {
-		description = userGroups[0].Description
+		description = strings.TrimSpace(userGroups[0].Description)
 	}
 	if userGroup.Group_lead_id != 0 {
 		groupLeadId = userGroup.Group_lead_id
@@ -407,11 +413,11 @@ func (e *GroupCtrl) UpdateGroup() {
 		groupLeadId = userGroups[0].Group_lead_id
 	}
 	num, err = qsGroup.Update(orm.Params{
-		"Title": title,
-		"Description": description,
+		"Title":         title,
+		"Description":   description,
 		"Group_lead_id": groupLeadId,
-		"Updated_by": user[0].Account_id,
-		"Updated_on": time.Now().Unix(),
+		"Updated_by":    user[0].Account_id,
+		"Updated_on":    time.Now().Unix(),
 	})
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()

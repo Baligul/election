@@ -1,19 +1,19 @@
 /*
    GET ACCOUNTS
    curl -X POST -H "Content-Type: application/json" -d '{"account_id":[1,2,4], "group_id":[1,2,4], "leader_id":[1,2,4]}' http://localhost:80/api/accounts
-   curl -X POST -H "Content-Type: application/json" -d '{"account_id":[1,2,4], "group_id":[1,2,4], "leader_id":[1,2,4]}' "http://104.197.6.26:80/api/accounts?mobile_no=9343352734&token=91e3b703fc84b455"
+   curl -X POST -H "Content-Type: application/json" -d '{"account_id":[1,2,4], "group_id":[1,2,4], "leader_id":[1,2,4]}' "http://104.197.6.26:80/api/accounts?mobile_no=9343352734&token=3964d6b3fb85f787"
 
    Update ACCOUNT
    curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' http://localhost:80/api/account
-   curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' "http://104.197.6.26:80/api/account?mobile_no=9343352734&token=91e3b703fc84b455"
+   curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' "http://104.197.6.26:80/api/account?mobile_no=9343352734&token=3964d6b3fb85f787"
 
    Create ACCOUNT
    curl -X POST -H "Content-Type: application/json" -d '{"display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' http://localhost:80/api/account
-   curl -X POST -H "Content-Type: application/json" -d '{"display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' "http://104.197.6.26:80/api/account?mobile_no=9343352734&token=91e3b703fc84b455"
+   curl -X POST -H "Content-Type: application/json" -d '{"display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' "http://104.197.6.26:80/api/account?mobile_no=9343352734&token=3964d6b3fb85f787"
 
    Delete ACCOUNT
    curl -X DELETE -H "Content-Type: application/json" -d '{"account_id":1, "group_id":1, "leader_id":2}' http://localhost:80/api/account
-   curl -X DELETE -H "Content-Type: application/json" -d '{"account_id":1, "group_id":1, "leader_id":2}' "http://104.197.6.26:80/api/account?mobile_no=9343352734&token=91e3b703fc84b455"
+   curl -X DELETE -H "Content-Type: application/json" -d '{"account_id":1, "group_id":1, "leader_id":2}' "http://104.197.6.26:80/api/account?mobile_no=9343352734&token=3964d6b3fb85f787"
 */
 
 package accounts
@@ -21,6 +21,8 @@ package accounts
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
+	"time"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"
@@ -194,9 +196,10 @@ func (e *AccountCtrl) GetAccounts() {
 
 func (e *AccountCtrl) CreateAccount() {
 	var (
-		err  error
-		num  int64
-		user []*modelAccounts.Account
+		err       error
+		num       int64
+		user      []*modelAccounts.Account
+		accountId int64
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -268,7 +271,12 @@ func (e *AccountCtrl) CreateAccount() {
 	userAccount.Leader_id = user[0].Account_id
 	userAccount.Approved_districts = user[0].Approved_districts
 	userAccount.Approved_acs = user[0].Approved_acs
-	id, err := o.Insert(&userAccount)
+	if userAccount.Account_id == 0 {
+		accountId, _ = o.QueryTable("account").Count()
+		accountId = accountId + 1
+		userAccount.Account_id = int(accountId)
+	}
+	id, err := o.Insert(userAccount)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -288,6 +296,16 @@ func (e *AccountCtrl) UpdateAccount() {
 		num          int64
 		user         []*modelAccounts.Account
 		userAccounts []*modelAccounts.Account
+		displayName  string
+		email        string
+		mobNo     	 int64
+		role         string
+		image        string
+		groupId      int
+		leaderId     int
+		age          int
+		sex          string
+		religion     string
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -387,7 +405,69 @@ func (e *AccountCtrl) UpdateAccount() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	num, err = o.Update(&userAccount, "Display_name", "Email", "Mobile_no", "Approved_districts", "Approved_acs", "Updated_on", "Role", "Image", "Group_id")
+	if strings.TrimSpace(userAccount.Display_name) != "" {
+		displayName = strings.TrimSpace(userAccount.Display_name)
+	} else {
+		displayName = strings.TrimSpace(userAccounts[0].Display_name)
+	}
+	if strings.TrimSpace(userAccount.Email) != "" {
+		email = strings.TrimSpace(userAccount.Email)
+	} else {
+		email = userAccounts[0].Email
+	}
+	if userAccount.Mobile_no != 0 {
+		mobNo = userAccount.Mobile_no
+	} else {
+		mobNo = userAccounts[0].Mobile_no
+	}
+	if strings.TrimSpace(userAccount.Role) != "" {
+		role = strings.TrimSpace(userAccount.Role)
+	} else {
+		role = strings.TrimSpace(userAccounts[0].Role)
+	}
+	if strings.TrimSpace(userAccount.Image) != "" {
+		image = strings.TrimSpace(userAccount.Image)
+	} else {
+		image = userAccounts[0].Image
+	}
+	if userAccount.Group_id != 0 {
+		groupId = userAccount.Group_id
+	} else {
+		groupId = userAccounts[0].Group_id
+	}
+	if userAccount.Leader_id != 0 {
+		leaderId = userAccount.Leader_id
+	} else {
+		leaderId = userAccounts[0].Leader_id
+	}
+	if userAccount.Age != 0 {
+		age = userAccount.Age
+	} else {
+		age = userAccounts[0].Age
+	}
+	if strings.TrimSpace(userAccount.Sex) != "" {
+		sex = strings.TrimSpace(userAccount.Sex)
+	} else {
+		sex = userAccounts[0].Sex
+	}
+	if strings.TrimSpace(userAccount.Religion) != "" {
+		religion = strings.TrimSpace(userAccount.Religion)
+	} else {
+		religion = userAccounts[0].Religion
+	}
+	num, err = qsUserAccount.Update(orm.Params{
+		"Display_name": displayName,
+		"Email":        email,
+		"Mobile_no":    mobNo,
+		"Role":         role,
+		"Image":        image,
+		"Group_id":     groupId,
+		"Leader_id":    leaderId,
+		"Age":          age,
+		"Sex":          sex,
+		"Religion":     religion,
+		"Updated_on":   time.Now().Unix(),
+	})
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -407,6 +487,7 @@ func (e *AccountCtrl) DeleteAccount() {
 		num          int64
 		user         []*modelAccounts.Account
 		userAccounts []*modelAccounts.Account
+		totalNum     int64
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -508,17 +589,53 @@ func (e *AccountCtrl) DeleteAccount() {
 			e.ServeJSON()
 		}
 	}
+	totalNum = 0
 
-	num, err = o.Delete(&userAccount)
+	if userAccount.Account_id != 0 {
+		num, err = o.QueryTable("account").Filter("Account_id__exact", userAccount.Account_id).Delete()
+	}
+
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on account_id. Please contact electionubda.com team for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	} else {
+		totalNum = totalNum + num
 	}
 
-	e.Data["json"] = fmt.Sprintf("%d rows deleted.", num)
+	if userAccount.Group_id != 0 {
+		num, err = o.QueryTable("account").Filter("Group_id__exact", userAccount.Group_id).Delete()
+	}
+
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on group_id. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	} else {
+		totalNum = totalNum + num
+	}
+
+	if userAccount.Leader_id != 0 {
+		num, err = o.QueryTable("account").Filter("Leader_id__exact", userAccount.Leader_id).Delete()
+	}
+
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on leader_id. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	} else {
+		totalNum = totalNum + num
+	}
+
+	e.Data["json"] = fmt.Sprintf("%d rows deleted.", totalNum)
 	e.ServeJSON()
 }
