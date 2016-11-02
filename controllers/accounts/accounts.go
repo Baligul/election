@@ -199,7 +199,7 @@ func (e *AccountCtrl) CreateAccount() {
 		err       error
 		num       int64
 		user      []*modelAccounts.Account
-		accountId int64
+		//accountId int64
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -275,7 +275,8 @@ func (e *AccountCtrl) CreateAccount() {
 	//accountId = accountId + 1
 	//userAccount.Account_id = int(accountId)
 	_, err = o.Insert(userAccount)
-	if err != nil && err.Error() != "no LastInsertId available" {
+	//if err != nil && err.Error() != "no LastInsertId available" {
+	if err != nil {		
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -283,7 +284,7 @@ func (e *AccountCtrl) CreateAccount() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	userAccount.Account_id = int(accountId)
+	//userAccount.Account_id = int(accountId)
 	e.Data["json"] = &userAccount
 	e.ServeJSON()
 }

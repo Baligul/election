@@ -276,7 +276,8 @@ func (e *GroupCtrl) CreateGroup() {
 	//userGroup.Group_id = int(groupId)
 
 	_, err = o.Insert(userGroup)
-	if err != nil && err.Error() != "no LastInsertId available" {
+	//if err != nil && err.Error() != "no LastInsertId available" {
+	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance. GroupId is %d", userGroup.Group_id)

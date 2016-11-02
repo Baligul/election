@@ -16,14 +16,14 @@ import "time"
 */
 
 type Usergroup struct {
-	Group_id      int       `form:"-" orm:"pk" json:"group_id,omitempty"`
+	Group_id      int       `form:"-" orm:"auto" json:"group_id,omitempty"`
 	Title         string    `json:"title,omitempty"`
 	Description   string    `json:"description,omitempty"`
 	Group_lead_id int       `json:"group_lead_id,omitempty"`
 	Updated_by    int       `json:"updated_by,omitempty"`
 	Created_by    int       `json:"created_by,omitempty"`
-	Updated_on    time.Time `json:"updated_on,omitempty"`
-	Created_on    time.Time `json:"created_on,omitempty"`
+	Updated_on    time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
+	Created_on    time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
 }
 
 type GroupQuery struct {

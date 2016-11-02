@@ -1,5 +1,7 @@
 package voters
 
+import "time"
+
 type Voter_21 struct {
 	Voter_id              int    `form:"-" orm:"pk" json:"voter_id,omitempty"`
 	Ac_number             int    `form:"acnumber" json:"ac_number,omitempty"`
@@ -25,6 +27,7 @@ type Voter_21 struct {
 	Email                 string `form:"email" json:"email,omitempty"`
 	Mobile_no             int    `form:"mobile_no" json:"mobile_no,omitempty"`
 	Image                 string `form:"image" json:"image,omitempty"`
+	Updated_on         	  time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
 }
 
 func (voter_21 *Voter_21) transpose() Voter {

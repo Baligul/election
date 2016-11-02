@@ -23,7 +23,7 @@ import "time"
 */
 
 type Account struct {
-	Account_id         int       `orm:"pk" json:"account_id,omitempty"`
+	Account_id         int       `orm:"auto" json:"account_id,omitempty"`
 	Otp                int       `json:"otp,omitempty"`
 	Display_name       string    `json:"display_name,omitempty"`
 	Email              string    `json:"email,omitempty"`
@@ -32,8 +32,8 @@ type Account struct {
 	Approved_districts string    `json:"approved_districts,omitempty"`
 	Approved_acs       string    `json:"approved_acs,omitempty"`
 	Last_login         time.Time `json:"last_login,omitempty"`
-	Updated_on         time.Time `json:"updated_on,omitempty"`
-	Created_on         time.Time `json:"created_on,omitempty"`
+	Updated_on         time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
+	Created_on         time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
 	Role               string    `json:"role,omitempty"`
 	Image              string    `json:"image,omitempty"`
 	Group_id           int       `json:"group_id,omitempty"`
