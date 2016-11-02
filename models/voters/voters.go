@@ -2,8 +2,8 @@ package voters
 
 /* Voters
 {
-    total:1900234
-    [
+    "total":1900234,
+    "voters":[
         {
             "voter_id":2,
             "ac_number":3,
@@ -24,11 +24,12 @@ package voters
             "section_name_hindi":"सिविल लाइन्स",
             "religion_english":"Muslim",
             "religion_hindi":"मुसलमान",
-            "age":34
-            "vote":0
-            "email":"abcd_example@test.com"
-            "mobile_no":9898272676
-            "image":"asdshku32%%7%ahssa*71212"
+            "age":34,
+            "vote":0,
+            "email":"abcd_example@test.com",
+            "mobile_no":9898272676,
+            "image":"asdshku32%%7%ahssa*71212",
+            "updated_on":""
         }
     ]
 }
