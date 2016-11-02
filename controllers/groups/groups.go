@@ -279,7 +279,7 @@ func (e *GroupCtrl) CreateGroup() {
 	if err != nil && err.Error() != "no LastInsertId available" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance. GroupId is %d", userGroup.group_id)
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance. GroupId is %d", userGroup.Group_id)
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
