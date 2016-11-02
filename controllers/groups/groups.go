@@ -1,19 +1,19 @@
 /*
    GET GROUPS
    curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4]}, "group_lead_id":[1,2,4]}' http://104.197.6.26:8080/api/groups
-   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://104.197.6.26:8080/api/groups?mobile_no=9343352734&token=3964d6b3fb85f787"
+   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://104.197.6.26:8080/api/groups?mobile_no=9343352734&token=cc5b86572d1ad660"
 
    Update GROUP
    curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' http://104.197.6.26:8080/api/group
-   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=3964d6b3fb85f787"
+   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=cc5b86572d1ad660"
 
    Create GROUP
    curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' http://104.197.6.26:8080/api/group
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=3964d6b3fb85f787"
+   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=cc5b86572d1ad660"
 
    Delete GROUP
    curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' http://104.197.6.26:8080/api/group
-   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=3964d6b3fb85f787"
+   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=cc5b86572d1ad660"
 */
 
 package groups
@@ -22,7 +22,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	"time"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
@@ -164,7 +163,7 @@ func (e *GroupCtrl) GetGroups() {
 
 	// Get groups
 	groupsCount, _ = qsGroup.Count()
-	_, err = qsGroup.All(&userGroups)
+	_, err = qsGroup.Filter("Created_by__exact", user[0].Account_id).All(&userGroups)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -410,7 +409,6 @@ func (e *GroupCtrl) UpdateGroup() {
 		"Description":   description,
 		"Group_lead_id": groupLeadId,
 		"Updated_by":    user[0].Account_id,
-		"Updated_on":    time.Now().Unix(),
 	})
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()

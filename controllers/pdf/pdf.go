@@ -1,6 +1,6 @@
 /*
    Create and Send Pdf
-   curl -X POST -H "Content-Type: application/json" -d '{"total":1900234,"voters":[{"voter_id":2,"ac_number":3,"part_number":5,"section_number":34,"serial_number_in_part":23,"name_english":"baligul hasan","name_hindi":"बलिग","relation_name_english":"Hasan","relation_name_hindi":"हसन","gender":"M","id_card_number":"SJKJFF132JH","district_name_hindi":"मुरादाबाद","district_name_english":"Moradabad","ac_name_english":"Moradabad Urban","ac_name_hindi":"मुरादाबाद नगर","section_name_english":"Civil Lines","section_name_hindi":"सिविल लाइन्स","religion_english":"Muslim","religion_hindi":"मुसलमान","age":34,"vote":0,"email":"abcd_example@test.com","mobile_no":9898272676,"image":"asdshku32%%7%ahssa*71212","updated_on":""}]}' "http://104.197.6.26:8080/api/pdf?mobile_no=9343352734&token=3964d6b3fb85f787"
+   curl -X POST -H "Content-Type: application/json" -d '{"total":1900234,"voters":[{"voter_id":2,"ac_number":3,"part_number":5,"section_number":34,"serial_number_in_part":23,"name_english":"baligul hasan","name_hindi":"बलिग","relation_name_english":"Hasan","relation_name_hindi":"हसन","gender":"M","id_card_number":"SJKJFF132JH","district_name_hindi":"मुरादाबाद","district_name_english":"Moradabad","ac_name_english":"Moradabad Urban","ac_name_hindi":"मुरादाबाद नगर","section_name_english":"Civil Lines","section_name_hindi":"सिविल लाइन्स","religion_english":"Muslim","religion_hindi":"मुसलमान","age":34,"vote":0,"email":"abcd_example@test.com","mobile_no":9898272676,"image":"asdshku32%%7%ahssa*71212","updated_on":""}]}' "http://104.197.6.26:8080/api/pdf?mobile_no=9343352734&token=cc5b86572d1ad660"
 */
 
 package pdf
@@ -137,6 +137,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		}
 		pdf.CellFormat(wSum, 0, "", "T", 0, "", false, 0, "")
 	}
+	pdf.SetFont("Arial", "", 14)
 	fancyTable()
 	fileName := "tables"
 	err = pdf.OutputFileAndClose(fileName)
