@@ -1,19 +1,19 @@
 /*
    GET GROUPS
-   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4]}, "group_lead_id":[1,2,4]}' http://localhost:80/api/groups
-   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://104.197.6.26:80/api/groups?mobile_no=9343352734&token=3964d6b3fb85f787"
+   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4]}, "group_lead_id":[1,2,4]}' http://localhost:8080/api/groups
+   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://104.197.6.26:8080/api/groups?mobile_no=9343352734&token=3964d6b3fb85f787"
 
    Update GROUP
-   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' http://localhost:80/api/group
-   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=3964d6b3fb85f787"
+   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' http://localhost:8080/api/group
+   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=3964d6b3fb85f787"
 
    Create GROUP
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' http://localhost:80/api/group
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=3964d6b3fb85f787"
+   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' http://localhost:8080/api/group
+   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=3964d6b3fb85f787"
 
    Delete GROUP
-   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' http://localhost:80/api/group
-   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=3964d6b3fb85f787"
+   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' http://localhost:8080/api/group
+   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=3964d6b3fb85f787"
 */
 
 package groups
@@ -271,20 +271,20 @@ func (e *GroupCtrl) CreateGroup() {
 	userGroup.Updated_by = user[0].Account_id
 	userGroup.Created_by = user[0].Account_id
 
-	groupId, _ = o.QueryTable("usergroup").Count()
-	groupId = groupId + 1
-	userGroup.Group_id = int(groupId)
+	//groupId, _ = o.QueryTable("usergroup").Count()
+	//groupId = groupId + 1
+	//userGroup.Group_id = int(groupId)
 
 	_, err = o.Insert(userGroup)
 	if err != nil && err.Error() != "no LastInsertId available" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance. GroupId is %d", userGroup.group_id)
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	userGroup.Group_id = int(groupId)
+	//userGroup.Group_id = int(groupId)
 	e.Data["json"] = &userGroup
 	e.ServeJSON()
 }
