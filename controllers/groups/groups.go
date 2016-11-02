@@ -199,7 +199,7 @@ func (e *GroupCtrl) CreateGroup() {
 		err     error
 		num     int64
 		user    []*modelAccounts.Account
-		groupId int64
+		//groupId int64
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
