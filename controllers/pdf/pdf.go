@@ -140,6 +140,20 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 	fancyTable()
 	fileName := "tables"
 	err = pdf.OutputFileAndClose(fileName)
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	responseStatus := modelVoters.NewResponseStatus()
+	responseStatus.Response = "ok"
+	responseStatus.Message = fmt.Sprintf("The file has been sent Successfully.")
+	e.Data["json"] = &responseStatus
+	e.ServeJSON()
 	//example.Summary(err, fileName)
 	// Output:
 	// Successfully generated pdf/Fpdf_CellFormat_tables.pdf
