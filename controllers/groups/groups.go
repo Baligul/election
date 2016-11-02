@@ -196,10 +196,9 @@ func (e *GroupCtrl) GetGroups() {
 
 func (e *GroupCtrl) CreateGroup() {
 	var (
-		err     error
-		num     int64
-		user    []*modelAccounts.Account
-		//groupId int64
+		err  error
+		num  int64
+		user []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -270,22 +269,15 @@ func (e *GroupCtrl) CreateGroup() {
 
 	userGroup.Updated_by = user[0].Account_id
 	userGroup.Created_by = user[0].Account_id
-
-	//groupId, _ = o.QueryTable("usergroup").Count()
-	//groupId = groupId + 1
-	//userGroup.Group_id = int(groupId)
-
 	_, err = o.Insert(userGroup)
-	//if err != nil && err.Error() != "no LastInsertId available" {
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance. GroupId is %d", userGroup.Group_id)
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	//userGroup.Group_id = int(groupId)
 	e.Data["json"] = &userGroup
 	e.ServeJSON()
 }
