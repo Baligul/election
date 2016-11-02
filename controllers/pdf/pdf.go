@@ -103,8 +103,22 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 	// PDF creation code start here
 	pdf := gofpdf.New("L", "mm", "A4", "")
 	header := []string{"h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10", "h11", "h12", "h13", "h14", "h15"}
+	// Simple table
+	basicTable := func() {
+		for _, str := range header {
+			pdf.CellFormat(40, 7, str, "1", 0, "", false, 0, "")
+		}
+		pdf.Ln(-1)
+		for _, voter := range voters.Voters {
+			pdf.CellFormat(40, 6, string(voter.Serial_number_in_part), "1", 0, "", false, 0, "")
+			pdf.CellFormat(40, 6, string(voter.Part_number), "1", 0, "", false, 0, "")
+			pdf.CellFormat(40, 6, string(voter.Part_number), "1", 0, "", false, 0, "")
+			pdf.CellFormat(40, 6, voter.Name_english+"("+voter.Name_hindi+")", "1", 0, "", false, 0, "")
+			pdf.Ln(-1)
+		}
+	}
 
-	// Colored table
+	/*// Colored table
 	fancyTable := func() {
 		// Colors, line width and bold font
 		pdf.SetFillColor(255, 0, 0)
@@ -136,10 +150,11 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 			fill = !fill
 		}
 		pdf.CellFormat(wSum, 0, "", "T", 0, "", false, 0, "")
-	}
+	}*/
 	pdf.SetFont("Arial", "", 14)
-	fancyTable()
-	fileName := "tables"
+	//fancyTable()
+	basicTable()
+	fileName := "tables.pdf"
 	err = pdf.OutputFileAndClose(fileName)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
