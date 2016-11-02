@@ -16,20 +16,20 @@ import "time"
 */
 
 type Usergroup struct {
-	Group_id      int       `form:"-" orm:"pk" json:"group_id"`
-	Title         string    `json:"title"`
-	Description   string    `json:"description"`
-	Group_lead_id int       `json:"group_lead_id"`
-	Updated_by    int       `json:"updated_by"`
-	Created_by    int       `json:"created_by"`
-	Updated_on    time.Time `json:"updated_on"`
-	Created_on    time.Time `json:"created_on"`
+	Group_id      int       `form:"-" orm:"pk" json:"group_id,omitempty"`
+	Title         string    `json:"title,omitempty"`
+	Description   string    `json:"description,omitempty"`
+	Group_lead_id int       `json:"group_lead_id,omitempty"`
+	Updated_by    int       `json:"updated_by,omitempty"`
+	Created_by    int       `json:"created_by,omitempty"`
+	Updated_on    time.Time `json:"updated_on,omitempty"`
+	Created_on    time.Time `json:"created_on,omitempty"`
 }
 
 type GroupQuery struct {
-	GroupId     []int `json:"group_id"`
-	CreatedBy   []int `json:"created_by"`
-	GroupLeadId []int `json:"group_lead_id"`
+	GroupId     []int `json:"group_id,omitempty"`
+	CreatedBy   []int `json:"created_by,omitempty"`
+	GroupLeadId []int `json:"group_lead_id,omitempty"`
 }
 
 /*GroupQuery
@@ -68,8 +68,8 @@ type GroupQuery struct {
 */
 
 type Groups struct {
-	Total  int64       `json:"total"`
-	Groups []Usergroup `json:"groups"`
+	Total  int64       `json:"total,omitempty"`
+	Groups []Usergroup `json:"groups,omitempty"`
 }
 
 func (groups *Groups) Populate(usergroups []*Usergroup) {

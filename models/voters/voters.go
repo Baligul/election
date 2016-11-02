@@ -35,35 +35,35 @@ package voters
 */
 
 type Voter struct {
-	Voter_id              int    `form:"-" orm:"pk" json:"voter_id"`
-	Ac_number             int    `form:"acnumber" json:"ac_number"`
-	Part_number           int    `form:"partnumber" json:"part_number"`
-	Section_number        int    `form:"sectionnumber" json:"section_number"`
-	Serial_number_in_part int    `form:"seialnumberinpart" json:"serial_number_in_part"`
-	Name_english          string `form:"nameenglish" json:"name_english"`
-	Name_hindi            string `form:"namehindi" json:"name_hindi"`
-	Relation_name_english string `form:"relationnameenglish" json:"relation_name_english"`
-	Relation_name_hindi   string `form:"relationnamehindi" json:"relation_name_hindi"`
-	Gender                string `form:"gender" json:"gender"`
-	Id_card_number        string `form:"idcardnumber" json:"id_card_number"`
-	District_name_hindi   string `form:"districtnamehindi" json:"district_name_hindi"`
-	District_name_english string `form:"districtnameenglish" json:"district_name_english"`
-	Ac_name_english       string `form:"acnameenglish" json:"ac_name_english"`
-	Ac_name_hindi         string `form:"acnamehindi" json:"ac_name_hindi"`
-	Section_name_english  string `form:"sectionnameenglish" json:"section_name_english"`
-	Section_name_hindi    string `form:"sectionnamehindi" json:"section_name_hindi"`
-	Religion_english      string `form:"religionenglish" json:"religion_english"`
-	Religion_hindi        string `form:"religionhindi" json:"religion_hindi"`
-	Age                   int    `form:"age" json:"age"`
-	Vote                  int    `form:"vote" json:"vote"`
-	Email                 string `form:"email" json:"email"`
-	Mobile_no             int    `form:"mobile_no" json:"mobile_no"`
-	Image                 string `form:"image" json:"image"`
+	Voter_id              int    `form:"-" orm:"pk" json:"voter_id,omitempty"`
+	Ac_number             int    `form:"acnumber" json:"ac_number,omitempty"`
+	Part_number           int    `form:"partnumber" json:"part_number,omitempty"`
+	Section_number        int    `form:"sectionnumber" json:"section_number,omitempty"`
+	Serial_number_in_part int    `form:"seialnumberinpart" json:"serial_number_in_part,omitempty"`
+	Name_english          string `form:"nameenglish" json:"name_english,omitempty"`
+	Name_hindi            string `form:"namehindi" json:"name_hindi,omitempty"`
+	Relation_name_english string `form:"relationnameenglish" json:"relation_name_english,omitempty"`
+	Relation_name_hindi   string `form:"relationnamehindi" json:"relation_name_hindi,omitempty"`
+	Gender                string `form:"gender" json:"gender,omitempty"`
+	Id_card_number        string `form:"idcardnumber" json:"id_card_number,omitempty"`
+	District_name_hindi   string `form:"districtnamehindi" json:"district_name_hindi,omitempty"`
+	District_name_english string `form:"districtnameenglish" json:"district_name_english,omitempty"`
+	Ac_name_english       string `form:"acnameenglish" json:"ac_name_english,omitempty"`
+	Ac_name_hindi         string `form:"acnamehindi" json:"ac_name_hindi,omitempty"`
+	Section_name_english  string `form:"sectionnameenglish" json:"section_name_english,omitempty"`
+	Section_name_hindi    string `form:"sectionnamehindi" json:"section_name_hindi,omitempty"`
+	Religion_english      string `form:"religionenglish" json:"religion_english,omitempty"`
+	Religion_hindi        string `form:"religionhindi" json:"religion_hindi,omitempty"`
+	Age                   int    `form:"age" json:"age,omitempty"`
+	Vote                  int    `form:"vote" json:"vote,omitempty"`
+	Email                 string `form:"email" json:"email,omitempty"`
+	Mobile_no             int    `form:"mobile_no" json:"mobile_no,omitempty"`
+	Image                 string `form:"image" json:"image,omitempty"`
 }
 
 type Voters struct {
-	Total  int64   `json:"total"`
-	Voters []Voter `json:"voters"`
+	Total  int64   `json:"total,omitempty"`
+	Voters []Voter `json:"voters,omitempty"`
 }
 
 // Queries
@@ -127,8 +127,8 @@ type Voters struct {
 }*/
 
 type Queries struct {
-	Query Query `json:"query"`
-	Scope Query `json:"scope"`
+	Query Query `json:"query,omitempty"`
+	Scope Query `json:"scope,omitempty"`
 }
 
 // Query
@@ -162,32 +162,32 @@ type Queries struct {
 }*/
 
 type Query struct {
-	StateNumber         []int    `json:"state_number"`
-	DistrictNumber      []int    `json:"district_number"`
-	VoterID             []int    `json:"voter_id"`
-	AcNumber            []int    `json:"ac_number"`
-	PartNumber          []int    `json:"part_number"`
-	SectionNumber       []int    `json:"section_number"`
-	SerialNumberInPart  []int    `json:"serial_number_in_part"`
-	NameEnglish         []string `json:"name_english"`
-	NameHindi           []string `json:"name_hindi"`
-	RelationNameEnglish []string `json:"relation_name_english"`
-	RelationNameHindi   []string `json:"relation_name_hindi"`
-	Gender              []string `json:"gender"`
-	IDCardNumber        []string `json:"id_card_number"`
-	DistrictNameHindi   []string `json:"district_name_hindi"`
-	DistrictNameEnglish []string `json:"district_name_english"`
-	AcNameEnglish       []string `json:"ac_name_english"`
-	AcNameHindi         []string `json:"ac_name_hindi"`
-	SectionNameEnglish  []string `json:"section_name_english"`
-	SectionNameHindi    []string `json:"section_name_hindi"`
-	ReligionEnglish     []string `json:"religion_english"`
-	ReligionHindi       []string `json:"religion_hindi"`
-	Age                 []int    `json:"age"`
-	Vote                []int    `json:"vote"`
-	Email               []string `json:"email"`
-	MobileNo            []int    `json:"mobile_no"`
-	Image               []string `json:"image"`
+	StateNumber         []int    `json:"state_number,omitempty"`
+	DistrictNumber      []int    `json:"district_number,omitempty"`
+	VoterID             []int    `json:"voter_id,omitempty"`
+	AcNumber            []int    `json:"ac_number,omitempty"`
+	PartNumber          []int    `json:"part_number,omitempty"`
+	SectionNumber       []int    `json:"section_number,omitempty"`
+	SerialNumberInPart  []int    `json:"serial_number_in_part,omitempty"`
+	NameEnglish         []string `json:"name_english,omitempty"`
+	NameHindi           []string `json:"name_hindi,omitempty"`
+	RelationNameEnglish []string `json:"relation_name_english,omitempty"`
+	RelationNameHindi   []string `json:"relation_name_hindi,omitempty"`
+	Gender              []string `json:"gender,omitempty"`
+	IDCardNumber        []string `json:"id_card_number,omitempty"`
+	DistrictNameHindi   []string `json:"district_name_hindi,omitempty"`
+	DistrictNameEnglish []string `json:"district_name_english,omitempty"`
+	AcNameEnglish       []string `json:"ac_name_english,omitempty"`
+	AcNameHindi         []string `json:"ac_name_hindi,omitempty"`
+	SectionNameEnglish  []string `json:"section_name_english,omitempty"`
+	SectionNameHindi    []string `json:"section_name_hindi,omitempty"`
+	ReligionEnglish     []string `json:"religion_english,omitempty"`
+	ReligionHindi       []string `json:"religion_hindi,omitempty"`
+	Age                 []int    `json:"age,omitempty"`
+	Vote                []int    `json:"vote,omitempty"`
+	Email               []string `json:"email,omitempty"`
+	MobileNo            []int    `json:"mobile_no,omitempty"`
+	Image               []string `json:"image,omitempty"`
 }
 
 /* Statistic
@@ -213,50 +213,50 @@ type Query struct {
 */
 
 type Statistic struct {
-	Total         int64   `json:"total"`
-	Muslim        int64   `json:"muslim"`
-	Others        int64   `json:"other"`
-	Male          int64   `json:"male"`
-	Female        int64   `json:"female"`
-	MuslimMale    int64   `json:"muslim_male"`
-	MuslimFemale  int64   `json:"muslim_female"`
-	OthersMale    int64   `json:"other_male"`
-	OthersFemale  int64   `json:"other_female"`
-	MuslimP       float64 `json:"muslim_p"`
-	OthersP       float64 `json:"other_p"`
-	MaleP         float64 `json:"male_p"`
-	FemaleP       float64 `json:"female_p"`
-	MuslimMaleP   float64 `json:"muslim_male_p"`
-	MuslimFemaleP float64 `json:"muslim_female_p"`
-	OthersMaleP   float64 `json:"other_male_p"`
-	OthersFemaleP float64 `json:"other_female_p"`
+	Total         int64   `json:"total,omitempty"`
+	Muslim        int64   `json:"muslim,omitempty"`
+	Others        int64   `json:"other,omitempty"`
+	Male          int64   `json:"male,omitempty"`
+	Female        int64   `json:"female,omitempty"`
+	MuslimMale    int64   `json:"muslim_male,omitempty"`
+	MuslimFemale  int64   `json:"muslim_female,omitempty"`
+	OthersMale    int64   `json:"other_male,omitempty"`
+	OthersFemale  int64   `json:"other_female,omitempty"`
+	MuslimP       float64 `json:"muslim_p,omitempty"`
+	OthersP       float64 `json:"other_p,omitempty"`
+	MaleP         float64 `json:"male_p,omitempty"`
+	FemaleP       float64 `json:"female_p,omitempty"`
+	MuslimMaleP   float64 `json:"muslim_male_p,omitempty"`
+	MuslimFemaleP float64 `json:"muslim_female_p,omitempty"`
+	OthersMaleP   float64 `json:"other_male_p,omitempty"`
+	OthersFemaleP float64 `json:"other_female_p,omitempty"`
 }
 
 type Statistics struct {
-	Total  int64     `json:"total"`
-	Result int64     `json:"result"`
-	Query  Statistic `json:"query"`
-	Scope  Statistic `json:"scope"`
+	Total  int64     `json:"total,omitempty"`
+	Result int64     `json:"result,omitempty"`
+	Query  Statistic `json:"query,omitempty"`
+	Scope  Statistic `json:"scope,omitempty"`
 }
 
 type ResponseStatus struct {
-	Response string `json:"response"`
-	Message  string `json:"message"`
-	Error    string `json:"error"`
+	Response string `json:"response,omitempty"`
+	Message  string `json:"message,omitempty"`
+	Error    string `json:"error,omitempty"`
 }
 
 type List struct {
-	Districts []string `json:"districts"`
-	Acs       []string `json:"acs"`
+	Districts []string `json:"districts,omitempty"`
+	Acs       []string `json:"acs,omitempty"`
 }
 
 type UpdateVoter struct {
-	District string `json:"district"`
-	VoterID  []int  `json:"voter_id"`
-	Vote     int    `json:"vote"`
-	Email    string `json:"email"`
-	MobileNo int64  `json:"mobile_no"`
-	Image    string `json:"image"`
+	District string `json:"district,omitempty"`
+	VoterID  []int  `json:"voter_id,omitempty"`
+	Vote     int    `json:"vote,omitempty"`
+	Email    string `json:"email,omitempty"`
+	MobileNo int64  `json:"mobile_no,omitempty"`
+	Image    string `json:"image,omitempty"`
 }
 
 func NewResponseStatus() *ResponseStatus {
@@ -286,10 +286,10 @@ func GetTableName(districtName string) string {
 }
 
 type ReadJson struct {
-	District    string `json:"district"`
-	AcNum       int    `json:"ac_num"`
-	AcName      string `json:"ac_name"`
-	SectionName string `json:"section_name"`
+	District    string `json:"district,omitempty"`
+	AcNum       int    `json:"ac_num,omitempty"`
+	AcName      string `json:"ac_name,omitempty"`
+	SectionName string `json:"section_name,omitempty"`
 }
 
 type ReadJsons struct {

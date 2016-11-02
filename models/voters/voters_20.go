@@ -1,30 +1,30 @@
 package voters
 
 type Voter_20 struct {
-	Voter_id              int    `form:"-" orm:"pk" json:"voter_id"`
-	Ac_number             int    `form:"acnumber" json:"ac_number"`
-	Part_number           int    `form:"partnumber" json:"part_number"`
-	Section_number        int    `form:"sectionnumber" json:"section_number"`
-	Serial_number_in_part int    `form:"seialnumberinpart json:"serial_number_in_part"`
-	Name_english          string `form:"nameenglish json:"name_english"`
-	Name_hindi            string `form:"namehindi json:"name_hindi"`
-	Relation_name_english string `form:"relationnameenglish json:"relation_name_english"`
-	Relation_name_hindi   string `form:"relationnamehindi json:"relation_name_hindi"`
-	Gender                string `form:"gender json:"gender"`
-	Id_card_number        string `form:"idcardnumber json:"id_card_number"`
-	District_name_hindi   string `form:"districtnamehindi json:"district_name_hindi"`
-	District_name_english string `form:"districtnameenglish json:"district_name_english"`
-	Ac_name_english       string `form:"acnameenglish json:"ac_name_english"`
-	Ac_name_hindi         string `form:"acnamehindi json:"ac_name_hindi"`
-	Section_name_english  string `form:"sectionnameenglish json:"section_name_english"`
-	Section_name_hindi    string `form:"sectionnamehindi json:"section_name_hindi"`
-	Religion_english      string `form:"religionenglish json:"religion_english"`
-	Religion_hindi        string `form:"religionhindi json:"religion_hindi"`
-	Age                   int    `form:"age json:"age"`
-	Vote                  int    `form:"vote json:"vote"`
-	Email                 string `form:"email" json:"email"`
-	Mobile_no             int    `form:"mobile_no" json:"mobile_no"`
-	Image                 string `form:"image" json:"image"`
+	Voter_id              int    `form:"-" orm:"pk" json:"voter_id,omitempty"`
+	Ac_number             int    `form:"acnumber" json:"ac_number,omitempty"`
+	Part_number           int    `form:"partnumber" json:"part_number,omitempty"`
+	Section_number        int    `form:"sectionnumber" json:"section_number,omitempty"`
+	Serial_number_in_part int    `form:"seialnumberinpart json:"serial_number_in_part,omitempty"`
+	Name_english          string `form:"nameenglish json:"name_english,omitempty"`
+	Name_hindi            string `form:"namehindi json:"name_hindi,omitempty"`
+	Relation_name_english string `form:"relationnameenglish json:"relation_name_english,omitempty"`
+	Relation_name_hindi   string `form:"relationnamehindi json:"relation_name_hindi,omitempty"`
+	Gender                string `form:"gender json:"gender,omitempty"`
+	Id_card_number        string `form:"idcardnumber json:"id_card_number,omitempty"`
+	District_name_hindi   string `form:"districtnamehindi json:"district_name_hindi,omitempty"`
+	District_name_english string `form:"districtnameenglish json:"district_name_english,omitempty"`
+	Ac_name_english       string `form:"acnameenglish json:"ac_name_english,omitempty"`
+	Ac_name_hindi         string `form:"acnamehindi json:"ac_name_hindi,omitempty"`
+	Section_name_english  string `form:"sectionnameenglish json:"section_name_english,omitempty"`
+	Section_name_hindi    string `form:"sectionnamehindi json:"section_name_hindi,omitempty"`
+	Religion_english      string `form:"religionenglish json:"religion_english,omitempty"`
+	Religion_hindi        string `form:"religionhindi json:"religion_hindi,omitempty"`
+	Age                   int    `form:"age json:"age,omitempty"`
+	Vote                  int    `form:"vote json:"vote,omitempty"`
+	Email                 string `form:"email" json:"email,omitempty"`
+	Mobile_no             int    `form:"mobile_no" json:"mobile_no,omitempty"`
+	Image                 string `form:"image" json:"image,omitempty"`
 }
 
 func (voter_20 *Voter_20) transpose() Voter {

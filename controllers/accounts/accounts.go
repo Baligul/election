@@ -271,9 +271,9 @@ func (e *AccountCtrl) CreateAccount() {
 	userAccount.Leader_id = user[0].Account_id
 	userAccount.Approved_districts = user[0].Approved_districts
 	userAccount.Approved_acs = user[0].Approved_acs
-	accountId, _ = o.QueryTable("account").Count()
-	accountId = accountId + 1
-	userAccount.Account_id = int(accountId)
+	//accountId, _ = o.QueryTable("account").Count()
+	//accountId = accountId + 1
+	//userAccount.Account_id = int(accountId)
 	_, err = o.Insert(userAccount)
 	if err != nil && err.Error() != "no LastInsertId available" {
 		responseStatus := modelVoters.NewResponseStatus()

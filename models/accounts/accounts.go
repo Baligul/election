@@ -23,30 +23,30 @@ import "time"
 */
 
 type Account struct {
-	Account_id         int       `orm:"pk" json:"account_id"`
-	Otp                int       `json:"otp"`
-	Display_name       string    `json:"display_name"`
-	Email              string    `json:"email"`
-	Mobile_no          int64     `json:"mobile_no"`
-	Token              string    `json:"token"`
-	Approved_districts string    `json:"approved_districts"`
-	Approved_acs       string    `json:"approved_acs"`
-	Last_login         time.Time `json:"last_login"`
-	Updated_on         time.Time `json:"updated_on"`
-	Created_on         time.Time `json:"created_on"`
-	Role               string    `json:"role"`
-	Image              string    `json:"image"`
-	Group_id           int       `json:"group_id"`
-	Leader_id          int       `json:"leader_id"`
-	Age                int       `json:"age"`
-	Sex                string    `json:"sex"`
-	Religion           string    `json:"religion"`
+	Account_id         int       `orm:"pk" json:"account_id,omitempty"`
+	Otp                int       `json:"otp,omitempty"`
+	Display_name       string    `json:"display_name,omitempty"`
+	Email              string    `json:"email,omitempty"`
+	Mobile_no          int64     `json:"mobile_no,omitempty"`
+	Token              string    `json:"token,omitempty"`
+	Approved_districts string    `json:"approved_districts,omitempty"`
+	Approved_acs       string    `json:"approved_acs,omitempty"`
+	Last_login         time.Time `json:"last_login,omitempty"`
+	Updated_on         time.Time `json:"updated_on,omitempty"`
+	Created_on         time.Time `json:"created_on,omitempty"`
+	Role               string    `json:"role,omitempty"`
+	Image              string    `json:"image,omitempty"`
+	Group_id           int       `json:"group_id,omitempty"`
+	Leader_id          int       `json:"leader_id,omitempty"`
+	Age                int       `json:"age,omitempty"`
+	Sex                string    `json:"sex,omitempty"`
+	Religion           string    `json:"religion,omitempty"`
 }
 
 type AccountQuery struct {
-	AccountId []int `json:"account_id"`
-	GroupId   []int `json:"group_id"`
-	LeaderId  []int `json:"leader_id"`
+	AccountId []int `json:"account_id,omitempty"`
+	GroupId   []int `json:"group_id,omitempty"`
+	LeaderId  []int `json:"leader_id,omitempty"`
 }
 
 /*AccountQuery
@@ -100,8 +100,8 @@ type AccountQuery struct {
 */
 
 type Accounts struct {
-	Total    int64     `json:"total"`
-	Accounts []Account `json:"accounts"`
+	Total    int64     `json:"total,omitempty"`
+	Accounts []Account `json:"accounts,omitempty"`
 }
 
 func (accounts *Accounts) Populate(useraccounts []*Account) {
