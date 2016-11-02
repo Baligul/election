@@ -280,7 +280,7 @@ func (e *AccountCtrl) CreateAccount() {
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		responseStatus.Error = err.Error()
-		e.Data["json"] = &responseStatus
+		e.Data["json"] = userAccount.Account_id
 		e.ServeJSON()
 	}
 	userAccount.Account_id = int(accountId)
