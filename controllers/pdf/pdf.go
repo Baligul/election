@@ -111,7 +111,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		pdf.SetTextColor(255, 255, 255)
 		pdf.SetDrawColor(128, 0, 0)
 		pdf.SetLineWidth(.3)
-		pdf.SetFont("Arial", "B", 16)
+		pdf.SetFont("Mangal", "B", 16)
 		// 	Header
 		w := []float64{40, 35, 40, 45}
 		wSum := 0.0
@@ -125,14 +125,14 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		// Color and font restoration
 		pdf.SetFillColor(224, 235, 255)
 		pdf.SetTextColor(0, 0, 0)
-		pdf.SetFont("", "", 0)
+		pdf.SetFont("Mangal", "", 0)
 		// 	Data
 		fill := false
 		for _, voter := range voters.Voters {
 			pdf.CellFormat(w[0], 6, string(voter.Serial_number_in_part), "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[1], 6, string(voter.Part_number), "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[2], 6, voter.Name_english+"("+voter.Name_hindi+")", "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[2], 6, voter.Name_english+"("+voter.Name_hindi+")", "LR", 0, "", fill, 0, "")
+			pdf.CellFormat(w[3], 6, voter.Name_english+"("+voter.Name_hindi+")", "LR", 0, "", fill, 0, "")
 			pdf.Ln(-1)
 			fill = !fill
 		}
