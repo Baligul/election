@@ -101,23 +101,9 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 	}
 
 	// PDF creation code start here
-	/*pdf := gofpdf.New("L", "mm", "A4", "")
-	header := []string{"h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10", "h11", "h12", "h13", "h14", "h15"}
-	// Simple table
-	basicTable := func() {
-		for _, str := range header {
-			pdf.CellFormat(40, 7, str, "1", 0, "", false, 0, "")
-		}
-		pdf.Ln(-1)
-		for _, voter := range voters.Voters {
-			pdf.CellFormat(40, 6, string(voter.Serial_number_in_part), "1", 0, "", false, 0, "")
-			pdf.CellFormat(40, 6, string(voter.Part_number), "1", 0, "", false, 0, "")
-			pdf.CellFormat(40, 6, string(voter.Part_number), "1", 0, "", false, 0, "")
-			pdf.CellFormat(40, 6, voter.Name_english+"("+voter.Name_hindi+")", "1", 0, "", false, 0, "")
-			pdf.Ln(-1)
-		}
-	}
-
+	header := []string{"h1", "h2", "h3", "h4"}
+	pdf := gofpdf.New("L", "mm", "A4", "")
+	pdf.AddPage()
 	// Colored table
 	fancyTable := func() {
 		// Colors, line width and bold font
@@ -125,9 +111,9 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		pdf.SetTextColor(255, 255, 255)
 		pdf.SetDrawColor(128, 0, 0)
 		pdf.SetLineWidth(.3)
-		pdf.SetFont("", "B", 0)
+		pdf.SetFont("Arial", "B", 16)
 		// 	Header
-		w := []float64{40, 35, 40, 45, 40, 35, 40, 45, 40, 35, 40, 45, 40, 35, 40}
+		w := []float64{40, 35, 40, 45}
 		wSum := 0.0
 		for _, v := range w {
 			wSum += v
@@ -146,20 +132,13 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 			pdf.CellFormat(w[0], 6, string(voter.Serial_number_in_part), "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[1], 6, string(voter.Part_number), "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[2], 6, voter.Name_english+"("+voter.Name_hindi+")", "LR", 0, "", fill, 0, "")
+			pdf.CellFormat(w[2], 6, voter.Name_english+"("+voter.Name_hindi+")", "LR", 0, "", fill, 0, "")
 			pdf.Ln(-1)
 			fill = !fill
 		}
 		pdf.CellFormat(wSum, 0, "", "T", 0, "", false, 0, "")
 	}
-	pdf.SetFont("Arial", "", 14)
-	//fancyTable()
-	basicTable()
-	fileName := "hello.pdf"
-	err = pdf.OutputFileAndClose(fileName)*/
-
-	pdf := gofpdf.New("P", "mm", "A4", "")
-	pdf.AddPage()
-	pdf.SetFont("Arial", "B", 16)
+	fancyTable()
 	pdf.Cell(40, 10, "Hello, world")
 	err = pdf.OutputFileAndClose("hello.pdf")
 	if err != nil {
