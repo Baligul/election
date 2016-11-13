@@ -101,7 +101,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 	}
 
 	// PDF creation code start here
-	pdf := gofpdf.New("L", "mm", "A4", "")
+	/*pdf := gofpdf.New("L", "mm", "A4", "")
 	header := []string{"h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10", "h11", "h12", "h13", "h14", "h15"}
 	// Simple table
 	basicTable := func() {
@@ -118,7 +118,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		}
 	}
 
-	/*// Colored table
+	// Colored table
 	fancyTable := func() {
 		// Colors, line width and bold font
 		pdf.SetFillColor(255, 0, 0)
@@ -150,12 +150,18 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 			fill = !fill
 		}
 		pdf.CellFormat(wSum, 0, "", "T", 0, "", false, 0, "")
-	}*/
+	}
 	pdf.SetFont("Arial", "", 14)
 	//fancyTable()
 	basicTable()
 	fileName := "hello.pdf"
-	err = pdf.OutputFileAndClose(fileName)
+	err = pdf.OutputFileAndClose(fileName)*/
+
+	pdf := gofpdf.New("P", "mm", "A4", "")
+	pdf.AddPage()
+	pdf.SetFont("Arial", "B", 16)
+	pdf.Cell(40, 10, "Hello, world")
+	err = pdf.OutputFileAndClose("hello.pdf")
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
