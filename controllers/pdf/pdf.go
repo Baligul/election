@@ -111,7 +111,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		pdf.SetTextColor(255, 255, 255)
 		pdf.SetDrawColor(128, 0, 0)
 		pdf.SetLineWidth(.3)
-		pdf.SetFont("Mangal", "B", 16)
+		pdf.SetFont("Arial", "B", 16)
 		// 	Header
 		w := []float64{40, 35, 40, 45}
 		wSum := 0.0
