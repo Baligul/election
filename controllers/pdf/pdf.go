@@ -101,7 +101,8 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 	}
 
 	// PDF creation code start here
-	header := []string{"Voter Id", "Name", "Age", "Gender", "Religion", "Mobile No.", "Email", "Relation", "District", "Ac", "Section", "Part No.", "Serial No. in Part", "Vote"}
+	//header := []string{"Voter Id", "Name", "Age", "Gender", "Religion", "Mobile No.", "Email", "Relation", "District", "Ac", "Section", "Part No.", "Serial No. in Part", "Vote"}
+	header := []string{"Voter Id", "Name", "Age", "Gender", "Religion", "Mobile No."}
 	pdf := gofpdf.New("L", "mm", "A4", "")
 	pdf.AddPage()
 	// Colored table
@@ -113,7 +114,8 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		pdf.SetLineWidth(.3)
 		pdf.SetFont("Arial", "B", 16)
 		// 	Header
-		w := []float64{40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40}
+		//w := []float64{40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40}
+		w := []float64{40, 40, 40, 40, 40, 40}
 		wSum := 0.0
 		for _, v := range w {
 			wSum += v
@@ -135,14 +137,14 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 			pdf.CellFormat(w[3], 6, voter.Gender, "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[4], 6, voter.Religion_english, "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[5], 6, strconv.Itoa(voter.Mobile_no), "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[6], 6, voter.Email, "LR", 0, "", fill, 0, "")
+			/*pdf.CellFormat(w[6], 6, voter.Email, "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[7], 6, voter.Relation_name_english, "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[8], 6, voter.District_name_english, "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[9], 6, voter.Ac_name_english+"("+strconv.Itoa(voter.Ac_number)+")", "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[10], 6, voter.Section_name_english+"("+strconv.Itoa(voter.Section_number)+")", "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[11], 6, strconv.Itoa(voter.Part_number), "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[12], 6, strconv.Itoa(voter.Serial_number_in_part), "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[13], 6, strconv.Itoa(voter.Vote), "LR", 0, "", fill, 0, "")
+			pdf.CellFormat(w[13], 6, strconv.Itoa(voter.Vote), "LR", 0, "", fill, 0, "")*/
 			pdf.Ln(-1)
 			fill = !fill
 		}
