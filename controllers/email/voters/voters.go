@@ -8,13 +8,13 @@ package voters
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/jung-kurt/gofpdf"
+	"github.com/scorredoira/email"
 	"net/mail"
 	"net/smtp"
 	"os"
 	"strconv"
 	"strings"
-	"github.com/jung-kurt/gofpdf"
-	"github.com/scorredoira/email"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"
@@ -39,10 +39,10 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 		votersCountBijnor    int64
 		votersCountBangalore int64
 		votersCountHubli     int64
-		err  	 			 error
-		num  	 			 int64
-		user 	 			 []*modelAccounts.Account
-		filepath 			 string
+		err                  error
+		num                  int64
+		user                 []*modelAccounts.Account
+		filepath             string
 		voters               modelVoters.Voters
 		votersMoradabad      []*modelVoters.Voter_19
 		votersRampur         []*modelVoters.Voter_20
@@ -772,20 +772,20 @@ func createPdf(voters modelVoters.Voters, filepath string) error {
 
 func sendEmailWithAttachment(toEmail string, displayName string, filepath string) error {
 	// compose the message
-    m := email.NewMessage(strings.TrimPrefix(filepath, "Downloads/"), "Dear " + displayName + "!\n\nPlease find attached the required file.\n\nThanks & Regards,\nElectionUBDA Team")
-    m.From = mail.Address{Name: "ElectionUBDA Team", Address: "electionubda@gmail.com"}
-    m.To = []string{toEmail}
+	m := email.NewMessage(strings.TrimPrefix(filepath, "Downloads/"), "Dear "+displayName+"!\n\nPlease find attached the required file.\n\nThanks & Regards,\nElectionUBDA Team")
+	m.From = mail.Address{Name: "ElectionUBDA Team", Address: "electionubda@gmail.com"}
+	m.To = []string{toEmail}
 
-    // add attachments
-    if err := m.Attach(filepath); err != nil {
-        return err
-    }
+	// add attachments
+	if err := m.Attach(filepath); err != nil {
+		return err
+	}
 
-    // send it
-    auth := smtp.PlainAuth("", "electionubda@gmail.com", "hu123*ElectionUBDA", "smtp.gmail.com")
-    if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
-       return err
-    }
+	// send it
+	auth := smtp.PlainAuth("", "electionubda@gmail.com", "hu123*ElectionUBDA", "smtp.gmail.com")
+	if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -795,60 +795,60 @@ func createFilePath(query *modelVoters.Query) string {
 	filepath = "Downloads/voters_list.pdf"
 
 	if len(query.StateNumber) == 1 && query.StateNumber[0] == 27 {
-		filepath = "UP"
+		filepath = "Downloads/UP"
 	}
-	
+
 	if len(query.DistrictNameEnglish) == 1 {
 		if filepath == "Downloads/voters_list.pdf" {
-			filepath = query.DistrictNameEnglish[0]
+			filepath = "Downloads/" + query.DistrictNameEnglish[0]
 		} else {
 			filepath = filepath + "-" + query.DistrictNameEnglish[0]
 		}
 	}
-	
+
 	if len(query.AcNameEnglish) == 1 {
 		if filepath == "Downloads/voters_list.pdf" {
-			filepath = query.AcNameEnglish[0]
+			filepath = "Downloads/" + query.AcNameEnglish[0]
 		} else {
 			filepath = filepath + "-" + query.AcNameEnglish[0]
 		}
 	}
-	
+
 	if len(query.SectionNameEnglish) == 1 {
 		if filepath == "Downloads/voters_list.pdf" {
-			filepath = query.SectionNameEnglish[0]
+			filepath = "Downloads/" + query.SectionNameEnglish[0]
 		} else {
 			filepath = filepath + "-" + query.SectionNameEnglish[0]
 		}
 	}
-	
+
 	if len(query.PartNumber) == 1 {
 		if filepath == "Downloads/voters_list.pdf" {
-			filepath = "PN_" + strconv.Itoa(query.PartNumber[0])
+			filepath = "Downloads/PN_" + strconv.Itoa(query.PartNumber[0])
 		} else {
 			filepath = filepath + "-PN_" + strconv.Itoa(query.PartNumber[0])
 		}
 	}
-	
+
 	if len(query.SerialNumberInPart) == 1 {
 		if filepath == "Downloads/voters_list.pdf" {
-			filepath = "SNIP_" + strconv.Itoa(query.SerialNumberInPart[0])
+			filepath = "Downloads/SNIP_" + strconv.Itoa(query.SerialNumberInPart[0])
 		} else {
 			filepath = filepath + "-SNIP_" + strconv.Itoa(query.SerialNumberInPart[0])
 		}
 	}
-	
+
 	if len(query.ReligionEnglish) == 1 {
 		if filepath == "Downloads/voters_list.pdf" {
-			filepath = query.ReligionEnglish[0]
+			filepath = "Downloads/" + query.ReligionEnglish[0]
 		} else {
 			filepath = filepath + "-" + query.ReligionEnglish[0]
 		}
 	}
-	
+
 	if len(query.Vote) == 1 {
 		if filepath == "Downloads/voters_list.pdf" {
-			filepath = "Vote_" + strconv.Itoa(query.Vote[0])
+			filepath = "Downloads/Vote_" + strconv.Itoa(query.Vote[0])
 		} else {
 			filepath = filepath + "-Vote_" + strconv.Itoa(query.Vote[0])
 		}

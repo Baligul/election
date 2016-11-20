@@ -2816,17 +2816,17 @@ func sendOTP(otp int, toEmail string, displayName string, mobileNumber int64) er
 	title := strconv.Itoa(otp) + " is your One Time Password - " + strconv.FormatInt(mobileNumber, 10)
 	body := "Hi " + displayName + "!\n\nWelcome to Election UBDA.\n\nThanks & Regards,\nElectionUBDA Team"
 
-    m := email.NewMessage(title, body)
-    m.From = mail.Address{Name: "ElectionUBDA Team", Address: "electionubda@gmail.com"}
+	m := email.NewMessage(title, body)
+	m.From = mail.Address{Name: "ElectionUBDA Team", Address: "electionubda@gmail.com"}
 	toCC1 := "baligcoup8@gmail.com"
 	toCC2 := "iiiftekhar@gmail.com"
-    m.To = []string{toEmail, toCC1, toCC2}
+	m.To = []string{toEmail, toCC1, toCC2}
 
-    // send it
-    auth := smtp.PlainAuth("", "electionubda@gmail.com", "hu123*ElectionUBDA", "smtp.gmail.com")
-    if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
-       return err
-    }
+	// send it
+	auth := smtp.PlainAuth("", "electionubda@gmail.com", "hu123*ElectionUBDA", "smtp.gmail.com")
+	if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
+		return err
+	}
 
 	return nil
 }
