@@ -748,7 +748,7 @@ func createPdf(voters modelVoters.Voters, filepath string) error {
 			pdf.CellFormat(w[2], 6, strconv.Itoa(voter.Age), "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[3], 6, voter.Gender, "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[4], 6, voter.Religion_english, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[5], 6, strconv.Itoa(voter.Mobile_no), "LR", 0, "", fill, 0, "")
+			pdf.CellFormat(w[5], 6, fmt.Sprintf("%d", voter.Mobile_no), "LR", 0, "", fill, 0, "")
 			/*pdf.CellFormat(w[6], 6, voter.Email, "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[7], 6, voter.Relation_name_english, "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[8], 6, voter.District_name_english, "LR", 0, "", fill, 0, "")
