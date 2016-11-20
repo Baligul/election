@@ -25,7 +25,7 @@ type Voter_21 struct {
 	Age                   int       `form:"age json:"age,omitempty"`
 	Vote                  int       `form:"vote json:"vote,omitempty"`
 	Email                 string    `form:"email" json:"email,omitempty"`
-	Mobile_no             int       `form:"mobile_no" json:"mobile_no,omitempty"`
+	Mobile_no             int64     `form:"mobile_no" json:"mobile_no,omitempty"`
 	Image                 string    `form:"image" json:"image,omitempty"`
 	Updated_on            time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
 }
