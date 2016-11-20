@@ -168,7 +168,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 	//responseStatus.Response = "ok"
 	//responseStatus.Message = fmt.Sprintf("The file has been sent Successfully.")
 	//e.Data["json"] = &responseStatus
-	e.Data["pdf"] = &pdf
+	e.Data["json"] = &pdf
 	e.ServeJSON()
 	//example.Summary(err, fileName)
 	// Output:
