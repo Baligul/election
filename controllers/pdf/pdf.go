@@ -125,7 +125,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		// Color and font restoration
 		pdf.SetFillColor(224, 235, 255)
 		pdf.SetTextColor(0, 0, 0)
-		pdf.SetFont("Mangal", "", 0)
+		pdf.SetFont("Arial", "", 0)
 		// 	Data
 		fill := false
 		for _, voter := range voters.Voters {
