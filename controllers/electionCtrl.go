@@ -50,7 +50,6 @@ package controllers
 
 import (
 	token "crypto/rand"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"math/rand"
@@ -67,6 +66,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/craigmj/gototp"
 	_ "github.com/lib/pq"
+	"github.com/scorredoira/email"
 )
 
 func init() {
@@ -2811,51 +2811,22 @@ func generateOTP() (int32, error) {
 	return otp.Now(), nil
 }
 
-func sendOTP(otp int, email string, displayName string, mobileNumber int64) error {
-	// Set up authentication information.
-	smtpServer := "smtp.gmail.com"
-	auth := smtp.PlainAuth(
-		"",
-		"electionubda",
-		"hu123*ElectionUBDA",
-		smtpServer,
-	)
-
-	from := mail.Address{"ElectionUBDA", "electionubda@gmail.com"}
-	to := mail.Address{displayName, email}
-	toCC1 := mail.Address{"Baligul Hasan", "baligcoup8@gmail.com"}
-	toCC2 := mail.Address{"Iftekhar Khan", "iiiftekhar@gmail.com"}
+func sendOTP(otp int, toEmail string, displayName string, mobileNumber int64) error {
+	// compose the message
 	title := strconv.Itoa(otp) + " is your One Time Password - " + strconv.FormatInt(mobileNumber, 10)
-
 	body := "Hi " + displayName + "!\n\nWelcome to Election UBDA.\n\nThanks & Regards,\nElectionUBDA Team"
 
-	header := make(map[string]string)
-	header["From"] = from.String()
-	header["To"] = to.String()
-	header["Subject"] = title
-	header["MIME-Version"] = "1.0"
-	header["Content-Type"] = "text/plain; charset=\"utf-8\""
-	header["Content-Transfer-Encoding"] = "base64"
+    m := email.NewMessage(title, body)
+    m.From = mail.Address{Name: "ElectionUBDA Team", Address: "electionubda@gmail.com"}
+	toCC1 := "baligcoup8@gmail.com"
+	toCC2 := "iiiftekhar@gmail.com"
+    m.To = []string{toEmail, toCC1, toCC2}
 
-	message := ""
-	for k, v := range header {
-		message += fmt.Sprintf("%s: %s\r\n", k, v)
-	}
-	message += "\r\n" + base64.StdEncoding.EncodeToString([]byte(body))
-
-	// Connect to the server, authenticate, set the sender and recipient,
-	// and send the email all in one step.
-	err := smtp.SendMail(
-		smtpServer+":587",
-		auth,
-		from.Address,
-		[]string{to.Address, toCC1.Address, toCC2.Address},
-		[]byte(message),
-		//[]byte("This is the email body."),
-	)
-	if err != nil {
-		return err
-	}
+    // send it
+    auth := smtp.PlainAuth("", "electionubda@gmail.com", "hu123*ElectionUBDA", "smtp.gmail.com")
+    if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
+       return err
+    }
 
 	return nil
 }

@@ -181,7 +181,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 
 func sendEmailWithAttachment(toEmail string, displayName string, filepath string) error {
 	// compose the message
-    m := email.NewMessage("Hi " + displayName + "!", "\n\nPlease find attached the required file.\n\nThanks & Regards,\nElectionUBDA Team")
+    m := email.NewMessage("Pdf file attached", "Dear " + displayName + "!\n\nPlease find attached the required file.\n\nThanks & Regards,\nElectionUBDA Team")
     m.From = mail.Address{Name: "ElectionUBDA Team", Address: "electionubda@gmail.com"}
     m.To = []string{toEmail}
 
