@@ -131,8 +131,8 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		for _, voter := range voters.Voters {
 			pdf.CellFormat(w[0], 6, string(voter.Serial_number_in_part), "LR", 0, "", fill, 0, "")
 			pdf.CellFormat(w[1], 6, string(voter.Part_number), "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[2], 6, voter.Name_english+"("+voter.Name_hindi+")", "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[3], 6, voter.Name_english+"("+voter.Name_hindi+")", "LR", 0, "", fill, 0, "")
+			pdf.CellFormat(w[2], 6, voter.Name_english+"("+")", "LR", 0, "", fill, 0, "")
+			pdf.CellFormat(w[3], 6, voter.Name_english+"("+")", "LR", 0, "", fill, 0, "")
 			pdf.Ln(-1)
 			fill = !fill
 		}
