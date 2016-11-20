@@ -6,16 +6,11 @@
 package pdf
 
 import (
-	//token "crypto/rand"
-	//"encoding/base64"
 	"encoding/json"
 	"fmt"
-	//"math/rand"
 	"net/mail"
 	"net/smtp"
 	"strconv"
-	//"strings"
-	//"time"
 	"github.com/jung-kurt/gofpdf"
 	"github.com/scorredoira/email"
 
