@@ -1,6 +1,6 @@
 /*
    Create and Send Pdf
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":["PILA TALAB"],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' "http://104.197.6.26:8080/api/email?mobile_no=9343352734&token=cc5b86572d1ad660"
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":["PILA TALAB"],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' "http://104.197.6.26:8080/api/email/voters?mobile_no=9343352734&token=cc5b86572d1ad660"
 */
 
 package voters
@@ -772,7 +772,7 @@ func createPdf(voters modelVoters.Voters, filepath string) error {
 
 func sendEmailWithAttachment(toEmail string, displayName string, filepath string) error {
 	// compose the message
-    m := email.NewMessage("Pdf file attached", "Dear " + displayName + "!\n\nPlease find attached the required file.\n\nThanks & Regards,\nElectionUBDA Team")
+    m := email.NewMessage(strings.TrimPrefix(filepath, "Downloads/"), "Dear " + displayName + "!\n\nPlease find attached the required file.\n\nThanks & Regards,\nElectionUBDA Team")
     m.From = mail.Address{Name: "ElectionUBDA Team", Address: "electionubda@gmail.com"}
     m.To = []string{toEmail}
 
@@ -852,6 +852,10 @@ func createFilePath(query *modelVoters.Query) string {
 		} else {
 			filepath = filepath + "-Vote_" + strconv.Itoa(query.Vote[0])
 		}
+	}
+
+	if filepath != "Downloads/voters_list.pdf" {
+		filepath = filepath + "-voters_list.pdf"
 	}
 
 	return filepath
