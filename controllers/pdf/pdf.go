@@ -50,7 +50,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		votersBangalore      []*modelVoters.Voter
 		votersHubli          []*modelVoters.Voter
 	)
-
+	filepath = "Downloads/hello.pdf"
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 
@@ -691,7 +691,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		e.ServeJSON()
 	}
 
-	err = sendEmailWithAttachment(user[0].Email, user[0].Display_name, "hello.pdf")
+	err = sendEmailWithAttachment(user[0].Email, user[0].Display_name, filepath)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
