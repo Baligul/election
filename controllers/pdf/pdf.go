@@ -477,7 +477,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		for _, state := range query.StateNumber {
 			if state == 27 {
 				votersCountRampur, _ = qsRampur.Count()
-				_, err = qsRampur.All(&votersRampur)
+				_, err = qsRampur.Limit(-1).All(&votersRampur)
 				if err != nil {
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
@@ -487,7 +487,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 					e.ServeJSON()
 				}
 				votersCountMoradabad, _ = qsMoradabad.Count()
-				_, err = qsMoradabad.All(&votersMoradabad)
+				_, err = qsMoradabad.Limit(-1).All(&votersMoradabad)
 				if err != nil {
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
@@ -497,7 +497,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 					e.ServeJSON()
 				}
 				votersCountBijnor, _ = qsBijnor.Count()
-				_, err = qsBijnor.All(&votersBijnor)
+				_, err = qsBijnor.Limit(-1).All(&votersBijnor)
 				if err != nil {
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
@@ -510,7 +510,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 
 			if state == 12 {
 				votersCountBangalore, _ = qsBangalore.Count()
-				_, err = qsBangalore.All(&votersBangalore)
+				_, err = qsBangalore.Limit(-1).All(&votersBangalore)
 				if err != nil {
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
@@ -520,7 +520,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 					e.ServeJSON()
 				}
 				votersCountHubli, _ = qsHubli.Count()
-				_, err = qsHubli.All(&votersHubli)
+				_, err = qsHubli.Limit(-1).All(&votersHubli)
 				if err != nil {
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
@@ -538,7 +538,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 	for _, districtNameHindi := range query.DistrictNameHindi {
 		if districtNameHindi == "मुरादाबाद" {
 			votersCountMoradabad, _ = qsMoradabad.Count()
-			_, err = qsMoradabad.All(&votersMoradabad)
+			_, err = qsMoradabad.Limit(-1).All(&votersMoradabad)
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
@@ -551,7 +551,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 
 		if districtNameHindi == "रामपुर" {
 			votersCountRampur, _ = qsRampur.Count()
-			_, err = qsRampur.All(&votersRampur)
+			_, err = qsRampur.Limit(-1).All(&votersRampur)
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
@@ -564,7 +564,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 
 		if districtNameHindi == "बिजनौर" {
 			votersCountBijnor, _ = qsBijnor.Count()
-			_, err = qsBijnor.All(&votersBijnor)
+			_, err = qsBijnor.Limit(-1).All(&votersBijnor)
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
@@ -580,7 +580,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 	for _, districtNameEnglish := range query.DistrictNameEnglish {
 		if districtNameEnglish == "Moradabad" || districtNameEnglish == "moradabad" {
 			votersCountMoradabad, _ = qsMoradabad.Count()
-			_, err = qsMoradabad.All(&votersMoradabad)
+			_, err = qsMoradabad.Limit(-1).All(&votersMoradabad)
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
@@ -593,7 +593,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 
 		if districtNameEnglish == "Rampur" || districtNameEnglish == "rampur" {
 			votersCountRampur, _ = qsRampur.Count()
-			_, err = qsRampur.All(&votersRampur)
+			_, err = qsRampur.Limit(-1).All(&votersRampur)
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
@@ -606,7 +606,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 
 		if districtNameEnglish == "Bijnor" || districtNameEnglish == "bijnor" {
 			votersCountBijnor, _ = qsBijnor.Count()
-			_, err = qsBijnor.All(&votersBijnor)
+			_, err = qsBijnor.Limit(-1).All(&votersBijnor)
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
@@ -622,7 +622,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 	for _, district := range query.DistrictNumber {
 		if district == 19 {
 			votersCountMoradabad, _ = qsMoradabad.Count()
-			_, err = qsMoradabad.All(&votersMoradabad)
+			_, err = qsMoradabad.Limit(-1).All(&votersMoradabad)
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
@@ -635,7 +635,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 
 		if district == 20 {
 			votersCountRampur, _ = qsRampur.Count()
-			_, err = qsRampur.All(&votersRampur)
+			_, err = qsRampur.Limit(-1).All(&votersRampur)
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
@@ -648,7 +648,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 
 		if district == 21 {
 			votersCountBijnor, _ = qsBijnor.Count()
-			_, err = qsBijnor.All(&votersBijnor)
+			_, err = qsBijnor.Limit(-1).All(&votersBijnor)
 			if err != nil {
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
