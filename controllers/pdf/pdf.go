@@ -11,15 +11,13 @@ import (
 	"encoding/json"
 	"fmt"
 	//"math/rand"
-	//"net/mail"
-	//"net/smtp"
+	"net/mail"
+	"net/smtp"
 	"strconv"
 	//"strings"
 	//"time"
-	"os"
-    "net/http"
-    "io"
 	"github.com/jung-kurt/gofpdf"
+	"github.com/scorredoira/email"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"
@@ -154,7 +152,6 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		pdf.CellFormat(wSum, 0, "", "T", 0, "", false, 0, "")
 	}
 	fancyTable()
-	//e.Data["json"] = pdf
 	err = pdf.OutputFileAndClose("hello.pdf")
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
@@ -165,87 +162,39 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		e.ServeJSON()
 	}
 
-	//responseStatus := modelVoters.NewResponseStatus()
-	//responseStatus.Response = "ok"
-	//responseStatus.Message = fmt.Sprintf("The file has been sent Successfully.")
-	//e.Data["json"] = &responseStatus
-	return pdf
-	//example.Summary(err, fileName)
-	// Output:
-	// Successfully generated pdf/Fpdf_CellFormat_tables.pdf
+	err = sendEmailWithAttachment(user[0].Email, user[0].Display_name, "hello.pdf")
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	responseStatus := modelVoters.NewResponseStatus()
+	responseStatus.Response = "ok"
+	responseStatus.Message = fmt.Sprintf("The file has been sent Successfully.")
+	e.Data["json"] = &responseStatus
+	e.ServeJSON()
 }
 
-/*
-func sendEmailWithAttachment(otp int, email string, displayName string, mobileNumber int64) error {
-	// Set up authentication information.
-	smtpServer := "smtp.gmail.com"
-	auth := smtp.PlainAuth(
-		"",
-		"electionubda",
-		"hu123*ElectionUBDA",
-		smtpServer,
-	)
+func sendEmailWithAttachment(toEmail string, displayName string, filepath string) error {
+	// compose the message
+    m := email.NewMessage("Hi " + displayName + "!", "\n\nPlease find attached the required file.\n\nThanks & Regards,\nElectionUBDA Team")
+    m.From = mail.Address{Name: "ElectionUBDA Team", Address: "electionubda@gmail.com"}
+    m.To = []string{toEmail}
 
-	from := mail.Address{"ElectionUBDA", "electionubda@gmail.com"}
-	to := mail.Address{displayName, email}
-	toCC1 := mail.Address{"Baligul Hasan", "baligcoup8@gmail.com"}
-	toCC2 := mail.Address{"Iftekhar Khan", "iiiftekhar@gmail.com"}
-	title := strconv.Itoa(otp) + " is your One Time Password - " + strconv.FormatInt(mobileNumber, 10)
+    // add attachments
+    if err := m.Attach(filepath); err != nil {
+        return err
+    }
 
-	body := "Hi " + displayName + "!\n\nWelcome to Election UBDA.\n\nThanks & Regards,\nElectionUBDA Team"
-
-	header := make(map[string]string)
-	header["From"] = from.String()
-	header["To"] = to.String()
-	header["Subject"] = title
-	header["MIME-Version"] = "1.0"
-	header["Content-Type"] = "text/plain; charset=\"utf-8\""
-	header["Content-Transfer-Encoding"] = "base64"
-
-	message := ""
-	for k, v := range header {
-		message += fmt.Sprintf("%s: %s\r\n", k, v)
-	}
-	message += "\r\n" + base64.StdEncoding.EncodeToString([]byte(body))
-
-	// Connect to the server, authenticate, set the sender and recipient,
-	// and send the email all in one step.
-	err := smtp.SendMail(
-		smtpServer+":587",
-		auth,
-		from.Address,
-		[]string{to.Address, toCC1.Address, toCC2.Address},
-		[]byte(message),
-		//[]byte("This is the email body."),
-	)
-	if err != nil {
-		return err
-	}
+    // send it
+    auth := smtp.PlainAuth("", "electionubda@gmail.com", "hu123*ElectionUBDA", "smtp.gmail.com")
+    if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
+       return err
+    }
 
 	return nil
-}*/
-
-func downloadFile(filepath string, url string) (err error) {
-
-  // Create the file
-  out, err := os.Create(filepath)
-  if err != nil  {
-    return err
-  }
-  defer out.Close()
-
-  // Get the data
-  resp, err := http.Get(url)
-  if err != nil {
-    return err
-  }
-  defer resp.Body.Close()
-
-  // Writer the body to file
-  _, err = io.Copy(out, resp.Body)
-  if err != nil  {
-    return err
-  }
-
-  return nil
 }
