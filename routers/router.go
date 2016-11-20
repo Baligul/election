@@ -11,7 +11,7 @@ import (
 	"github.com/Baligul/election/controllers"
 	"github.com/Baligul/election/controllers/accounts"
 	"github.com/Baligul/election/controllers/groups"
-	"github.com/Baligul/election/controllers/pdf"
+	"github.com/Baligul/election/controllers/email/voters"
 
 	"github.com/astaxie/beego"
 )
@@ -33,7 +33,7 @@ func init() {
 	beego.Router("/api/accounts", &accounts.AccountCtrl{}, "get,post:GetAccounts")
 	beego.Router("/api/account", &accounts.AccountCtrl{}, "put:UpdateAccount")
 	beego.Router("/api/account", &accounts.AccountCtrl{}, "delete:DeleteAccount")
-	beego.Router("/api/email", &pdf.PdfCtrl{}, "post:CreateAndSendPdf")
+	beego.Router("/api/email/voters", &voters.VotersCtrl{}, "post:CreateAndEmailPdf")
 	//beego.Router("/api/task", &controllers.ElectionController{}, "post:CreateTask")
 	//beego.Router("/api/task", &controllers.ElectionController{}, "get:GetTasks")
 	//beego.Router("/api/task", &controllers.ElectionController{}, "put:UpdateTask")
