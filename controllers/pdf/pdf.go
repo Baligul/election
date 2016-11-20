@@ -154,7 +154,7 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		pdf.CellFormat(wSum, 0, "", "T", 0, "", false, 0, "")
 	}
 	fancyTable()
-	e.Data["json"] = &pdf
+	e.Data["json"] = pdf
 	err = pdf.OutputFileAndClose("hello.pdf")
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
