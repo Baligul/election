@@ -16,6 +16,9 @@ import (
 	"strconv"
 	//"strings"
 	//"time"
+	"os"
+    "net/http"
+    "io"
 	"github.com/jung-kurt/gofpdf"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
@@ -161,10 +164,11 @@ func (e *PdfCtrl) CreateAndSendPdf() {
 		e.ServeJSON()
 	}
 
-	responseStatus := modelVoters.NewResponseStatus()
-	responseStatus.Response = "ok"
-	responseStatus.Message = fmt.Sprintf("The file has been sent Successfully.")
-	e.Data["json"] = &responseStatus
+	//responseStatus := modelVoters.NewResponseStatus()
+	//responseStatus.Response = "ok"
+	//responseStatus.Message = fmt.Sprintf("The file has been sent Successfully.")
+	//e.Data["json"] = &responseStatus
+	e.Data["pdf"] = &pdf
 	e.ServeJSON()
 	//example.Summary(err, fileName)
 	// Output:
@@ -220,3 +224,28 @@ func sendEmailWithAttachment(otp int, email string, displayName string, mobileNu
 
 	return nil
 }*/
+
+func downloadFile(filepath string, url string) (err error) {
+
+  // Create the file
+  out, err := os.Create(filepath)
+  if err != nil  {
+    return err
+  }
+  defer out.Close()
+
+  // Get the data
+  resp, err := http.Get(url)
+  if err != nil {
+    return err
+  }
+  defer resp.Body.Close()
+
+  // Writer the body to file
+  _, err = io.Copy(out, resp.Body)
+  if err != nil  {
+    return err
+  }
+
+  return nil
+}
