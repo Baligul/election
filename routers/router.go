@@ -13,6 +13,7 @@ import (
 	"github.com/Baligul/election/controllers/email/users"
 	"github.com/Baligul/election/controllers/email/voters"
 	"github.com/Baligul/election/controllers/groups"
+	"github.com/Baligul/election/controllers/tasks"
 
 	"github.com/astaxie/beego"
 )
@@ -36,9 +37,9 @@ func init() {
 	beego.Router("/api/account", &accounts.AccountCtrl{}, "delete:DeleteAccount")
 	beego.Router("/api/email/voters", &voters.VotersCtrl{}, "post:CreateAndEmailPdf")
 	beego.Router("/api/email/users", &users.UsersCtrl{}, "post:CreateAndEmailPdf")
-	//beego.Router("/api/task", &controllers.ElectionController{}, "post:CreateTask")
-	//beego.Router("/api/task", &controllers.ElectionController{}, "get:GetTasks")
-	//beego.Router("/api/task", &controllers.ElectionController{}, "put:UpdateTask")
-	//beego.Router("/api/task", &controllers.ElectionController{}, "delete:DeleteTask")
+	beego.Router("/api/task", &tasks.TaskCtrl{}, "post:CreateTask")
+	beego.Router("/api/tasks", &tasks.TaskCtrl{}, "get:GetTasks")
+	beego.Router("/api/task", &tasks.TaskCtrl{}, "put:UpdateTask")
+	beego.Router("/api/task", &tasks.TaskCtrl{}, "delete:DeleteTask")
 	beego.Router("/api/read/json", &controllers.ElectionController{}, "post:ReadJson")
 }
