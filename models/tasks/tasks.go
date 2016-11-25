@@ -39,14 +39,14 @@ type TaskGroupMap struct {
 }
 
 type TaskAccountMap struct {
-	Task_group_map_id int       `form:"-" orm:"pk" json:"task_group_map_id,omitempty"`
-	Task_id           int       `json:"task_id,omitempty"`
-	Account_id        int       `json:"tasks_assigned,omitempty"`
-	Status            string    `json:"status,omitempty"`
-	Updated_by        int       `json:"updated_by,omitempty"`
-	Created_by        int       `json:"created_by,omitempty"`
-	Updated_on        time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
-	Created_on        time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
+	Task_account_map_id int       `form:"-" orm:"pk" json:"task_account_map_id,omitempty"`
+	Task_id             int       `json:"task_id,omitempty"`
+	Account_id          int       `json:"account_id,omitempty"`
+	Status              string    `json:"status,omitempty"`
+	Updated_by          int       `json:"updated_by,omitempty"`
+	Created_by          int       `json:"created_by,omitempty"`
+	Updated_on          time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
+	Created_on          time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
 }
 
 type TaskQuery struct {
@@ -119,4 +119,14 @@ func (tasks *Tasks) Populate(tasksList []*Task) {
 	for _, task := range tasksList {
 		tasks.Tasks = append(tasks.Tasks, *task)
 	}
+}
+
+func (task *Task) Transpose(taskCreateDelete *TaskCreateDelete) {
+	task.Task_id = taskCreateDelete.Task_id
+	task.Title = taskCreateDelete.Title
+	task.Description = taskCreateDelete.Description
+	task.Updated_by = taskCreateDelete.Updated_by
+	task.Created_by = taskCreateDelete.Created_by
+	task.Updated_on = taskCreateDelete.Updated_on
+	task.Created_on = taskCreateDelete.Created_on
 }

@@ -338,6 +338,7 @@ func (e *TaskCtrl) CreateTask() {
 
 	inputJson := e.Ctx.Input.RequestBody
 	userTask := new(modelTasks.TaskCreateDelete)
+	task := new(modelTasks.Task)
 	err = json.Unmarshal(inputJson, &userTask)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
@@ -348,9 +349,10 @@ func (e *TaskCtrl) CreateTask() {
 		e.ServeJSON()
 	}
 
-	userTask.Updated_by = user[0].Account_id
-	userTask.Created_by = user[0].Account_id
-	taskId, err := o.Insert(userTask)
+	task.Transpose(userTask)
+	task.Updated_by = user[0].Account_id
+	task.Created_by = user[0].Account_id
+	taskId, err := o.Insert(task)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
