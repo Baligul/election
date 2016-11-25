@@ -353,7 +353,7 @@ func (e *TaskCtrl) CreateTask() {
 	task.Updated_by = user[0].Account_id
 	task.Created_by = user[0].Account_id
 	taskId, err := o.Insert(task)
-	if err != nil {
+	if err != nil && err.Error() != "no LastInsertId available" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
