@@ -18,7 +18,7 @@ import "time"
 */
 
 type Task struct {
-	Task_id     int       `form:"-" orm:"pk" json:"task_id,omitempty"`
+	Task_id     int       `form:"-" orm:"auto" json:"task_id,omitempty"`
 	Title       string    `json:"title,omitempty"`
 	Description string    `json:"description,omitempty"`
 	Updated_by  int       `json:"updated_by,omitempty"`
@@ -28,7 +28,7 @@ type Task struct {
 }
 
 type TaskGroupMap struct {
-	Task_group_map_id int       `form:"-" orm:"pk" json:"task_group_map_id,omitempty"`
+	Task_group_map_id int       `form:"-" orm:"auto" json:"task_group_map_id,omitempty"`
 	Task_id           int       `json:"task_id,omitempty"`
 	Group_id          int       `json:"group_id,omitempty"`
 	Status            string    `json:"status,omitempty"`
@@ -39,7 +39,7 @@ type TaskGroupMap struct {
 }
 
 type TaskAccountMap struct {
-	Task_account_map_id int       `form:"-" orm:"pk" json:"task_account_map_id,omitempty"`
+	Task_account_map_id int       `form:"-" orm:"auto" json:"task_account_map_id,omitempty"`
 	Task_id             int       `json:"task_id,omitempty"`
 	Account_id          int       `json:"account_id,omitempty"`
 	Status              string    `json:"status,omitempty"`
@@ -59,7 +59,7 @@ type TaskQuery struct {
 }
 
 type TaskCreateDelete struct {
-	Task_id           int       `form:"-" orm:"pk" json:"task_id,omitempty"`
+	Task_id           int       `json:"task_id,omitempty"`
 	Title             string    `json:"title,omitempty"`
 	Description       string    `json:"description,omitempty"`
 	Groups_assigned   []int     `json:"groups_assigned,omitempty"`
@@ -67,8 +67,8 @@ type TaskCreateDelete struct {
 	Status            string    `json:"status.omitempty"`
 	Updated_by        int       `json:"updated_by,omitempty"`
 	Created_by        int       `json:"created_by,omitempty"`
-	Updated_on        time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
-	Created_on        time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
+	Updated_on        time.Time `json:"updated_on,omitempty"`
+	Created_on        time.Time `json:"created_on,omitempty"`
 }
 
 /*GroupQuery

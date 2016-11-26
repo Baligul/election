@@ -3,7 +3,7 @@ package voters
 import "time"
 
 type Voter_21 struct {
-	Voter_id              int       `form:"-" orm:"pk" json:"voter_id,omitempty"`
+	Voter_id              int       `form:"-" orm:"auto" json:"voter_id,omitempty"`
 	Ac_number             int       `form:"acnumber" json:"ac_number,omitempty"`
 	Part_number           int       `form:"partnumber" json:"part_number,omitempty"`
 	Section_number        int       `form:"sectionnumber" json:"section_number,omitempty"`
