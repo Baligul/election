@@ -34,8 +34,8 @@ import (
 
 func init() {
 	orm.RegisterModel(new(modelTasks.Task),
-		new(modelTasks.TaskGroupMap),
-		new(modelTasks.TaskAccountMap))
+		new(modelTasks.Taskgroupmap),
+		new(modelTasks.Taskaccountmap))
 }
 
 type TaskCtrl struct {
@@ -47,8 +47,8 @@ func (e *TaskCtrl) GetTasks() {
 		tasksCount int64
 		tasks      modelTasks.Tasks
 		userTasks  []*modelTasks.Task
-		tgMap      []*modelTasks.TaskGroupMap
-		taMap      []*modelTasks.TaskAccountMap
+		tgMap      []*modelTasks.Taskgroupmap
+		taMap      []*modelTasks.Taskaccountmap
 		err        error
 		num        int64
 		user       []*modelAccounts.Account
@@ -66,11 +66,11 @@ func (e *TaskCtrl) GetTasks() {
 	// Create query string for task table
 	qsTask := o.QueryTable("task")
 
-	// Create query string for taskgroupmap table
-	qsTaskGroupMap := o.QueryTable("taskgroupmap")
+	// Create query string for Taskgroupmap table
+	qsTaskgroupmap := o.QueryTable("Taskgroupmap")
 
-	// Create query string for taskaccountmap table
-	qsTaskAccountMap := o.QueryTable("taskaccountmap")
+	// Create query string for Taskaccountmap table
+	qsTaskaccountmap := o.QueryTable("Taskaccountmap")
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
@@ -194,20 +194,20 @@ func (e *TaskCtrl) GetTasks() {
 	qsTask = qsTask.SetCond(cond)
 
 	if condGroupsAssigned != nil && !condGroupsAssigned.IsEmpty() {
-		qsTaskGroupMap = qsTaskGroupMap.SetCond(condGroupsAssigned)
-		qsTaskGroupMap = qsTaskGroupMap.SetCond(condStatus)
+		qsTaskgroupmap = qsTaskgroupmap.SetCond(condGroupsAssigned)
+		qsTaskgroupmap = qsTaskgroupmap.SetCond(condStatus)
 	}
 
 	if condGroupsAssigned != nil && !condGroupsAssigned.IsEmpty() {
-		qsTaskAccountMap = qsTaskAccountMap.SetCond(condAccountsAssigned)
-		qsTaskAccountMap = qsTaskAccountMap.SetCond(condStatus)
+		qsTaskaccountmap = qsTaskaccountmap.SetCond(condAccountsAssigned)
+		qsTaskaccountmap = qsTaskaccountmap.SetCond(condStatus)
 	}
 
-	_, err = qsTaskGroupMap.Filter("Created_by__exact", user[0].Account_id).All(&tgMap)
+	_, err = qsTaskgroupmap.Filter("Created_by__exact", user[0].Account_id).All(&tgMap)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Db Error TaskGroupMap. Unable to get the tasks.")
+		responseStatus.Message = fmt.Sprintf("Db Error Taskgroupmap. Unable to get the tasks.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -223,11 +223,11 @@ func (e *TaskCtrl) GetTasks() {
 		qsTask = qsTask.SetCond(condTaskId)
 	}
 
-	_, err = qsTaskAccountMap.Filter("Created_by__exact", user[0].Account_id).All(&taMap)
+	_, err = qsTaskaccountmap.Filter("Created_by__exact", user[0].Account_id).All(&taMap)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Db Error TaskAccountMap. Unable to get the tasks.")
+		responseStatus.Message = fmt.Sprintf("Db Error Taskaccountmap. Unable to get the tasks.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -362,7 +362,7 @@ func (e *TaskCtrl) CreateTask() {
 		e.ServeJSON()
 	}
 
-	tgMap := new(modelTasks.TaskGroupMap)
+	tgMap := new(modelTasks.Taskgroupmap)
 
 	for _, groupId := range userTask.Groups_assigned {
 		tgMap.Task_id = int(taskId)
@@ -381,7 +381,7 @@ func (e *TaskCtrl) CreateTask() {
 		}
 	}
 
-	taMap := new(modelTasks.TaskAccountMap)
+	taMap := new(modelTasks.Taskaccountmap)
 
 	for _, accountId := range userTask.Accounts_assigned {
 		taMap.Task_id = int(taskId)
@@ -410,8 +410,8 @@ func (e *TaskCtrl) UpdateTask() {
 		num         int64
 		user        []*modelAccounts.Account
 		userTasks   []*modelTasks.Task
-		tgMap       []*modelTasks.TaskGroupMap
-		taMap       []*modelTasks.TaskAccountMap
+		tgMap       []*modelTasks.Taskgroupmap
+		taMap       []*modelTasks.Taskaccountmap
 		title       string
 		description string
 	)
@@ -428,10 +428,10 @@ func (e *TaskCtrl) UpdateTask() {
 	// Create query string for task table
 	qsTask := o.QueryTable("task")
 	condTaskId := orm.NewCondition()
-	qsTaskGroupMap := o.QueryTable("taskgroupmap")
-	condTaskGroupMap := orm.NewCondition()
-	qsTaskAccountMap := o.QueryTable("taskaccountmap")
-	condTaskAccountMap := orm.NewCondition()
+	qsTaskgroupmap := o.QueryTable("Taskgroupmap")
+	condTaskgroupmap := orm.NewCondition()
+	qsTaskaccountmap := o.QueryTable("Taskaccountmap")
+	condTaskaccountmap := orm.NewCondition()
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
@@ -527,13 +527,13 @@ func (e *TaskCtrl) UpdateTask() {
 	}
 
 	for _, groupId := range userTask.Groups_assigned {
-		condTaskGroupMap = condTaskGroupMap.And("Task_id__exact", userTask.Task_id).And("Group_id__exact", groupId)
-		qsTaskGroupMap = qsTaskGroupMap.SetCond(condTaskGroupMap)
-		num, err = qsTaskGroupMap.All(&tgMap)
+		condTaskgroupmap = condTaskgroupmap.And("Task_id__exact", userTask.Task_id).And("Group_id__exact", groupId)
+		qsTaskgroupmap = qsTaskgroupmap.SetCond(condTaskgroupmap)
+		num, err = qsTaskgroupmap.All(&tgMap)
 		if err != nil {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error TaskGroupMap. Unable to find the taskgroupmap.")
+			responseStatus.Message = fmt.Sprintf("Db Error Taskgroupmap. Unable to find the Taskgroupmap.")
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
@@ -542,12 +542,12 @@ func (e *TaskCtrl) UpdateTask() {
 		if num == 0 {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error TaskGroupMap. Unable to find the taskgroupmap.")
+			responseStatus.Message = fmt.Sprintf("Db Error Taskgroupmap. Unable to find the Taskgroupmap.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
 
-		num, err = qsTaskGroupMap.Update(orm.Params{
+		num, err = qsTaskgroupmap.Update(orm.Params{
 			"Status": userTask.Status,
 		})
 		if err != nil {
@@ -561,13 +561,13 @@ func (e *TaskCtrl) UpdateTask() {
 	}
 
 	for _, accountId := range userTask.Accounts_assigned {
-		condTaskAccountMap = condTaskAccountMap.And("Task_id__exact", userTask.Task_id).And("Account_id__exact", accountId)
-		qsTaskAccountMap = qsTaskAccountMap.SetCond(condTaskAccountMap)
-		num, err = qsTaskAccountMap.All(&taMap)
+		condTaskaccountmap = condTaskaccountmap.And("Task_id__exact", userTask.Task_id).And("Account_id__exact", accountId)
+		qsTaskaccountmap = qsTaskaccountmap.SetCond(condTaskaccountmap)
+		num, err = qsTaskaccountmap.All(&taMap)
 		if err != nil {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error TaskAccountMap. Unable to find the taskaccountmap.")
+			responseStatus.Message = fmt.Sprintf("Db Error Taskaccountmap. Unable to find the Taskaccountmap.")
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
@@ -576,12 +576,12 @@ func (e *TaskCtrl) UpdateTask() {
 		if num == 0 {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error TaskAccountMap. Unable to find the taskaccountmap.")
+			responseStatus.Message = fmt.Sprintf("Db Error Taskaccountmap. Unable to find the Taskaccountmap.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
 
-		num, err = qsTaskAccountMap.Update(orm.Params{
+		num, err = qsTaskaccountmap.Update(orm.Params{
 			"Status": userTask.Status,
 		})
 		if err != nil {
@@ -600,8 +600,8 @@ func (e *TaskCtrl) UpdateTask() {
 
 func (e *TaskCtrl) DeleteTask() {
 	var (
-		tgMap []*modelTasks.TaskGroupMap
-		taMap []*modelTasks.TaskAccountMap
+		tgMap []*modelTasks.Taskgroupmap
+		taMap []*modelTasks.Taskaccountmap
 		err   error
 		num   int64
 		user  []*modelAccounts.Account
@@ -619,11 +619,11 @@ func (e *TaskCtrl) DeleteTask() {
 	// Create query string for task table
 	qsTask := o.QueryTable("task")
 
-	// Create query string for taskgroupmap table
-	qsTaskGroupMap := o.QueryTable("taskgroupmap")
+	// Create query string for Taskgroupmap table
+	qsTaskgroupmap := o.QueryTable("Taskgroupmap")
 
-	// Create query string for taskaccountmap table
-	qsTaskAccountMap := o.QueryTable("taskaccountmap")
+	// Create query string for Taskaccountmap table
+	qsTaskaccountmap := o.QueryTable("Taskaccountmap")
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
@@ -747,18 +747,18 @@ func (e *TaskCtrl) DeleteTask() {
 	qsTask = qsTask.SetCond(cond)
 
 	if condGroupsAssigned != nil && !condGroupsAssigned.IsEmpty() {
-		qsTaskGroupMap = qsTaskGroupMap.SetCond(condGroupsAssigned)
-		qsTaskGroupMap = qsTaskGroupMap.SetCond(condStatus)
+		qsTaskgroupmap = qsTaskgroupmap.SetCond(condGroupsAssigned)
+		qsTaskgroupmap = qsTaskgroupmap.SetCond(condStatus)
 	}
 
 	if condGroupsAssigned != nil && !condGroupsAssigned.IsEmpty() {
-		qsTaskAccountMap = qsTaskAccountMap.SetCond(condAccountsAssigned)
-		qsTaskAccountMap = qsTaskAccountMap.SetCond(condStatus)
+		qsTaskaccountmap = qsTaskaccountmap.SetCond(condAccountsAssigned)
+		qsTaskaccountmap = qsTaskaccountmap.SetCond(condStatus)
 	}
 
-	_, err = qsTaskGroupMap.Filter("Created_by__exact", user[0].Account_id).All(&tgMap)
-	// Delete from taskgroupmap
-	num, err = qsTaskGroupMap.Delete()
+	_, err = qsTaskgroupmap.Filter("Created_by__exact", user[0].Account_id).All(&tgMap)
+	// Delete from Taskgroupmap
+	num, err = qsTaskgroupmap.Delete()
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -778,9 +778,9 @@ func (e *TaskCtrl) DeleteTask() {
 		qsTask = qsTask.SetCond(condTaskId)
 	}
 
-	_, err = qsTaskAccountMap.Filter("Created_by__exact", user[0].Account_id).All(&taMap)
-	// Delete from taskaccountmap
-	num, err = qsTaskAccountMap.Delete()
+	_, err = qsTaskaccountmap.Filter("Created_by__exact", user[0].Account_id).All(&taMap)
+	// Delete from Taskaccountmap
+	num, err = qsTaskaccountmap.Delete()
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
