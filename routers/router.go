@@ -38,7 +38,7 @@ func init() {
 	beego.Router("/api/email/voters", &voters.VotersCtrl{}, "post:CreateAndEmailPdf")
 	beego.Router("/api/email/users", &users.UsersCtrl{}, "post:CreateAndEmailPdf")
 	beego.Router("/api/task", &tasks.TaskCtrl{}, "post:CreateTask")
-	beego.Router("/api/tasks", &tasks.TaskCtrl{}, "get:GetTasks")
+	beego.Router("/api/tasks", &tasks.TaskCtrl{}, "get,post:GetTasks")
 	beego.Router("/api/task", &tasks.TaskCtrl{}, "put:UpdateTask")
 	beego.Router("/api/task", &tasks.TaskCtrl{}, "delete:DeleteTask")
 	beego.Router("/api/read/json", &controllers.ElectionController{}, "post:ReadJson")
