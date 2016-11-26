@@ -28,7 +28,7 @@ type Task struct {
 }
 
 type TaskGroupMap struct {
-	Task_group_map_id int       `form:"-" orm:"auto" json:"task_group_map_id,omitempty"`
+	Taskgroupmap_id   int       `form:"-" orm:"auto" json:"taskgroupmapid,omitempty"`
 	Task_id           int       `json:"task_id,omitempty"`
 	Group_id          int       `json:"group_id,omitempty"`
 	Status            string    `json:"status,omitempty"`
@@ -39,7 +39,7 @@ type TaskGroupMap struct {
 }
 
 type TaskAccountMap struct {
-	Task_account_map_id int       `form:"-" orm:"auto" json:"task_account_map_id,omitempty"`
+	Taskaccountmap_id 	int       `form:"-" orm:"auto" json:"taskaccountmapid,omitempty"`
 	Task_id             int       `json:"task_id,omitempty"`
 	Account_id          int       `json:"account_id,omitempty"`
 	Status              string    `json:"status,omitempty"`
