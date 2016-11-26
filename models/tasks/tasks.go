@@ -27,26 +27,26 @@ type Task struct {
 	Created_on  time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
 }
 
-type TaskGroupMap struct {
-	Taskgroupmap_id   int       `form:"-" orm:"auto" json:"taskgroupmapid,omitempty"`
+type Taskgroupmap struct {
+	Taskgroupmap_id int       `form:"-" orm:"auto" json:"taskgroupmap_id,omitempty"`
+	Task_id         int       `json:"task_id,omitempty"`
+	Group_id        int       `json:"group_id,omitempty"`
+	Status          string    `json:"status,omitempty"`
+	Updated_by      int       `json:"updated_by,omitempty"`
+	Created_by      int       `json:"created_by,omitempty"`
+	Updated_on      time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
+	Created_on      time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
+}
+
+type Taskaccountmap struct {
+	Taskaccountmap_id int       `form:"-" orm:"auto" json:"taskaccountmap_id,omitempty"`
 	Task_id           int       `json:"task_id,omitempty"`
-	Group_id          int       `json:"group_id,omitempty"`
+	Account_id        int       `json:"account_id,omitempty"`
 	Status            string    `json:"status,omitempty"`
 	Updated_by        int       `json:"updated_by,omitempty"`
 	Created_by        int       `json:"created_by,omitempty"`
 	Updated_on        time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
 	Created_on        time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
-}
-
-type TaskAccountMap struct {
-	Taskaccountmap_id 	int       `form:"-" orm:"auto" json:"taskaccountmapid,omitempty"`
-	Task_id             int       `json:"task_id,omitempty"`
-	Account_id          int       `json:"account_id,omitempty"`
-	Status              string    `json:"status,omitempty"`
-	Updated_by          int       `json:"updated_by,omitempty"`
-	Created_by          int       `json:"created_by,omitempty"`
-	Updated_on          time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
-	Created_on          time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
 }
 
 type TaskQuery struct {
