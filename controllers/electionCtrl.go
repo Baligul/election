@@ -521,8 +521,11 @@ func (e *ElectionController) GetVoters() {
 	}
 
 	qsRampur = qsRampur.SetCond(cond)
+	qsRampur = qsRampur.OrderBy("Name_english")
 	qsMoradabad = qsMoradabad.SetCond(cond)
+	qsMoradabad = qsMoradabad.OrderBy("Name_english")
 	qsBijnor = qsBijnor.SetCond(cond)
+	qsBijnor = qsBijnor.OrderBy("Name_english")
 
 	// Get voters for each state
 	if len(query.DistrictNameEnglish) == 0 && len(query.DistrictNameHindi) == 0 && len(query.DistrictNumber) == 0 {
