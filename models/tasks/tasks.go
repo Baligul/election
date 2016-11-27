@@ -127,10 +127,10 @@ type TaskReturn struct {
 
 type Tasks struct {
 	Total int64        `json:"total,omitempty"`
-	Tasks []TaskReturn `json:"tasks,omitempty"`
+	Tasks []Task 	   `json:"tasks,omitempty"`
 }
 
-func (tasks *Tasks) Populate(tasksList []*TaskReturn) {
+func (tasks *Tasks) Populate(tasksList []*Task) {
 	for _, task := range tasksList {
 		tasks.Tasks = append(tasks.Tasks, *task)
 	}

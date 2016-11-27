@@ -44,20 +44,15 @@ type TaskCtrl struct {
 
 func (e *TaskCtrl) GetTasks() {
 	var (
-		tasksCount   int64
-		tasks        modelTasks.Tasks
-		tasksReturn  []*modelTasks.TaskReturn
-		tgMap        []*modelTasks.Taskgroupmap
-		taMap        []*modelTasks.Taskaccountmap
-		err          error
-		num          int64
-		user         []*modelAccounts.Account
-		taskIds      []int
-		createdByIds []int
-		updatedByIds []int
+		tasksCount int64
+		tasks      modelTasks.Tasks
+		userTasks  []*modelTasks.Task
+		tgMap      []*modelTasks.Taskgroupmap
+		taMap      []*modelTasks.Taskaccountmap
+		err        error
+		num        int64
+		user       []*modelAccounts.Account
 	)
-
-	selectQuery := "SELECT t.task_id, t.title, t.description, t.updated_by, t.created_by, t.updated_on, t.created_on, tam.status AS account_status, tam.updated_by AS account_status_updated_by, tam.updated_on AS account_status_updated_on, a.account_id, a.display_name FROM task AS t LEFT OUTER JOIN taskaccountmap AS tam ON t.task_id = tam.task_id LEFT OUTER JOIN account AS a ON tam.account_id = a.account_id"
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
@@ -67,6 +62,9 @@ func (e *TaskCtrl) GetTasks() {
 
 	// Create query string for account table
 	qsAccount := o.QueryTable("account")
+
+	// Create query string for task table
+	qsTask := o.QueryTable("task")
 
 	// Create query string for Taskgroupmap table
 	qsTaskgroupmap := o.QueryTable("Taskgroupmap")
@@ -124,19 +122,19 @@ func (e *TaskCtrl) GetTasks() {
 		e.ServeJSON()
 	}
 
-	condTaskId := ""
+	cond := orm.NewCondition()
+	condTaskId := orm.NewCondition()
 	condGroupsAssigned := orm.NewCondition()
 	condAccountsAssigned := orm.NewCondition()
 	condStatus := orm.NewCondition()
-	condUpdatedBy := ""
-	condCreatedBy := ""
+	condUpdatedBy := orm.NewCondition()
+	condCreatedBy := orm.NewCondition()
 
 	// Apply filters for each query string
 	// Task Id
 	for _, taskId := range query.TaskId {
 		if taskId > 0 {
-			taskIds = append(taskIds, taskId)
-			condTaskId = condTaskId + " ?,"
+			condTaskId = condTaskId.Or("Task_id__exact", taskId)
 		}
 	}
 
@@ -162,87 +160,94 @@ func (e *TaskCtrl) GetTasks() {
 	// Updated By
 	for _, updatedBy := range query.UpdatedBy {
 		if updatedBy > 0 {
-			updatedByIds = append(updatedByIds, updatedBy)
-			condUpdatedBy = condUpdatedBy + " ?,"
+			condUpdatedBy = condUpdatedBy.Or("Updated_by__exact", updatedBy)
 		}
 	}
 
 	// Created By
 	for _, createdBy := range query.CreatedBy {
 		if createdBy > 0 {
-			createdByIds = append(createdByIds, createdBy)
-			condCreatedBy = condCreatedBy + " ?,"
+			condCreatedBy = condCreatedBy.Or("Created_by__exact", createdBy)
 		}
+	}
+
+	if condTaskId != nil && !condTaskId.IsEmpty() {
+		cond = condTaskId
+	}
+
+	if condUpdatedBy != nil && !condUpdatedBy.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condUpdatedBy)
+		} else {
+			cond = condUpdatedBy
+		}
+	}
+
+	if condCreatedBy != nil && !condCreatedBy.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condCreatedBy)
+		} else {
+			cond = condCreatedBy
+		}
+	}
+	
+	if cond != nil && !cond.IsEmpty() {
+		qsTask = qsTask.SetCond(cond)
 	}
 
 	if condGroupsAssigned != nil && !condGroupsAssigned.IsEmpty() {
 		qsTaskgroupmap = qsTaskgroupmap.SetCond(condGroupsAssigned)
 		qsTaskgroupmap = qsTaskgroupmap.SetCond(condStatus)
+
+		_, err = qsTaskgroupmap.All(&tgMap)
+		if err != nil {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Db Error Taskgroupmap. Unable to get the tasks.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+		condTaskId = orm.NewCondition()
+
+		for _, tg := range tgMap {
+			condTaskId = condTaskId.Or("Task_id__exact", tg.Task_id)
+		}
+
+		if condTaskId != nil && !condTaskId.IsEmpty() {
+			qsTask = qsTask.SetCond(condTaskId)
+		}
 	}
 
-	if condGroupsAssigned != nil && !condGroupsAssigned.IsEmpty() {
+	if condAccountsAssigned != nil && !condAccountsAssigned.IsEmpty() {
 		qsTaskaccountmap = qsTaskaccountmap.SetCond(condAccountsAssigned)
 		qsTaskaccountmap = qsTaskaccountmap.SetCond(condStatus)
-	}
 
-	_, err = qsTaskgroupmap.Filter("Created_by__exact", user[0].Account_id).All(&tgMap)
-	if err != nil {
-		responseStatus := modelVoters.NewResponseStatus()
-		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Db Error Taskgroupmap. Unable to get the tasks.")
-		responseStatus.Error = err.Error()
-		e.Data["json"] = &responseStatus
-		e.ServeJSON()
-	}
+		_, err = qsTaskaccountmap.All(&taMap)
+		if err != nil {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Db Error Taskaccountmap. Unable to get the tasks.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
 
-	for _, tg := range tgMap {
-		taskIds = append(taskIds, tg.Task_id)
-		condTaskId = condTaskId + "?,"
-	}
+		condTaskId = orm.NewCondition()
 
-	_, err = qsTaskaccountmap.Filter("Created_by__exact", user[0].Account_id).All(&taMap)
-	if err != nil {
-		responseStatus := modelVoters.NewResponseStatus()
-		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Db Error Taskaccountmap. Unable to get the tasks.")
-		responseStatus.Error = err.Error()
-		e.Data["json"] = &responseStatus
-		e.ServeJSON()
-	}
+		for _, ta := range taMap {
+			condTaskId = condTaskId.Or("Task_id__exact", ta.Task_id)
+		}
 
-	for _, ta := range taMap {
-		taskIds = append(taskIds, ta.Task_id)
-		condTaskId = condTaskId + "?,"
+		if condTaskId != nil && !condTaskId.IsEmpty() {
+			qsTask = qsTask.SetCond(condTaskId)
+		}
 	}
 
 	// Get tasks
-	condTaskId = strings.TrimRight(strings.TrimSpace(condTaskId), ",")
-	if len(taskIds) > 0 && len(createdByIds) > 0 && len(updatedByIds) > 0 {
-		selectQuery = selectQuery + " WHERE t.task_id IN (" + condTaskId + ") AND t.created_by IN (" + condCreatedBy + ") AND t.updated_by IN (" + condUpdatedBy + ") AND t.created_by = ?"
-		tasksCount, err = o.Raw(selectQuery, taskIds, createdByIds, updatedByIds, user[0].Account_id).QueryRows(&tasksReturn)
-	} else if len(taskIds) > 0 && len(createdByIds) == 0 && len(updatedByIds) == 0 {
-		selectQuery = selectQuery + " WHERE t.task_id IN (" + condTaskId + ") AND t.created_by = ?"
-		tasksCount, err = o.Raw(selectQuery, taskIds, user[0].Account_id).QueryRows(&tasksReturn)
-	} else if len(taskIds) > 0 && len(createdByIds) > 0 && len(updatedByIds) == 0 {
-		selectQuery = selectQuery + " WHERE t.task_id IN (" + condTaskId + ") AND t.created_by IN (" + condCreatedBy + ") AND t.created_by = ?"
-		tasksCount, err = o.Raw(selectQuery, taskIds, createdByIds, user[0].Account_id).QueryRows(&tasksReturn)
-	} else if len(taskIds) > 0 && len(createdByIds) == 0 && len(updatedByIds) > 0 {
-		selectQuery = selectQuery + " WHERE t.task_id IN (" + condTaskId + ") AND t.updated_by IN (" + condUpdatedBy + ") AND t.created_by = ?"
-		tasksCount, err = o.Raw(selectQuery, taskIds, updatedByIds, user[0].Account_id).QueryRows(&tasksReturn)
-	} else if len(taskIds) == 0 && len(createdByIds) > 0 && len(updatedByIds) > 0 {
-		selectQuery = selectQuery + " WHERE t.created_by IN (" + condCreatedBy + ") AND t.updated_by IN (" + condUpdatedBy + ") AND t.created_by = ?"
-		tasksCount, err = o.Raw(selectQuery, createdByIds, updatedByIds, user[0].Account_id).QueryRows(&tasksReturn)
-	} else if len(taskIds) == 0 && len(createdByIds) > 0 && len(updatedByIds) == 0 {
-		selectQuery = selectQuery + " WHERE t.task_id IN (" + condTaskId + ") AND t.created_by IN (" + condCreatedBy + ") AND t.created_by = ?"
-		tasksCount, err = o.Raw(selectQuery, createdByIds, user[0].Account_id).QueryRows(&tasksReturn)
-	} else if len(taskIds) == 0 && len(createdByIds) == 0 && len(updatedByIds) > 0 {
-		selectQuery = selectQuery + " WHERE t.task_id IN (" + condTaskId + ") AND t.updated_by IN (" + condUpdatedBy + ") AND t.created_by = ?"
-		tasksCount, err = o.Raw(selectQuery, updatedByIds, user[0].Account_id).QueryRows(&tasksReturn)
-	} else {
-		selectQuery = selectQuery + " WHERE t.created_by = ?"
-		tasksCount, err = o.Raw(selectQuery, user[0].Account_id).QueryRows(&tasksReturn)
-	}
-
+	tasksCount, _ = qsTask.Count()
+	_, err = qsTask.Filter("Created_by__exact", user[0].Account_id).All(&userTasks)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -251,8 +256,8 @@ func (e *TaskCtrl) GetTasks() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
+	tasks.Populate(userTasks)
 
-	tasks.Populate(tasksReturn)
 	if tasksCount > 0 {
 		tasks.Total = tasksCount
 		e.Data["json"] = tasks
