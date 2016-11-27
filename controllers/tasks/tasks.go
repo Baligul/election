@@ -44,15 +44,20 @@ type TaskCtrl struct {
 
 func (e *TaskCtrl) GetTasks() {
 	var (
-		tasksCount int64
-		tasks      modelTasks.Tasks
-		userTasks  []*modelTasks.Task
-		tgMap      []*modelTasks.Taskgroupmap
-		taMap      []*modelTasks.Taskaccountmap
-		err        error
-		num        int64
-		user       []*modelAccounts.Account
+		tasksCount 	 int64
+		tasks      	 modelTasks.Tasks
+		tasksReturn  []*modelTasks.TaskReturn
+		tgMap      	 []*modelTasks.Taskgroupmap
+		taMap      	 []*modelTasks.Taskaccountmap
+		err        	 error
+		num        	 int64
+		user       	 []*modelAccounts.Account
+		taskIds	   	 []int
+		createdByIds []int
+		updatedByIds []int
 	)
+
+	selectQuery := "SELECT t.task_id, t.title, t.description, t.updated_by, t.created_by, t.updated_on, t.created_on, tam.status AS account_status, tam.updated_by AS account_status_updated_by, tam.updated_on AS account_status_updated_on, a.account_id, a.display_name FROM task AS t LEFT OUTER JOIN taskaccountmap AS tam ON t.task_id = tam.task_id LEFT OUTER JOIN account AS a ON tam.account_id = a.account_id"
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
@@ -62,9 +67,6 @@ func (e *TaskCtrl) GetTasks() {
 
 	// Create query string for account table
 	qsAccount := o.QueryTable("account")
-
-	// Create query string for task table
-	qsTask := o.QueryTable("task")
 
 	// Create query string for Taskgroupmap table
 	qsTaskgroupmap := o.QueryTable("Taskgroupmap")
@@ -122,19 +124,19 @@ func (e *TaskCtrl) GetTasks() {
 		e.ServeJSON()
 	}
 
-	cond := orm.NewCondition()
-	condTaskId := orm.NewCondition()
+	condTaskId := ""
 	condGroupsAssigned := orm.NewCondition()
 	condAccountsAssigned := orm.NewCondition()
 	condStatus := orm.NewCondition()
-	condUpdatedBy := orm.NewCondition()
-	condCreatedBy := orm.NewCondition()
+	condUpdatedBy := ""
+	condCreatedBy := ""
 
 	// Apply filters for each query string
 	// Task Id
 	for _, taskId := range query.TaskId {
 		if taskId > 0 {
-			condTaskId = condTaskId.Or("Task_id__exact", taskId)
+			taskIds = append(taskIds, taskId)
+			condTaskId = condTaskId + " ?,"
 		}
 	}
 
@@ -160,38 +162,18 @@ func (e *TaskCtrl) GetTasks() {
 	// Updated By
 	for _, updatedBy := range query.UpdatedBy {
 		if updatedBy > 0 {
-			condUpdatedBy = condUpdatedBy.Or("Updated_by__exact", updatedBy)
+			updatedByIds = append(updatedByIds, updatedBy)
+			condUpdatedBy = condUpdatedBy + " ?,"
 		}
 	}
 
 	// Created By
 	for _, createdBy := range query.CreatedBy {
 		if createdBy > 0 {
-			condCreatedBy = condCreatedBy.Or("Created_by__exact", createdBy)
+			createdByIds = append(createdByIds, createdBy)
+			condCreatedBy = condCreatedBy + " ?,"
 		}
 	}
-
-	if condTaskId != nil && !condTaskId.IsEmpty() {
-		cond = condTaskId
-	}
-
-	if condUpdatedBy != nil && !condUpdatedBy.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condUpdatedBy)
-		} else {
-			cond = condUpdatedBy
-		}
-	}
-
-	if condCreatedBy != nil && !condCreatedBy.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condCreatedBy)
-		} else {
-			cond = condCreatedBy
-		}
-	}
-
-	qsTask = qsTask.SetCond(cond)
 
 	if condGroupsAssigned != nil && !condGroupsAssigned.IsEmpty() {
 		qsTaskgroupmap = qsTaskgroupmap.SetCond(condGroupsAssigned)
@@ -213,14 +195,9 @@ func (e *TaskCtrl) GetTasks() {
 		e.ServeJSON()
 	}
 
-	condTaskId = orm.NewCondition()
-
 	for _, tg := range tgMap {
-		condTaskId = condTaskId.Or("Task_id__exact", tg.Task_id)
-	}
-
-	if condTaskId != nil && !condTaskId.IsEmpty() {
-		qsTask = qsTask.SetCond(condTaskId)
+		taskIds = append(taskIds, tg.Task_id)
+		condTaskId = condTaskId + "?,"
 	}
 
 	_, err = qsTaskaccountmap.Filter("Created_by__exact", user[0].Account_id).All(&taMap)
@@ -233,19 +210,39 @@ func (e *TaskCtrl) GetTasks() {
 		e.ServeJSON()
 	}
 
-	condTaskId = orm.NewCondition()
-
 	for _, ta := range taMap {
-		condTaskId = condTaskId.Or("Task_id__exact", ta.Task_id)
-	}
-
-	if condTaskId != nil && !condTaskId.IsEmpty() {
-		qsTask = qsTask.SetCond(condTaskId)
+		taskIds = append(taskIds, ta.Task_id)
+		condTaskId = condTaskId + "?,"
 	}
 
 	// Get tasks
-	tasksCount, _ = qsTask.Count()
-	_, err = qsTask.Filter("Created_by__exact", user[0].Account_id).All(&userTasks)
+	condTaskId = strings.TrimRight(strings.TrimSpace(condTaskId), ",")
+	if len(taskIds) > 0 && len(createdByIds) > 0 && len(updatedByIds) > 0 {
+		selectQuery = selectQuery + " WHERE t.task_id IN (" + condTaskId + ") AND t.created_by IN (" + condCreatedBy + ") AND t.updated_by IN (" + condUpdatedBy + ") AND t.created_by = ?"
+		tasksCount, err = o.Raw(selectQuery, taskIds, createdByIds, updatedByIds, user[0].Account_id).QueryRows(&tasksReturn)
+	} else if len(taskIds) > 0 && len(createdByIds) == 0 && len(updatedByIds) == 0 {
+		selectQuery = selectQuery + " WHERE t.task_id IN (" + condTaskId + ") AND t.created_by = ?"
+		tasksCount, err = o.Raw(selectQuery, taskIds, user[0].Account_id).QueryRows(&tasksReturn)
+	} else if len(taskIds) > 0 && len(createdByIds) > 0 && len(updatedByIds) == 0 {
+		selectQuery = selectQuery + " WHERE t.task_id IN (" + condTaskId + ") AND t.created_by IN (" + condCreatedBy + ") AND t.created_by = ?"
+		tasksCount, err = o.Raw(selectQuery, taskIds, createdByIds, user[0].Account_id).QueryRows(&tasksReturn)
+	} else if len(taskIds) > 0 && len(createdByIds) == 0 && len(updatedByIds) > 0 {
+		selectQuery = selectQuery + " WHERE t.task_id IN (" + condTaskId + ") AND t.updated_by IN (" + condUpdatedBy + ") AND t.created_by = ?"
+		tasksCount, err = o.Raw(selectQuery, taskIds, updatedByIds, user[0].Account_id).QueryRows(&tasksReturn)
+	} else if len(taskIds) == 0 && len(createdByIds) > 0 && len(updatedByIds) > 0 {
+		selectQuery = selectQuery + " WHERE t.created_by IN (" + condCreatedBy + ") AND t.updated_by IN (" + condUpdatedBy + ") AND t.created_by = ?"
+		tasksCount, err = o.Raw(selectQuery, createdByIds, updatedByIds, user[0].Account_id).QueryRows(&tasksReturn)
+	} else if len(taskIds) == 0 && len(createdByIds) > 0 && len(updatedByIds) == 0 {
+		selectQuery = selectQuery + " WHERE t.task_id IN (" + condTaskId + ") AND t.created_by IN (" + condCreatedBy + ") AND t.created_by = ?"
+		tasksCount, err = o.Raw(selectQuery, createdByIds, user[0].Account_id).QueryRows(&tasksReturn)
+	} else if len(taskIds) == 0 && len(createdByIds) == 0 && len(updatedByIds) > 0 {
+		selectQuery = selectQuery + " WHERE t.task_id IN (" + condTaskId + ") AND t.updated_by IN (" + condUpdatedBy + ") AND t.created_by = ?"
+		tasksCount, err = o.Raw(selectQuery, updatedByIds, user[0].Account_id).QueryRows(&tasksReturn)
+	} else {
+		selectQuery = selectQuery + " WHERE t.created_by = ?"
+		tasksCount, err = o.Raw(selectQuery, user[0].Account_id).QueryRows(&tasksReturn)
+	}
+
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -254,8 +251,8 @@ func (e *TaskCtrl) GetTasks() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	tasks.Populate(userTasks)
 
+	tasks.Populate(tasksReturn)
 	if tasksCount > 0 {
 		tasks.Total = tasksCount
 		e.Data["json"] = tasks

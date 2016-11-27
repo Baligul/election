@@ -64,11 +64,26 @@ type TaskCreateDelete struct {
 	Description       string    `json:"description,omitempty"`
 	Groups_assigned   []int     `json:"groups_assigned,omitempty"`
 	Accounts_assigned []int     `json:"accounts_assigned,omitempty"`
-	Status            string    `json:"status.omitempty"`
+	Status            string    `json:"status,omitempty"`
 	Updated_by        int       `json:"updated_by,omitempty"`
 	Created_by        int       `json:"created_by,omitempty"`
 	Updated_on        time.Time `json:"updated_on,omitempty"`
 	Created_on        time.Time `json:"created_on,omitempty"`
+}
+
+type TaskReturn struct {
+	Task_id           		  int       `json:"task_id,omitempty"`
+	Title             		  string    `json:"title,omitempty"`
+	Description       		  string    `json:"description,omitempty"`
+	Account_id		  		  int		`json:"account_id,omitempty"`
+	Display_name	  		  string	`json:"display_name,omitempty"`
+	Account_status    		  string 	`json:"account_status,omitempty"`
+	Account_status_updated_by int 		`json:"account_status_updated_by,omitempty"`
+	Account_status_updated_on time.Time	`json:"account_status_updated_on,omitempty"`
+	Updated_by        		  int       `json:"updated_by,omitempty"`
+	Created_by       		  int       `json:"created_by,omitempty"`
+	Updated_on        		  time.Time `json:"updated_on,omitempty"`
+	Created_on       		  time.Time `json:"created_on,omitempty"`
 }
 
 /*GroupQuery
@@ -111,11 +126,11 @@ type TaskCreateDelete struct {
 */
 
 type Tasks struct {
-	Total int64  `json:"total,omitempty"`
-	Tasks []Task `json:"tasks,omitempty"`
+	Total int64  	   `json:"total,omitempty"`
+	Tasks []TaskReturn `json:"tasks,omitempty"`
 }
 
-func (tasks *Tasks) Populate(tasksList []*Task) {
+func (tasks *Tasks) Populate(tasksList []*TaskReturn) {
 	for _, task := range tasksList {
 		tasks.Tasks = append(tasks.Tasks, *task)
 	}
