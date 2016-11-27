@@ -41,5 +41,6 @@ func init() {
 	beego.Router("/api/tasks", &tasks.TaskCtrl{}, "get,post:GetTasks")
 	beego.Router("/api/task", &tasks.TaskCtrl{}, "put:UpdateTask")
 	beego.Router("/api/task", &tasks.TaskCtrl{}, "delete:DeleteTask")
+	beego.Router("/api/taskdetail", &tasks.TaskCtrl{}, "get,post:GetTaskDetail")
 	beego.Router("/api/read/json", &controllers.ElectionController{}, "post:ReadJson")
 }

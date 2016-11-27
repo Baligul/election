@@ -277,6 +277,128 @@ func (e *TaskCtrl) GetTasks() {
 	e.ServeJSON()
 }
 
+func (e *TaskCtrl) GetTaskDetail() {
+	var (
+		tasks		   []*modelTasks.Task
+		taskDetail	   modelTasks.TaskDetail
+		accountDetails []*modelTasks.AccountDetails
+		err     	   error
+		num     	   int64
+		user    	   []*modelAccounts.Account
+	)
+
+	mobileNo, _ := e.GetInt("mobile_no")
+	token := e.GetString("token")
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	// Create query string for account table
+	qsAccount := o.QueryTable("account")
+
+	// Create query string for task table
+	qsTask := o.QueryTable("task")
+
+	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
+	if !exist {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
+
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	if num > 0 {
+		if user[0].Token != token {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+	} else {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	inputJson := e.Ctx.Input.RequestBody
+	query := new(modelTasks.Task)
+
+	err = json.Unmarshal(inputJson, &query)
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	condTaskId := orm.NewCondition()
+
+	// Apply filters for each query string
+	// Task Id
+	if query.Task_id > 0 {
+		condTaskId = condTaskId.And("Task_id__exact", query.Task_id)
+	} else {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Invalid task id. Unable to get the task details.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	qsTask = qsTask.SetCond(condTaskId)
+
+	// Get task details
+	num, err = qsTask.Filter("Created_by__exact", user[0].Account_id).All(&tasks)
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	if num > 0 {
+		taskDetail.Populate(tasks[0])
+		_, err = o.Raw("SELECT tam.account_id, tam.status, tam.updated_by AS status_updated_by, tam.updated_on AS status_updated_on, tam.created_by AS task_assigned_by, tam.created_on AS task_assigned_on, a.display_name, g.group_id, g.title AS group_title FROM taskaccountmap AS tam LEFT OUTER JOIN account AS a ON tam.account_id = a.account_id LEFT OUTER JOIN usergroup AS g ON a.group_id = g.group_id WHERE tam.task_id=?", query.Task_id).QueryRows(&accountDetails)
+		if err != nil {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+		taskDetail.AccountDetails = accountDetails
+		e.Data["json"] = taskDetail
+	} else {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "ok"
+		responseStatus.Message = "Invalid task id. Unable to get the task details."
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+	e.ServeJSON()
+}
+
 func (e *TaskCtrl) CreateTask() {
 	var (
 		err      error
