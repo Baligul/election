@@ -44,14 +44,16 @@ type TaskCtrl struct {
 
 func (e *TaskCtrl) GetTasks() {
 	var (
-		tasksCount int64
-		tasks      modelTasks.Tasks
-		userTasks  []*modelTasks.Task
-		tgMap      []*modelTasks.Taskgroupmap
-		taMap      []*modelTasks.Taskaccountmap
-		err        error
-		num        int64
-		user       []*modelAccounts.Account
+		tasksCount     int64
+		tasks          modelTasks.Tasks
+		userTasks      []*modelTasks.Task
+		tasksCreatedBy []*modelTasks.Task
+		tgMap          []*modelTasks.Taskgroupmap
+		taMap          []*modelTasks.Taskaccountmap
+		accountsMap    []*modelTasks.Taskaccountmap
+		err            error
+		num            int64
+		user           []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -65,12 +67,14 @@ func (e *TaskCtrl) GetTasks() {
 
 	// Create query string for task table
 	qsTask := o.QueryTable("task")
+	qsTaskCreatedBy := o.QueryTable("task")
 
 	// Create query string for Taskgroupmap table
 	qsTaskgroupmap := o.QueryTable("Taskgroupmap")
 
 	// Create query string for Taskaccountmap table
 	qsTaskaccountmap := o.QueryTable("Taskaccountmap")
+	qsAccountAssigned := o.QueryTable("Taskaccountmap")
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
@@ -183,6 +187,7 @@ func (e *TaskCtrl) GetTasks() {
 		}
 	}
 
+	//condCreatedBy = condCreatedBy.Or("Created_by__exact", user[0].Account_id)
 	if condCreatedBy != nil && !condCreatedBy.IsEmpty() {
 		if cond != nil && !cond.IsEmpty() {
 			cond = cond.AndCond(condCreatedBy)
@@ -243,6 +248,46 @@ func (e *TaskCtrl) GetTasks() {
 		if condTaskId != nil && !condTaskId.IsEmpty() {
 			qsTask = qsTask.SetCond(condTaskId)
 		}
+	}
+
+	_, err = qsAccountAssigned.Filter("Account_id__exact", user[0].Account_id).All(&accountsMap)
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Db Error Taskgroupmap. Unable to get the tasks.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	condTaskId = orm.NewCondition()
+
+	for _, am := range accountsMap {
+		condTaskId = condTaskId.Or("Task_id__exact", am.Task_id)
+	}
+
+	if condTaskId != nil && !condTaskId.IsEmpty() {
+		qsTask = qsTask.SetCond(condTaskId)
+	}
+
+	_, err = qsTaskCreatedBy.Filter("Created_by__exact", user[0].Account_id).All(&tasksCreatedBy)
+	if err != nil {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Db Error tasks. Unable to get the tasks.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	condTaskId = orm.NewCondition()
+
+	for _, tcb := range tasksCreatedBy {
+		condTaskId = condTaskId.Or("Task_id__exact", tcb.Task_id)
+	}
+
+	if condTaskId != nil && !condTaskId.IsEmpty() {
+		qsTask = qsTask.SetCond(condTaskId)
 	}
 
 	// Get tasks
