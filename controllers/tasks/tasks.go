@@ -190,7 +190,7 @@ func (e *TaskCtrl) GetTasks() {
 			cond = condCreatedBy
 		}
 	}
-	
+
 	if cond != nil && !cond.IsEmpty() {
 		qsTask = qsTask.SetCond(cond)
 	}
@@ -279,12 +279,12 @@ func (e *TaskCtrl) GetTasks() {
 
 func (e *TaskCtrl) GetTaskDetail() {
 	var (
-		tasks		   []*modelTasks.Task
-		taskDetail	   modelTasks.TaskDetail
+		tasks          []*modelTasks.Task
+		taskDetail     modelTasks.TaskDetail
 		accountDetails []*modelTasks.AccountDetails
-		err     	   error
-		num     	   int64
-		user    	   []*modelAccounts.Account
+		err            error
+		num            int64
+		user           []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
