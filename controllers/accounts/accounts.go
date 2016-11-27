@@ -162,7 +162,7 @@ func (e *AccountCtrl) GetAccounts() {
 	qsUserAccount = qsUserAccount.SetCond(cond)
 
 	// Get accounts
-	accountsCount, _ = qsUserAccount.Count()
+	accountsCount, _ = qsUserAccount.Filter("Leader_id__exact", user[0].Account_id).Count()
 	_, err = qsUserAccount.Filter("Leader_id__exact", user[0].Account_id).All(&userAccounts)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()

@@ -162,7 +162,7 @@ func (e *GroupCtrl) GetGroups() {
 	qsGroup = qsGroup.SetCond(cond)
 
 	// Get groups
-	groupsCount, _ = qsGroup.Count()
+	groupsCount, _ = qsGroup.Filter("Created_by__exact", user[0].Account_id).Count()
 	_, err = qsGroup.Filter("Created_by__exact", user[0].Account_id).All(&userGroups)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()

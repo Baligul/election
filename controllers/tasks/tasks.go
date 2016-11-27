@@ -292,7 +292,7 @@ func (e *TaskCtrl) GetTasks() {
 
 	// Get tasks
 	tasksCount, _ = qsTask.Count()
-	_, err = qsTask.Filter("Created_by__exact", user[0].Account_id).All(&userTasks)
+	_, err = qsTask.All(&userTasks)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -411,7 +411,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 	qsTask = qsTask.SetCond(condTaskId)
 
 	// Get task details
-	num, err = qsTask.Filter("Created_by__exact", user[0].Account_id).All(&tasks)
+	num, err = qsTask.All(&tasks)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
