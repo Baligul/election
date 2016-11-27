@@ -72,18 +72,18 @@ type TaskCreateDelete struct {
 }
 
 type TaskReturn struct {
-	Task_id           		  int       `json:"task_id,omitempty"`
-	Title             		  string    `json:"title,omitempty"`
-	Description       		  string    `json:"description,omitempty"`
-	Account_id		  		  int		`json:"account_id,omitempty"`
-	Display_name	  		  string	`json:"display_name,omitempty"`
-	Account_status    		  string 	`json:"account_status,omitempty"`
-	Account_status_updated_by int 		`json:"account_status_updated_by,omitempty"`
-	Account_status_updated_on time.Time	`json:"account_status_updated_on,omitempty"`
-	Updated_by        		  int       `json:"updated_by,omitempty"`
-	Created_by       		  int       `json:"created_by,omitempty"`
-	Updated_on        		  time.Time `json:"updated_on,omitempty"`
-	Created_on       		  time.Time `json:"created_on,omitempty"`
+	Task_id                   int       `json:"task_id,omitempty"`
+	Title                     string    `json:"title,omitempty"`
+	Description               string    `json:"description,omitempty"`
+	Account_id                int       `json:"account_id,omitempty"`
+	Display_name              string    `json:"display_name,omitempty"`
+	Account_status            string    `json:"account_status,omitempty"`
+	Account_status_updated_by int       `json:"account_status_updated_by,omitempty"`
+	Account_status_updated_on time.Time `json:"account_status_updated_on,omitempty"`
+	Updated_by                int       `json:"updated_by,omitempty"`
+	Created_by                int       `json:"created_by,omitempty"`
+	Updated_on                time.Time `json:"updated_on,omitempty"`
+	Created_on                time.Time `json:"created_on,omitempty"`
 }
 
 /*GroupQuery
@@ -126,7 +126,7 @@ type TaskReturn struct {
 */
 
 type Tasks struct {
-	Total int64  	   `json:"total,omitempty"`
+	Total int64        `json:"total,omitempty"`
 	Tasks []TaskReturn `json:"tasks,omitempty"`
 }
 

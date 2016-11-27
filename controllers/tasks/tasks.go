@@ -44,15 +44,15 @@ type TaskCtrl struct {
 
 func (e *TaskCtrl) GetTasks() {
 	var (
-		tasksCount 	 int64
-		tasks      	 modelTasks.Tasks
+		tasksCount   int64
+		tasks        modelTasks.Tasks
 		tasksReturn  []*modelTasks.TaskReturn
-		tgMap      	 []*modelTasks.Taskgroupmap
-		taMap      	 []*modelTasks.Taskaccountmap
-		err        	 error
-		num        	 int64
-		user       	 []*modelAccounts.Account
-		taskIds	   	 []int
+		tgMap        []*modelTasks.Taskgroupmap
+		taMap        []*modelTasks.Taskaccountmap
+		err          error
+		num          int64
+		user         []*modelAccounts.Account
+		taskIds      []int
 		createdByIds []int
 		updatedByIds []int
 	)
@@ -274,9 +274,10 @@ func (e *TaskCtrl) GetTasks() {
 
 func (e *TaskCtrl) CreateTask() {
 	var (
-		err  error
-		num  int64
-		user []*modelAccounts.Account
+		err      error
+		num      int64
+		user     []*modelAccounts.Account
+		accounts []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -375,6 +376,35 @@ func (e *TaskCtrl) CreateTask() {
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
+		}
+		accounts = nil
+		_, err = qsAccount.All(&accounts)
+		if err != nil {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+		taMap := new(modelTasks.Taskaccountmap)
+
+		for _, account := range accounts {
+			taMap.Task_id = int(taskId)
+			taMap.Account_id = account.Account_id
+			taMap.Status = "new"
+			taMap.Updated_by = user[0].Account_id
+			taMap.Created_by = user[0].Account_id
+			_, err := o.Insert(taMap)
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
 		}
 	}
 
