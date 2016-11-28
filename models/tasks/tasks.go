@@ -83,15 +83,21 @@ type TaskDetail struct {
 }
 
 type AccountDetails struct {
-	Account_id        int       `json:"account_id,omitempty"`
-	Status            string    `json:"status,omitempty"`
-	Status_updated_by int       `json:"status_updated_by,omitempty"`
-	Status_updated_on time.Time `json:"status_updated_on,omitempty"`
-	Task_assigned_by  int       `json:"task_assigned_by,omitempty"`
-	Task_assigned_on  time.Time `json:"task_assigned_on,omitempty"`
-	Display_name      string    `json:"display_name,omitempty"`
-	Group_id          string    `json:"group_id,omitempty"`
-	Group_title       string    `json:"group_title,omitempty"`
+	Account_id                     int       `json:"account_id,omitempty"`
+	Status                         string    `json:"status,omitempty"`
+	Status_updated_by              int       `json:"status_updated_by,omitempty"`
+	Status_updated_by_display_name string    `json:"status_updated_by_display_name,omitempty"`
+	Status_updated_on              time.Time `json:"status_updated_on,omitempty"`
+	Task_assigned_by               int       `json:"task_assigned_by,omitempty"`
+	Task_assigned_by_display_name  string    `json:"task_assigned_by_display_name,omitempty"`
+	Task_assigned_on               time.Time `json:"task_assigned_on,omitempty"`
+	Display_name                   string    `json:"display_name,omitempty"`
+	Group_id                       int       `json:"group_id,omitempty"`
+	Group_title                    string    `json:"group_title,omitempty"`
+}
+
+type AccountDisplayName struct {
+	Display_name string `json:"display_name,omitempty"`
 }
 
 /*GroupQuery

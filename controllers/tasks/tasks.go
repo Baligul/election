@@ -14,6 +14,10 @@
    Delete TASK
    curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' http://104.197.6.26:8080/api/task
    curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' "http://104.197.6.26:8080/api/task?mobile_no=9343352734&token=cc5b86572d1ad660"
+
+   GET TASK DETAILS
+   curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' http://104.197.6.26:8080/api/taskdetail
+   curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' "http://104.197.6.26:8080/api/taskdetail?mobile_no=9343352734&token=cc5b86572d1ad660"
 */
 
 package tasks
@@ -327,6 +331,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 		tasks          []*modelTasks.Task
 		taskDetail     modelTasks.TaskDetail
 		accountDetails []*modelTasks.AccountDetails
+		accountDN      []*modelTasks.AccountDisplayName
 		err            error
 		num            int64
 		user           []*modelAccounts.Account
@@ -431,6 +436,35 @@ func (e *TaskCtrl) GetTaskDetail() {
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
+		}
+
+		for _, accountDetail := range accountDetails {
+			accountDN = nil
+			_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", accountDetail.Status_updated_by).QueryRows(&accountDN)
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			accountDetail.Status_updated_by_display_name = accountDN[0].Display_name
+
+			accountDN = nil
+			_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", accountDetail.Task_assigned_by).QueryRows(&accountDN)
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			accountDetail.Task_assigned_by_display_name = accountDN[0].Display_name
+			if accountDetail.Group_title == "" {
+				accountDetail.Group_title = "Group not assigned"
+			}
 		}
 		taskDetail.AccountDetails = accountDetails
 		e.Data["json"] = taskDetail
