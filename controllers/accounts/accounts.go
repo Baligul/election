@@ -24,6 +24,7 @@ import (
 	"strings"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
+	modelGroups "github.com/Baligul/election/models/groups"
 	modelVoters "github.com/Baligul/election/models/voters"
 
 	"github.com/astaxie/beego"
@@ -47,6 +48,7 @@ func (e *AccountCtrl) GetAccounts() {
 		err           error
 		num           int64
 		user          []*modelAccounts.Account
+		userGroup     []*modelGroups.Usergroup
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -173,6 +175,25 @@ func (e *AccountCtrl) GetAccounts() {
 		e.ServeJSON()
 	}
 	accounts.Populate(userAccounts)
+
+	for _, userAccount := range accounts.Accounts {
+		userGroup = nil
+		_, err = o.Raw("SELECT title FROM usergroup WHERE group_id=?", userAccount.Group_id).QueryRows(&userGroup)
+		if err != nil {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+		if len(userGroup) > 0 {
+			userAccount.Group_title = userGroup[0].Title
+		}
+		if userAccount.Group_title == "" {
+			userAccount.Group_title = "Group not assigned"
+		}
+	}
 
 	if accountsCount > 0 {
 		accounts.Total = accountsCount

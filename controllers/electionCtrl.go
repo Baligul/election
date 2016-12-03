@@ -3300,6 +3300,28 @@ func (e *ElectionController) UpdateVoter() {
 				e.ServeJSON()
 			}
 		}
+
+		if len(strings.TrimSpace(voter.Image)) > 0 {
+			updatedRows, err := qsMoradabad.Update(orm.Params{
+				"image": voter.Image,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the image.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the image.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "ok"
 		responseStatus.Message = fmt.Sprintf("The voter data has been successfully updated.")
@@ -3374,6 +3396,28 @@ func (e *ElectionController) UpdateVoter() {
 				e.ServeJSON()
 			}
 		}
+
+		if len(strings.TrimSpace(voter.Image)) > 0 {
+			updatedRows, err := qsRampur.Update(orm.Params{
+				"image": voter.Image,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the image.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the image.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "ok"
 		responseStatus.Message = fmt.Sprintf("The voter data has been successfully updated.")
@@ -3443,6 +3487,28 @@ func (e *ElectionController) UpdateVoter() {
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the mobile number.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+
+		if len(strings.TrimSpace(voter.Image)) > 0 {
+			updatedRows, err := qsBijnor.Update(orm.Params{
+				"image": voter.Image,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the image.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the image.")
 				responseStatus.Error = "The voter id(s) provided is/are not valid."
 				e.Data["json"] = &responseStatus
 				e.ServeJSON()
