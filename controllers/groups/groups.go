@@ -1,19 +1,19 @@
 /*
    GET GROUPS
    curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4]}, "group_lead_id":[1,2,4]}' http://104.197.6.26:8080/api/groups
-   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://104.197.6.26:8080/api/groups?mobile_no=9343352734&token=cc5b86572d1ad660"
+   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://104.197.6.26:8080/api/groups?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    Update GROUP
    curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' http://104.197.6.26:8080/api/group
-   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=cc5b86572d1ad660"
+   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    Create GROUP
    curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' http://104.197.6.26:8080/api/group
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=cc5b86572d1ad660"
+   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    Delete GROUP
    curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' http://104.197.6.26:8080/api/group
-   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=cc5b86572d1ad660"
+   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 */
 
 package groups

@@ -1,23 +1,23 @@
 /*
    GET TASKS
    curl -X POST -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' http://104.197.6.26:8080/api/tasks
-   curl -X POST -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' "http://104.197.6.26:8080/api/tasks?mobile_no=9343352734&token=cc5b86572d1ad660"
+   curl -X POST -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' "http://104.197.6.26:8080/api/tasks?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    Update TASK
    curl -X PUT -H "Content-Type: application/json" -d '{"task_id": 2, "title":"updated title", "description":"updated description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"in process"}' http://104.197.6.26:8080/api/task
-   curl -X PUT -H "Content-Type: application/json" -d '{"task_id": 2, "title":"updated title", "description":"updated description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"in process"}' "http://104.197.6.26:8080/api/task?mobile_no=9343352734&token=cc5b86572d1ad660"
+   curl -X PUT -H "Content-Type: application/json" -d '{"task_id": 2, "title":"updated title", "description":"updated description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"in process"}' "http://104.197.6.26:8080/api/task?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    Create TASK
    curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4]}' http://104.197.6.26:8080/api/task
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4]}' "http://104.197.6.26:8080/api/task?mobile_no=9343352734&token=cc5b86572d1ad660"
+   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4]}' "http://104.197.6.26:8080/api/task?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    Delete TASK
    curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' http://104.197.6.26:8080/api/task
-   curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' "http://104.197.6.26:8080/api/task?mobile_no=9343352734&token=cc5b86572d1ad660"
+   curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' "http://104.197.6.26:8080/api/task?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    GET TASK DETAILS
    curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' http://104.197.6.26:8080/api/taskdetail
-   curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' "http://104.197.6.26:8080/api/taskdetail?mobile_no=9343352734&token=cc5b86572d1ad660"
+   curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' "http://104.197.6.26:8080/api/taskdetail?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 */
 
 package tasks
