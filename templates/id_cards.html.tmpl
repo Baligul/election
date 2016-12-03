@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <style>
+         .card {
+         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+         transition: 0.3s;
+         width: 70%;
+         }
+         .card:hover {
+         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+         }
+         .container {
+         padding: 2px 16px;
+         }
+      </style>
+   </head>
+   <body>
+      {{ range $account := .Accounts }}
+      <div class="card">
+         <center>
+            <h2>Samajwadi Party Worker</h2>
+         </center>
+         <div class="container">
+            <center><img src="{{$account.Image}}" alt="Avatar" style="width:50%"></center>
+         </div>
+         <div class="container">
+            <center>
+               <h3>{{$account.Display_name}}</h3>
+            </center>
+            <center>{{$account.Role}}</center>
+            <p>
+            <table>
+               <tr style="width:100%"></tr>
+               <td style="width:50%"><b>Gender{{$account.Sex}}</b>: Male</td>
+               <td style="width:50%"><b>Age</b>: {{$account.Age}}</td>
+               <tr></tr>
+               <tr style="width:100%"></tr>
+               <td style="width:50%"><b>Mobile</b>: {{$account.Mobile_no}}</td>
+               <td style="width:50%"><b>Sections Assigned</b>: {{$account.Approved_sections}}</td>
+               <tr></tr>
+               <tr></tr>
+               <td style="width:50%"><b>Email</b>: {{$account.Email}}</td>
+               <td style="width:50%"><b>Booths Assigned</b>: {{$account.Approved_booths}}</td>
+               <tr></tr>
+               <tr></tr>
+               <td style="width:50%"><b>Father's Name</b>: {{$account.Father_name}}</td>
+               <td style="width:50%"><b>Group</b>: {{$account.Group_title}}</td>
+               <tr></tr>
+            </table>
+            </p>
+         </div>
+      </div>
+      {{ end }}
+   </body>
+</html>

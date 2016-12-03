@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <style>
+         .card {
+         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+         transition: 0.3s;
+         width: 40%;
+         }
+         .card:hover {
+         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+         }
+         .container {
+         padding: 2px 16px;
+         }
+         .style1 {
+         color: #0066FF;
+         font-weight: bold;
+         }
+         .style2
+         {
+         text-align: justify;
+         }
+         .style4
+         {
+         text-align: center;
+         font-size: x-large;
+         font-weight: bold;
+         }
+      </style>
+   </head>
+   <body>
+      {{ range $voter := .Voters }}
+      <div class="card">
+         <div class="container">
+            <table style="width:520px; font-size: small; font-family: Arial, Helvetica, sans-serif;" cellpadding="5" cellspacing="1" bgcolor="#CCCCFF" border="2">
+               <tbody>
+                  <tr>
+                     <td colspan="2" class="style4">
+                        VOTER SLIP / मतदाता पर्ची
+                     </td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" class="style4">
+                        <img src="{{$voter.Image}}" alt="Avatar" style="width:50%">
+                     </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="2">District Name / जिले का नाम : </td>
+                     <td>
+                        <span>{{$voter.DistrictNameEnglish}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>{{$voter.DistrictNameHindi}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="2">AC (Name & No.) / विधान सभा क्षेत्र(नाम एवम संख्या) : </td>
+                     <td>
+                        <span>{{$voter.AcNumber}} {{$voter.AcNameEnglish}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>{{$voter.AcNumber}} {{$voter.AcNameHindi}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="2">Section (Name & No.) / मुहल्ला (नाम एवम संख्या) : </td>
+                     <td>
+                        <span>{{$voter.SectionNumber}} {{$voter.SectionNameEnglish}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>{{$voter.SectionNumber}} {{$voter.SectionNameHindi}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="2">Name / नाम : </td>
+                     <td>
+                        <span>{{$voter.NameEnglish}} </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>{{$voter.NameHindi}} </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>Gender / लिंग : </td>
+                     <td>
+                        <span>{{$voter.Gender}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>ID Card No. / पहचान पत्र संख्या : </td>
+                     <td>
+                        <span>{{$voter.IDCardNumber}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="2">Father/Husband Name / पिता/पति का नाम : </td>
+                     <td>
+                        <span>{{$voter.RelationNameEnglish}} </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>{{$voter.RelationNameHindi}} </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>Serial Number In Part / मतदाता क्रमांक : </td>
+                     <td>
+                        <span>{{$voter.SerialNumberInPart}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>Part Number / मतदान स्थल एवम संख्या: </td>
+                     <td>
+                        <span>{{$voter.PartNumber}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>Election Date / मतदान दिवस : </td>
+                     <td><span></span>  </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="2">Religion / धर्म : </td>
+                     <td>
+                        <span>{{$voter.ReligionEnglish}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>{{$voter.ReligionHindi}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>Age / आयु : </td>
+                     <td>
+                        <span>{{$voter.Age}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>Email / ईमेल : </td>
+                     <td>
+                        <span>{{$voter.Email}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>Mobile No. / मोबाइल संख्या : </td>
+                     <td>
+                        <span>{{$voter.MobileNo}}</span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td class="style2" colspan="2">Note 1 : This Voter Slip is not an identification 
+                        document.
+                     </td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" style="text-align: justify">Note 2 : Bringing this voter slip to the Polling 
+                        Station
+                        is not compulsory. It is issued only as a 
+                        convenience to electors.
+                     </td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" style="text-align: justify">Note 3 : If this voter slip does not have a photograph 
+                        or
+                        it has wrong particulars or photograph, the voter 
+                        can still be allowed to vote based on alternate 
+                        identity documents permitted by 
+                        Election Commission of India.
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+      <!--loop here-->
+   </body>
+</html>

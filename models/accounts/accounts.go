@@ -41,6 +41,10 @@ type Account struct {
 	Age                int       `json:"age,omitempty"`
 	Sex                string    `json:"sex,omitempty"`
 	Religion           string    `json:"religion,omitempty"`
+	Father_name        string    `json:"father_name,omitempty"`
+	Approved_sections  string    `json:"approved_sections,omitempty"`
+	Approved_booths    string    `json:"approved_booths,omitempty"`
+	Group_title        string    `json:"group_title,omitempty"`
 }
 
 type AccountQuery struct {

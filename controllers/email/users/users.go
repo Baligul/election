@@ -8,20 +8,21 @@ package users
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/jung-kurt/gofpdf"
-	"github.com/scorredoira/email"
 	"net/mail"
 	"net/smtp"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"
 
+	"github.com/Baligul/election/lib/html"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/lib/pq"
+	"github.com/scorredoira/email"
 )
 
 func init() {
@@ -106,7 +107,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 	}
 
 	filepath = createFilePath(query)
-	if _, err := os.Stat(filepath); os.IsNotExist(err) || filepath == "Downloads/users_list.pdf" {
+	if _, err := os.Stat(filepath); os.IsNotExist(err) || filepath == "Downloads/users_list" {
 		cond := orm.NewCondition()
 		condAccountId := orm.NewCondition()
 		condGroupId := orm.NewCondition()
@@ -186,7 +187,17 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 		}
 
 		// PDF creation code start here
-		err = createPdf(accounts, filepath)
+		err = html.GenerateHtmlFile("templates/id_cards.html.tmpl", accounts, filepath+".html")
+		if err != nil {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+		err = createPdf(filepath)
 		if err != nil {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
@@ -197,7 +208,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 		}
 	}
 
-	err = sendEmailWithAttachment(user[0].Email, user[0].Display_name, filepath)
+	err = sendEmailWithAttachment(user[0].Email, user[0].Display_name, filepath+".pdf")
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -214,59 +225,10 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 	e.ServeJSON()
 }
 
-func createPdf(accounts modelAccounts.Accounts, filepath string) error {
+func createPdf(filepath string) error {
 	// PDF creation code start here
-	//header := []string{"Voter Id", "Name", "Age", "Gender", "Religion", "Mobile No.", "Email", "Relation", "District", "Ac", "Section", "Part No.", "Serial No. in Part", "Vote"}
-	header := []string{"Name", "Age", "Gender", "Religion", "Mobile No.", "Email", "Role"}
-	pdf := gofpdf.New("L", "mm", "A4", "")
-	pdf.AddPage()
-	// Colored table
-	fancyTable := func() {
-		// Colors, line width and bold font
-		pdf.SetFillColor(255, 0, 0)
-		pdf.SetTextColor(255, 255, 255)
-		pdf.SetDrawColor(128, 0, 0)
-		pdf.SetLineWidth(.3)
-		pdf.SetFont("Arial", "B", 16)
-		// 	Header
-		//w := []float64{40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40}
-		w := []float64{30, 15, 15, 30, 30, 50, 60, 20}
-		wSum := 0.0
-		for _, v := range w {
-			wSum += v
-		}
-		for j, str := range header {
-			pdf.CellFormat(w[j], 7, str, "1", 0, "C", true, 0, "")
-		}
-		pdf.Ln(-1)
-		// Color and font restoration
-		pdf.SetFillColor(224, 235, 255)
-		pdf.SetTextColor(0, 0, 0)
-		pdf.SetFont("Arial", "", 0)
-		// 	Data
-		fill := false
-		for _, account := range accounts.Accounts {
-			pdf.CellFormat(w[0], 6, account.Display_name, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[1], 6, strconv.Itoa(account.Age), "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[2], 6, account.Sex, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[3], 6, account.Religion, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[4], 6, fmt.Sprintf("%d", account.Mobile_no), "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[5], 6, account.Email, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[6], 6, account.Role, "LR", 0, "", fill, 0, "")
-			/*pdf.CellFormat(w[7], 6, voter.Relation_name_english, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[8], 6, voter.District_name_english, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[9], 6, voter.Ac_name_english+"("+strconv.Itoa(voter.Ac_number)+")", "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[10], 6, voter.Section_name_english+"("+strconv.Itoa(voter.Section_number)+")", "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[11], 6, strconv.Itoa(voter.Part_number), "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[12], 6, strconv.Itoa(voter.Serial_number_in_part), "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[13], 6, strconv.Itoa(voter.Vote), "LR", 0, "", fill, 0, "")*/
-			pdf.Ln(-1)
-			fill = !fill
-		}
-		pdf.CellFormat(wSum, 0, "", "T", 0, "", false, 0, "")
-	}
-	fancyTable()
-	err := pdf.OutputFileAndClose(filepath)
+	// converts ".html" file to ".pdf"
+	err := exec.Command("wkhtmltox/bin/wkhtmltopdf", filepath+".html", filepath+".pdf").Run()
 	if err != nil {
 		return err
 	}
@@ -296,14 +258,14 @@ func sendEmailWithAttachment(toEmail string, displayName string, filepath string
 
 func createFilePath(query *modelAccounts.AccountQuery) string {
 	var filepath string
-	filepath = "Downloads/users_list.pdf"
+	filepath = "Downloads/users_list"
 
 	if len(query.LeaderId) == 1 {
 		filepath = "Downloads/Leader_" + strconv.Itoa(query.LeaderId[0])
 	}
 
 	if len(query.GroupId) == 1 {
-		if filepath == "Downloads/users_list.pdf" {
+		if filepath == "Downloads/users_list" {
 			filepath = "Downloads/Group_" + strconv.Itoa(query.GroupId[0])
 		} else {
 			filepath = filepath + "-Group_" + strconv.Itoa(query.GroupId[0])
@@ -311,15 +273,15 @@ func createFilePath(query *modelAccounts.AccountQuery) string {
 	}
 
 	if len(query.AccountId) == 1 {
-		if filepath == "Downloads/users_list.pdf" {
+		if filepath == "Downloads/users_list" {
 			filepath = "Downloads/Account_" + strconv.Itoa(query.AccountId[0])
 		} else {
 			filepath = filepath + "-Account_" + strconv.Itoa(query.AccountId[0])
 		}
 	}
 
-	if filepath != "Downloads/users_list.pdf" {
-		filepath = filepath + "-users_list.pdf"
+	if filepath != "Downloads/users_list" {
+		filepath = filepath + "-users_list"
 	}
 
 	return filepath

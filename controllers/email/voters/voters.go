@@ -8,17 +8,18 @@ package voters
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/jung-kurt/gofpdf"
 	"github.com/scorredoira/email"
 	"net/mail"
 	"net/smtp"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"
 
+	"github.com/Baligul/election/lib/html"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/lib/pq"
@@ -109,7 +110,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	}
 
 	filepath = createFilePath(query)
-	if _, err := os.Stat(filepath); os.IsNotExist(err) || filepath == "Downloads/voters_list.pdf" {
+	if _, err := os.Stat(filepath); os.IsNotExist(err) || filepath == "Downloads/voters_list" {
 		// Create query string for each and every district
 		qsRampur := o.QueryTable(modelVoters.GetTableName("Rampur"))
 		qsMoradabad := o.QueryTable(modelVoters.GetTableName("Moradabad"))
@@ -682,7 +683,17 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 		}
 
 		// PDF creation code start here
-		err = createPdf(voters, filepath)
+		err = html.GenerateHtmlFile("templates/voter_slips.html.tmpl", voters, filepath+".html")
+		if err != nil {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+		err = createPdf(filepath)
 		if err != nil {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
@@ -710,59 +721,10 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	e.ServeJSON()
 }
 
-func createPdf(voters modelVoters.Voters, filepath string) error {
+func createPdf(filepath string) error {
 	// PDF creation code start here
-	//header := []string{"Voter Id", "Name", "Age", "Gender", "Religion", "Mobile No.", "Email", "Relation", "District", "Ac", "Section", "Part No.", "Serial No. in Part", "Vote"}
-	header := []string{"Voter Id", "Name", "Age", "Gender", "Religion", "Mobile No."}
-	pdf := gofpdf.New("L", "mm", "A4", "")
-	pdf.AddPage()
-	// Colored table
-	fancyTable := func() {
-		// Colors, line width and bold font
-		pdf.SetFillColor(255, 0, 0)
-		pdf.SetTextColor(255, 255, 255)
-		pdf.SetDrawColor(128, 0, 0)
-		pdf.SetLineWidth(.3)
-		pdf.SetFont("Arial", "B", 16)
-		// 	Header
-		//w := []float64{40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40}
-		w := []float64{40, 40, 40, 40, 40, 40}
-		wSum := 0.0
-		for _, v := range w {
-			wSum += v
-		}
-		for j, str := range header {
-			pdf.CellFormat(w[j], 7, str, "1", 0, "C", true, 0, "")
-		}
-		pdf.Ln(-1)
-		// Color and font restoration
-		pdf.SetFillColor(224, 235, 255)
-		pdf.SetTextColor(0, 0, 0)
-		pdf.SetFont("Arial", "", 0)
-		// 	Data
-		fill := false
-		for _, voter := range voters.Voters {
-			pdf.CellFormat(w[0], 6, voter.Id_card_number, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[1], 6, voter.Name_english, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[2], 6, strconv.Itoa(voter.Age), "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[3], 6, voter.Gender, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[4], 6, voter.Religion_english, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[5], 6, fmt.Sprintf("%d", voter.Mobile_no), "LR", 0, "", fill, 0, "")
-			/*pdf.CellFormat(w[6], 6, voter.Email, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[7], 6, voter.Relation_name_english, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[8], 6, voter.District_name_english, "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[9], 6, voter.Ac_name_english+"("+strconv.Itoa(voter.Ac_number)+")", "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[10], 6, voter.Section_name_english+"("+strconv.Itoa(voter.Section_number)+")", "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[11], 6, strconv.Itoa(voter.Part_number), "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[12], 6, strconv.Itoa(voter.Serial_number_in_part), "LR", 0, "", fill, 0, "")
-			pdf.CellFormat(w[13], 6, strconv.Itoa(voter.Vote), "LR", 0, "", fill, 0, "")*/
-			pdf.Ln(-1)
-			fill = !fill
-		}
-		pdf.CellFormat(wSum, 0, "", "T", 0, "", false, 0, "")
-	}
-	fancyTable()
-	err := pdf.OutputFileAndClose(filepath)
+	// converts ".html" file to ".pdf"
+	err := exec.Command("wkhtmltox/bin/wkhtmltopdf", filepath+".html", filepath+".pdf").Run()
 	if err != nil {
 		return err
 	}
@@ -792,14 +754,14 @@ func sendEmailWithAttachment(toEmail string, displayName string, filepath string
 
 func createFilePath(query *modelVoters.Query) string {
 	var filepath string
-	filepath = "Downloads/voters_list.pdf"
+	filepath = "Downloads/voters_list"
 
 	if len(query.StateNumber) == 1 && query.StateNumber[0] == 27 {
 		filepath = "Downloads/UP"
 	}
 
 	if len(query.DistrictNameEnglish) == 1 {
-		if filepath == "Downloads/voters_list.pdf" {
+		if filepath == "Downloads/voters_list" {
 			filepath = "Downloads/" + query.DistrictNameEnglish[0]
 		} else {
 			filepath = filepath + "-" + query.DistrictNameEnglish[0]
@@ -807,7 +769,7 @@ func createFilePath(query *modelVoters.Query) string {
 	}
 
 	if len(query.AcNameEnglish) == 1 {
-		if filepath == "Downloads/voters_list.pdf" {
+		if filepath == "Downloads/voters_list" {
 			filepath = "Downloads/" + query.AcNameEnglish[0]
 		} else {
 			filepath = filepath + "-" + query.AcNameEnglish[0]
@@ -815,7 +777,7 @@ func createFilePath(query *modelVoters.Query) string {
 	}
 
 	if len(query.SectionNameEnglish) == 1 {
-		if filepath == "Downloads/voters_list.pdf" {
+		if filepath == "Downloads/voters_list" {
 			filepath = "Downloads/" + query.SectionNameEnglish[0]
 		} else {
 			filepath = filepath + "-" + query.SectionNameEnglish[0]
@@ -823,7 +785,7 @@ func createFilePath(query *modelVoters.Query) string {
 	}
 
 	if len(query.PartNumber) == 1 {
-		if filepath == "Downloads/voters_list.pdf" {
+		if filepath == "Downloads/voters_list" {
 			filepath = "Downloads/PN_" + strconv.Itoa(query.PartNumber[0])
 		} else {
 			filepath = filepath + "-PN_" + strconv.Itoa(query.PartNumber[0])
@@ -831,7 +793,7 @@ func createFilePath(query *modelVoters.Query) string {
 	}
 
 	if len(query.SerialNumberInPart) == 1 {
-		if filepath == "Downloads/voters_list.pdf" {
+		if filepath == "Downloads/voters_list" {
 			filepath = "Downloads/SNIP_" + strconv.Itoa(query.SerialNumberInPart[0])
 		} else {
 			filepath = filepath + "-SNIP_" + strconv.Itoa(query.SerialNumberInPart[0])
@@ -839,7 +801,7 @@ func createFilePath(query *modelVoters.Query) string {
 	}
 
 	if len(query.ReligionEnglish) == 1 {
-		if filepath == "Downloads/voters_list.pdf" {
+		if filepath == "Downloads/voters_list" {
 			filepath = "Downloads/" + query.ReligionEnglish[0]
 		} else {
 			filepath = filepath + "-" + query.ReligionEnglish[0]
@@ -847,15 +809,15 @@ func createFilePath(query *modelVoters.Query) string {
 	}
 
 	if len(query.Vote) == 1 {
-		if filepath == "Downloads/voters_list.pdf" {
+		if filepath == "Downloads/voters_list" {
 			filepath = "Downloads/Vote_" + strconv.Itoa(query.Vote[0])
 		} else {
 			filepath = filepath + "-Vote_" + strconv.Itoa(query.Vote[0])
 		}
 	}
 
-	if filepath != "Downloads/voters_list.pdf" {
-		filepath = filepath + "-voters_list.pdf"
+	if filepath != "Downloads/voters_list" {
+		filepath = filepath + "-voters_list"
 	}
 
 	return filepath
