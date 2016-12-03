@@ -32,7 +32,7 @@
             <p>
             <table>
                <tr style="width:100%"></tr>
-               <td style="width:50%"><b>Gender{{$account.Sex}}</b>: Male</td>
+               <td style="width:50%"><b>Gender</b>: {{if eq $account.Sex "M"}}Male{{else}}Female{{end}}</td>
                <td style="width:50%"><b>Age</b>: {{$account.Age}}</td>
                <tr></tr>
                <tr style="width:100%"></tr>
