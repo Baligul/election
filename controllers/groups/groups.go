@@ -4,12 +4,12 @@
    curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://104.197.6.26:8080/api/groups?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    Update GROUP
-   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' http://104.197.6.26:8080/api/group
-   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=0d4f93e68cdf26ff"
+   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5, "account_id":[2]}' http://104.197.6.26:8080/api/group
+   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5, "account_id":[2,3]}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    Create GROUP
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' http://104.197.6.26:8080/api/group
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=0d4f93e68cdf26ff"
+   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5, "account_id":[2,3]}' http://104.197.6.26:8080/api/group
+   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5, "account_id":[2,3]}' "http://104.197.6.26:8080/api/group?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    Delete GROUP
    curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' http://104.197.6.26:8080/api/group
@@ -196,9 +196,9 @@ func (e *GroupCtrl) GetGroups() {
 
 func (e *GroupCtrl) CreateGroup() {
 	var (
-		err  error
-		num  int64
-		user []*modelAccounts.Account
+		err  		 error
+		num  		 int64
+		user 		 []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -269,7 +269,7 @@ func (e *GroupCtrl) CreateGroup() {
 
 	userGroup.Updated_by = user[0].Account_id
 	userGroup.Created_by = user[0].Account_id
-	_, err = o.Insert(userGroup)
+	newGroupId, err := o.Insert(userGroup)
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -278,6 +278,35 @@ func (e *GroupCtrl) CreateGroup() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
+
+	// Update all accounts for which this group is being created
+	if len(userGroup.Account_id) > 0 {
+		// Create query string for account table
+		qsUserAccount := o.QueryTable("account")
+		condAccountId := orm.NewCondition()
+
+		// Account Id
+		for _, accountId := range userGroup.Account_id {
+			if accountId > 0 {
+				condAccountId = condAccountId.Or("Account_id__exact", accountId)
+			}
+		}
+
+		qsUserAccount = qsUserAccount.SetCond(condAccountId)
+
+		_, err = qsUserAccount.Update(orm.Params{
+			"Group_id": newGroupId,
+		})
+		if err != nil {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+	}
+
 	e.Data["json"] = &userGroup
 	e.ServeJSON()
 }
@@ -418,6 +447,34 @@ func (e *GroupCtrl) UpdateGroup() {
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	// Update all accounts for which this group is being updated
+	if len(userGroup.Account_id) > 0 {
+		// Create query string for account table
+		qsUserAccount := o.QueryTable("account")
+		condAccountId := orm.NewCondition()
+
+		// Account Id
+		for _, accountId := range userGroup.Account_id {
+			if accountId > 0 {
+				condAccountId = condAccountId.Or("Account_id__exact", accountId)
+			}
+		}
+
+		qsUserAccount = qsUserAccount.SetCond(condAccountId)
+
+		_, err = qsUserAccount.Update(orm.Params{
+			"Group_id": userGroup.Group_id,
+		})
+		if err != nil {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
 	}
 
 	e.Data["json"] = fmt.Sprintf("%d rows updated.", num)
