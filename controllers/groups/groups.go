@@ -160,6 +160,7 @@ func (e *GroupCtrl) GetGroups() {
 	}
 
 	qsGroup = qsGroup.SetCond(cond)
+	qsGroup = qsGroup.OrderBy("Title")
 
 	// Get groups
 	groupsCount, _ = qsGroup.Filter("Created_by__exact", user[0].Account_id).Count()

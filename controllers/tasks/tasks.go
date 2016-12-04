@@ -414,6 +414,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 	}
 
 	qsTask = qsTask.SetCond(condTaskId)
+	qsTask = qsTask.OrderBy("Title")
 
 	// Get task details
 	num, err = qsTask.All(&tasks)

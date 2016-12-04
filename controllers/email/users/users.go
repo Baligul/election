@@ -157,6 +157,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 		}
 
 		qsUserAccount = qsUserAccount.SetCond(cond)
+		qsUserAccount = qsUserAccount.OrderBy("Display_name")
 
 		// Get accounts
 		accountsCount, _ = qsUserAccount.Count()

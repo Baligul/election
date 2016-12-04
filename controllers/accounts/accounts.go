@@ -162,6 +162,7 @@ func (e *AccountCtrl) GetAccounts() {
 	}
 
 	qsUserAccount = qsUserAccount.SetCond(cond)
+	qsUserAccount = qsUserAccount.OrderBy("Display_name")
 
 	// Get accounts
 	accountsCount, _ = qsUserAccount.Filter("Leader_id__exact", user[0].Account_id).Count()
