@@ -110,7 +110,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	}
 
 	filepath = createFilePath(query)
-	if _, err := os.Stat(filepath); os.IsNotExist(err) || filepath == "Downloads/voters_list" {
+	if _, err := os.Stat(filepath + ".pdf"); os.IsNotExist(err) || filepath == "Downloads/voters_list" {
 		// Create query string for each and every district
 		qsRampur := o.QueryTable(modelVoters.GetTableName("Rampur"))
 		qsMoradabad := o.QueryTable(modelVoters.GetTableName("Moradabad"))
@@ -704,7 +704,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 		}
 	}
 
-	err = sendEmailWithAttachment(user[0].Email, user[0].Display_name, filepath)
+	err = sendEmailWithAttachment(user[0].Email, user[0].Display_name, filepath+".pdf")
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"

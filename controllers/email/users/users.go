@@ -107,7 +107,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 	}
 
 	filepath = createFilePath(query)
-	if _, err := os.Stat(filepath); os.IsNotExist(err) || filepath == "Downloads/users_list" {
+	if _, err := os.Stat(filepath + ".pdf"); os.IsNotExist(err) || filepath == "Downloads/users_list" {
 		cond := orm.NewCondition()
 		condAccountId := orm.NewCondition()
 		condGroupId := orm.NewCondition()
