@@ -724,7 +724,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 func createPdf(filepath string) error {
 	// PDF creation code start here
 	// converts ".html" file to ".pdf"
-	err := exec.Command("wkhtmltox/bin/wkhtmltopdf", filepath+".html", filepath+".pdf").Run()
+	err := exec.Command("wkhtmltopdf", filepath+".html", filepath+".pdf").Run()
 	if err != nil {
 		return err
 	}
