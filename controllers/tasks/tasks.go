@@ -464,7 +464,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 			}
 			accountDetail.Task_assigned_by_display_name = accountDN[0].Display_name
 			if accountDetail.Group_title == "" {
-				accountDetail.Group_title = "Group not assigned"
+				accountDetail.Group_title = "N/A"
 			}
 		}
 		taskDetail.AccountDetails = accountDetails

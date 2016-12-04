@@ -175,9 +175,8 @@ func (e *AccountCtrl) GetAccounts() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	accounts.Populate(userAccounts)
 
-	for _, userAccount := range accounts.Accounts {
+	for _, userAccount := range userAccounts {
 		userGroup = nil
 		_, err = o.Raw("SELECT title FROM usergroup WHERE group_id=?", userAccount.Group_id).QueryRows(&userGroup)
 		if err != nil {
@@ -192,9 +191,10 @@ func (e *AccountCtrl) GetAccounts() {
 			userAccount.Group_title = userGroup[0].Title
 		}
 		if userAccount.Group_title == "" {
-			userAccount.Group_title = "Group not assigned"
+			userAccount.Group_title = "N/A"
 		}
 	}
+	accounts.Populate(userAccounts)
 
 	if accountsCount > 0 {
 		accounts.Total = accountsCount
