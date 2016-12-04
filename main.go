@@ -21,7 +21,7 @@ func init() {
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "80"
 	}
 
 	beego.BConfig.Listen.HTTPPort, _ = strconv.Atoi(port)
