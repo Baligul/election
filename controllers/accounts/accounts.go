@@ -4,12 +4,14 @@
    curl -X POST -H "Content-Type: application/json" -d '{"account_id":[1,2,4], "group_id":[1,2,4], "leader_id":[1,2,4]}' "http://104.197.6.26:8080/api/accounts?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    Update ACCOUNT
-   curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' http://104.197.6.26:8080/api/account
-   curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' "http://104.197.6.26:8080/api/account?mobile_no=9343352734&token=0d4f93e68cdf26ff"
+   curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", 
+   "group_id":3, "approved_sections":"civil lines,thana naghfani", "father_name":"Mujeebul Hasan"}' http://104.197.6.26:8080/api/account
+   curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)",
+   "group_id":3, "approved_sections":"civil lines,thana naghfani", "father_name":"Mujeebul Hasan"}' "http://104.197.6.26:8080/api/account?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    Create ACCOUNT
-   curl -X POST -H "Content-Type: application/json" -d '{"display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' http://104.197.6.26:8080/api/account
-   curl -X POST -H "Content-Type: application/json" -d '{"display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3}' "http://104.197.6.26:8080/api/account?mobile_no=9343352734&token=0d4f93e68cdf26ff"
+   curl -X POST -H "Content-Type: application/json" -d '{"display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3, "approved_sections":"civil lines,thana naghfani", "father_name":"Mujeebul Hasan"}' http://104.197.6.26:8080/api/account
+   curl -X POST -H "Content-Type: application/json" -d '{"display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3, "approved_sections":"civil lines,thana naghfani", "father_name":"Mujeebul Hasan"}' "http://104.197.6.26:8080/api/account?mobile_no=9343352734&token=0d4f93e68cdf26ff"
 
    Delete ACCOUNT
    curl -X DELETE -H "Content-Type: application/json" -d '{"account_id":1, "group_id":1, "leader_id":2}' http://104.197.6.26:8080/api/account
@@ -306,20 +308,22 @@ func (e *AccountCtrl) CreateAccount() {
 
 func (e *AccountCtrl) UpdateAccount() {
 	var (
-		err          error
-		num          int64
-		user         []*modelAccounts.Account
-		userAccounts []*modelAccounts.Account
-		displayName  string
-		email        string
-		mobNo        int64
-		role         string
-		image        string
-		groupId      int
-		leaderId     int
-		age          int
-		sex          string
-		religion     string
+		err          		error
+		num          		int64
+		user         		[]*modelAccounts.Account
+		userAccounts 		[]*modelAccounts.Account
+		displayName  		string
+		email        		string
+		mobNo        		int64
+		role         		string
+		image        		string
+		groupId      		int
+		leaderId     		int
+		age          		int
+		sex          		string
+		religion     		string
+		fatherName     		string
+		approvedSections	string
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -469,17 +473,29 @@ func (e *AccountCtrl) UpdateAccount() {
 	} else {
 		religion = userAccounts[0].Religion
 	}
+	if strings.TrimSpace(userAccount.Father_name) != "" {
+		fatherName = strings.TrimSpace(userAccount.Father_name)
+	} else {
+		fatherName = userAccounts[0].Father_name
+	}
+	if strings.TrimSpace(userAccount.Approved_sections) != "" {
+		approvedSections = strings.TrimSpace(userAccount.Approved_sections)
+	} else {
+		approvedSections = userAccounts[0].Approved_sections
+	}
 	num, err = qsUserAccount.Update(orm.Params{
-		"Display_name": displayName,
-		"Email":        email,
-		"Mobile_no":    mobNo,
-		"Role":         role,
-		"Image":        image,
-		"Group_id":     groupId,
-		"Leader_id":    leaderId,
-		"Age":          age,
-		"Sex":          sex,
-		"Religion":     religion,
+		"Display_name": 	 displayName,
+		"Email":        	 email,
+		"Mobile_no":    	 mobNo,
+		"Role":         	 role,
+		"Image":        	 image,
+		"Group_id":     	 groupId,
+		"Leader_id":    	 leaderId,
+		"Age":          	 age,
+		"Sex":          	 sex,
+		"Religion":     	 religion,
+		"Father_name":  	 fatherName,
+		"Approved_sections": approvedSections,
 	})
 	if err != nil {
 		responseStatus := modelVoters.NewResponseStatus()

@@ -2993,13 +2993,13 @@ func (e *ElectionController) GetList() {
 	}
 
 	if len(list.Acs) > 0 {
-		sections := getApprovedSections(user[0].Approved_acs, list.Acs)
+		sections := getApprovedSections(user[0].Approved_acs, list.Acs, user[0].Approved_sections)
 		e.Data["json"] = &sections
 		e.ServeJSON()
 	}
 
 	if len(list.Districts) > 0 {
-		acs := getApprovedAcs(user[0].Approved_districts, list.Districts)
+		acs := getApprovedAcs(user[0].Approved_districts, list.Districts, user[0].Approved_acs)
 		e.Data["json"] = &acs
 		e.ServeJSON()
 	}
@@ -3030,20 +3030,20 @@ func (e *ElectionController) ReadJson() {
 	}
 }
 
-func getApprovedSections(csvAcs string, acs []string) []string {
+func getApprovedSections(csvAcs string, acs []string, csvApprovedSections string) []string {
 	approvedAcs := strings.Split(csvAcs, ",")
 	approvedSections := getSections(approvedAcs)
 	sections := getSections(acs)
 
-	return getCommonItems(sections, approvedSections)
+	return getCommonItems(sections, approvedSections, strings.Split(csvApprovedSections, ","))
 }
 
-func getApprovedAcs(csvDistricts string, districts []string) []string {
+func getApprovedAcs(csvDistricts string, districts []string, csvApprovedAcs string) []string {
 	approvedDistricts := strings.Split(csvDistricts, ",")
 	approvedAcs := getAcs(approvedDistricts)
 	acs := getAcs(districts)
 
-	return getCommonItems(acs, approvedAcs)
+	return getCommonItems(acs, approvedAcs, strings.Split(csvApprovedAcs, ","))
 }
 
 func getSections(acs []string) []string {
@@ -3129,16 +3129,29 @@ func getAcs(districts []string) []string {
 	return acs
 }
 
-func getCommonItems(list1 []string, list2 []string) []string {
+func getCommonItems(list1 []string, list2 []string, list3 []string) []string {
 	var items []string
+	var itemsToReturn []string
 
+	// Get the items common in first 2 lists
 	for _, item := range list1 {
 		if contains(list2, item) {
 			items = append(items, item)
 		}
 	}
 
-	return items
+	if len(list3) > 0 {
+		// Get the items common from first 2 lists and 3rd list
+		for _, item := range items {
+			if contains(list3, item) {
+				itemsToReturn = append(itemsToReturn, item)
+			}
+		}
+	} else {
+		return items
+	}
+
+	return itemsToReturn
 }
 
 func contains(sliceString []string, item string) bool {
