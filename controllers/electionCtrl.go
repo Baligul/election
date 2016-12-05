@@ -3004,7 +3004,7 @@ func (e *ElectionController) GetList() {
 		e.ServeJSON()
 	}
 
-	approvedDistricts := strings.Split(user[0].Approved_districts, ",")
+	approvedDistricts := strings.Split(strings.TrimSpace(user[0].Approved_districts), ",")
 	e.Data["json"] = &approvedDistricts
 	e.ServeJSON()
 }
@@ -3031,19 +3031,19 @@ func (e *ElectionController) ReadJson() {
 }
 
 func getApprovedSections(csvAcs string, acs []string, csvApprovedSections string) []string {
-	approvedAcs := strings.Split(csvAcs, ",")
+	approvedAcs := strings.Split(strings.TrimSpace(csvAcs), ",")
 	approvedSections := getSections(approvedAcs)
 	sections := getSections(acs)
 
-	return getCommonItems(sections, approvedSections, strings.Split(csvApprovedSections, ","))
+	return getCommonItems(sections, approvedSections, strings.Split(strings.TrimSpace(csvApprovedSections), ","))
 }
 
 func getApprovedAcs(csvDistricts string, districts []string, csvApprovedAcs string) []string {
-	approvedDistricts := strings.Split(csvDistricts, ",")
+	approvedDistricts := strings.Split(strings.TrimSpace(csvDistricts), ",")
 	approvedAcs := getAcs(approvedDistricts)
 	acs := getAcs(districts)
 
-	return getCommonItems(acs, approvedAcs, strings.Split(csvApprovedAcs, ","))
+	return getCommonItems(acs, approvedAcs, strings.Split(strings.TrimSpace(csvApprovedAcs), ","))
 }
 
 func getSections(acs []string) []string {
@@ -3138,6 +3138,10 @@ func getCommonItems(list1 []string, list2 []string, list3 []string) []string {
 		if contains(list2, item) {
 			items = append(items, item)
 		}
+	}
+
+	if len(list3) == 1 && list3[0] == "" {
+		return items
 	}
 
 	if len(list3) > 0 {
