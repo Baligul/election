@@ -1,19 +1,19 @@
 /*
    GET GROUPS
    curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4]}, "group_lead_id":[1,2,4]}' http://localhost:8080/api/groups
-   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://104.197.6.26:80/api/groups?mobile_no=9343352734&token=0d4f93e68cdf26ff"
+   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://107.178.208.219:80/api/groups?mobile_no=9343352734&token=ed67fb13cdd9ac51"
 
    Update GROUP
    curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5, "account_id":[2]}' http://localhost:8080/api/group
-   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5, "account_id":[2,3]}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=0d4f93e68cdf26ff"
+   curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5, "account_id":[2,3]}' "http://107.178.208.219:80/api/group?mobile_no=9343352734&token=ed67fb13cdd9ac51"
 
    Create GROUP
    curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5, "account_id":[2,3]}' http://localhost:8080/api/group
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5, "account_id":[2,3]}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=0d4f93e68cdf26ff"
+   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "group_lead_id":5, "account_id":[2,3]}' "http://107.178.208.219:80/api/group?mobile_no=9343352734&token=ed67fb13cdd9ac51"
 
    Delete GROUP
    curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' http://localhost:8080/api/group
-   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' "http://104.197.6.26:80/api/group?mobile_no=9343352734&token=0d4f93e68cdf26ff"
+   curl -X DELETE -H "Content-Type: application/json" -d '{"group_id":1, "created_by":2, "group_lead_id":5}' "http://107.178.208.219:80/api/group?mobile_no=9343352734&token=ed67fb13cdd9ac51"
 */
 
 package groups
