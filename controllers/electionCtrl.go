@@ -1716,6 +1716,7 @@ func (e *ElectionController) GetStatistics() {
 	qsBijnor = qsBijnor.SetCond(condQuery)
 	qsScopeRampur = qsScopeRampur.SetCond(condScope)
 	qsScopeMoradabad = qsScopeMoradabad.SetCond(condScope)
+	qsScopeBijnor = qsScopeBijnor.SetCond(condScope)
 
 	// CALCULATIONS FOR QUERY
 	// Get voters for each state
@@ -2453,6 +2454,7 @@ func (e *ElectionController) GetStatistics() {
 	qsBijnor = qsBijnor.SetCond(condQuery)
 	qsScopeRampur = qsScopeRampur.SetCond(condScope)
 	qsScopeMoradabad = qsScopeMoradabad.SetCond(condScope)
+	qsScopeBijnor = qsScopeBijnor.SetCond(condScope)
 
 	//Reset all counters
 	votersCountRampur = 0
@@ -2530,7 +2532,7 @@ func (e *ElectionController) GetStatistics() {
 		}
 
 		if districtNameHindi == "बिजनौर" {
-			votersCountRampur, err = qsRampur.Count()
+			votersCountBijnor, err = qsBijnor.Count()
 		}
 	}
 
@@ -2643,7 +2645,7 @@ func (e *ElectionController) GetStatistics() {
 		}
 
 		if districtNameHindi == "बिजनौर" {
-			votersCountRampur, err = qsScopeRampur.Count()
+			votersCountBijnor, err = qsScopeBijnor.Count()
 		}
 	}
 
