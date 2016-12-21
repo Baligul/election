@@ -48,6 +48,14 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 
+	if mobileNo == 0 || token == "" {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
 	o := orm.NewOrm()
 	o.Using("default")
 

@@ -57,6 +57,14 @@ func (e *AccountCtrl) GetAccounts() {
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 
+	if mobileNo == 0 || token == "" {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
 	o := orm.NewOrm()
 	o.Using("default")
 
@@ -229,6 +237,14 @@ func (e *AccountCtrl) CreateAccount() {
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 
+	if mobileNo == 0 || token == "" {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
 	o := orm.NewOrm()
 	o.Using("default")
 
@@ -330,6 +346,14 @@ func (e *AccountCtrl) UpdateAccount() {
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
+
+	if mobileNo == 0 || token == "" {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
 
 	o := orm.NewOrm()
 	o.Using("default")
@@ -523,6 +547,14 @@ func (e *AccountCtrl) DeleteAccount() {
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
+
+	if mobileNo == 0 || token == "" {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
 
 	o := orm.NewOrm()
 	o.Using("default")

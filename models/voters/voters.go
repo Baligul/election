@@ -203,19 +203,25 @@ type Query struct {
 {
     "total":213243,
     "muslim":23243,
+    "dalit":2434,
     "other":2343,
     "male":2343,
     "female":2343,
     "muslim_male":2343,
     "muslim_female":2343,
+    "dalit_male":2343,
+    "dalit_female":2343,
     "other_male":2343,
     "other_female":2343,
     "muslim_p":10.89,
+    "dalit_p":10.89,
     "other_p":10.89,
     "male_p":10.89,
     "female_p":10.89,
     "muslim_male_p":10.89,
     "muslim_female_p":10.89,
+    "dalit_male_p":10.89,
+    "dalit_female_p":10.89,
     "other_male_p":10.89,
     "other_female_p":10.89
 }
@@ -224,19 +230,25 @@ type Query struct {
 type Statistic struct {
 	Total         int64   `json:"total,omitempty"`
 	Muslim        int64   `json:"muslim,omitempty"`
+    Dalit         int64   `json:"dalit,omitempty"`
 	Others        int64   `json:"other,omitempty"`
 	Male          int64   `json:"male,omitempty"`
 	Female        int64   `json:"female,omitempty"`
 	MuslimMale    int64   `json:"muslim_male,omitempty"`
 	MuslimFemale  int64   `json:"muslim_female,omitempty"`
+    DalitMale     int64   `json:"dalit_male,omitempty"`
+	DalitFemale   int64   `json:"dalit_female,omitempty"`
 	OthersMale    int64   `json:"other_male,omitempty"`
 	OthersFemale  int64   `json:"other_female,omitempty"`
 	MuslimP       float64 `json:"muslim_p,omitempty"`
+    DalitP        float64 `json:"dalit_p,omitempty"`
 	OthersP       float64 `json:"other_p,omitempty"`
 	MaleP         float64 `json:"male_p,omitempty"`
 	FemaleP       float64 `json:"female_p,omitempty"`
 	MuslimMaleP   float64 `json:"muslim_male_p,omitempty"`
 	MuslimFemaleP float64 `json:"muslim_female_p,omitempty"`
+    DalitMaleP    float64 `json:"dalit_male_p,omitempty"`
+	DalitFemaleP  float64 `json:"dalit_female_p,omitempty"`
 	OthersMaleP   float64 `json:"other_male_p,omitempty"`
 	OthersFemaleP float64 `json:"other_female_p,omitempty"`
 }
