@@ -58,6 +58,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"sort"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"
@@ -723,6 +724,7 @@ func (e *ElectionController) GetVoters() {
 
 	if votersCountRampur > 0 || votersCountMoradabad > 0 || votersCountBijnor > 0 || votersCountBangalore > 0 || votersCountHubli > 0 {
 		voters.Total = totalVotersCount
+		sort.Sort(modelVoters.ByName(voters.Voters))
 		e.Data["json"] = voters
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
@@ -2996,17 +2998,20 @@ func (e *ElectionController) GetList() {
 
 	if len(list.Acs) > 0 {
 		sections := getApprovedSections(user[0].Approved_acs, list.Acs, user[0].Approved_sections)
+		sort.Strings(sections)
 		e.Data["json"] = &sections
 		e.ServeJSON()
 	}
 
 	if len(list.Districts) > 0 {
 		acs := getApprovedAcs(user[0].Approved_districts, list.Districts, user[0].Approved_acs)
+		sort.Strings(acs)
 		e.Data["json"] = &acs
 		e.ServeJSON()
 	}
 
 	approvedDistricts := strings.Split(strings.TrimSpace(user[0].Approved_districts), ",")
+	sort.Strings(approvedDistricts)
 	e.Data["json"] = &approvedDistricts
 	e.ServeJSON()
 }

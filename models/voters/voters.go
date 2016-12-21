@@ -62,9 +62,17 @@ type Voter struct {
 	Image                 string `form:"image" json:"image,omitempty"`
 }
 
+// ByName implements sort.Interface for []Voter based on
+// the Name_english field.
+type ByName []Voter
+
+func (v ByName) Len() int           { return len(v) }
+func (v ByName) Swap(i, j int)      { v[i], v[j] = v[j], v[i] }
+func (v ByName) Less(i, j int) bool { return v[i].Name_english < v[j].Name_english }
+
 type Voters struct {
-	Total  int64   `json:"total,omitempty"`
-	Voters []Voter `json:"voters,omitempty"`
+	Total    int64  `json:"total,omitempty"`
+	Voters   ByName `json:"voters,omitempty"`
 }
 
 // Queries

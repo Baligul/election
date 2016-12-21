@@ -14,6 +14,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"sort"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"
@@ -37,7 +38,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 	var (
 		accountsCount int64
 		accounts      modelAccounts.Accounts
-		userAccounts  []*modelAccounts.Account
+		userAccounts  modelAccounts.ByDisplayName
 		err           error
 		num           int64
 		user          []*modelAccounts.Account
@@ -174,6 +175,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 
 		if accountsCount > 0 {
 			accounts.Total = accountsCount
+			sort.Sort(modelAccounts.ByDisplayName(accounts.Accounts))
 		} else {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "ok"

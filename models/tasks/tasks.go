@@ -139,14 +139,22 @@ type AccountDisplayName struct {
 }
 */
 
+// ByTitle implements sort.Interface for []Task based on
+// the Title field.
+type ByTitle []Task
+
+func (a ByTitle) Len() int           { return len(a) }
+func (a ByTitle) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByTitle) Less(i, j int) bool { return a[i].Title < a[j].Title }
+
 type Tasks struct {
-	Total int64  `json:"total,omitempty"`
-	Tasks []Task `json:"tasks,omitempty"`
+	Total    int64   `json:"total,omitempty"`
+	Tasks 	 ByTitle `json:"tasks,omitempty"`
 }
 
-func (tasks *Tasks) Populate(tasksList []*Task) {
+func (tasks *Tasks) Populate(tasksList ByTitle) {
 	for _, task := range tasksList {
-		tasks.Tasks = append(tasks.Tasks, *task)
+		tasks.Tasks = append(tasks.Tasks, task)
 	}
 }
 

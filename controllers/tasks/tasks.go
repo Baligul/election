@@ -26,6 +26,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"sort"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelTasks "github.com/Baligul/election/models/tasks"
@@ -50,7 +51,7 @@ func (e *TaskCtrl) GetTasks() {
 	var (
 		tasksCount     int64
 		tasks          modelTasks.Tasks
-		userTasks      []*modelTasks.Task
+		userTasks      modelTasks.ByTitle
 		tasksCreatedBy []*modelTasks.Task
 		tgMap          []*modelTasks.Taskgroupmap
 		taMap          []*modelTasks.Taskaccountmap
@@ -309,6 +310,7 @@ func (e *TaskCtrl) GetTasks() {
 
 	if tasksCount > 0 {
 		tasks.Total = tasksCount
+		sort.Sort(modelTasks.ByTitle(tasks.Tasks))
 		e.Data["json"] = tasks
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()

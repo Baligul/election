@@ -22,6 +22,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"sort"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
@@ -44,7 +45,7 @@ func (e *GroupCtrl) GetGroups() {
 	var (
 		groupsCount int64
 		groups      modelGroups.Groups
-		userGroups  []*modelGroups.Usergroup
+		userGroups  modelGroups.ByTitle
 		err         error
 		num         int64
 		user        []*modelAccounts.Account
@@ -177,6 +178,7 @@ func (e *GroupCtrl) GetGroups() {
 
 	if groupsCount > 0 {
 		groups.Total = groupsCount
+		sort.Sort(modelGroups.ByTitle(groups.Groups))
 		e.Data["json"] = groups
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()

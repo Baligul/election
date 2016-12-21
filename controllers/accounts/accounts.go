@@ -24,6 +24,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"sort"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
@@ -46,7 +47,7 @@ func (e *AccountCtrl) GetAccounts() {
 	var (
 		accountsCount int64
 		accounts      modelAccounts.Accounts
-		userAccounts  []*modelAccounts.Account
+		userAccounts  modelAccounts.ByDisplayName
 		err           error
 		num           int64
 		user          []*modelAccounts.Account
@@ -195,11 +196,12 @@ func (e *AccountCtrl) GetAccounts() {
 		if userAccount.Group_title == "" {
 			userAccount.Group_title = "N/A"
 		}
-	}
+	}	
 	accounts.Populate(userAccounts)
 
 	if accountsCount > 0 {
 		accounts.Total = accountsCount
+		sort.Sort(modelAccounts.ByDisplayName(accounts.Accounts))
 		e.Data["json"] = accounts
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()

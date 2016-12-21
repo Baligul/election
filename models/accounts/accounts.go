@@ -103,13 +103,21 @@ type AccountQuery struct {
 }
 */
 
+// ByDisplayName implements sort.Interface for []Account based on
+// the Display_name field.
+type ByDisplayName []Account
+
+func (a ByDisplayName) Len() int           { return len(a) }
+func (a ByDisplayName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByDisplayName) Less(i, j int) bool { return a[i].Display_name < a[j].Display_name }
+
 type Accounts struct {
-	Total    int64     `json:"total,omitempty"`
-	Accounts []Account `json:"accounts,omitempty"`
+	Total    int64         `json:"total,omitempty"`
+	Accounts ByDisplayName `json:"accounts,omitempty"`
 }
 
-func (accounts *Accounts) Populate(useraccounts []*Account) {
+func (accounts *Accounts) Populate(useraccounts ByDisplayName) {
 	for _, account := range useraccounts {
-		accounts.Accounts = append(accounts.Accounts, *account)
+		accounts.Accounts = append(accounts.Accounts, account)
 	}
 }

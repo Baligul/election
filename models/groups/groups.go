@@ -68,13 +68,21 @@ type GroupQuery struct {
 }
 */
 
+// ByTitle implements sort.Interface for []Usergroup based on
+// the Title field.
+type ByTitle []Usergroup
+
+func (g ByTitle) Len() int           { return len(g) }
+func (g ByTitle) Swap(i, j int)      { g[i], g[j] = g[j], g[i] }
+func (g ByTitle) Less(i, j int) bool { return g[i].Title < g[j].Title }
+
 type Groups struct {
-	Total  int64       `json:"total,omitempty"`
-	Groups []Usergroup `json:"groups,omitempty"`
+	Total    int64   `json:"total,omitempty"`
+	Groups   ByTitle `json:"groups,omitempty"`
 }
 
-func (groups *Groups) Populate(usergroups []*Usergroup) {
+func (groups *Groups) Populate(usergroups ByTitle) {
 	for _, group := range usergroups {
-		groups.Groups = append(groups.Groups, *group)
+		groups.Groups = append(groups.Groups, group)
 	}
 }
