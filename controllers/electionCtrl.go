@@ -933,6 +933,7 @@ func (e *ElectionController) GetStatistic() {
 			condAcNumber = condAcNumber.Or("Ac_number__exact", acNumber)
 		}
 	}
+	fmt.Println("condAcNumber: ", condAcNumber)
 
 	// Part Number
 	for _, partNumber := range query.PartNumber {
@@ -940,6 +941,7 @@ func (e *ElectionController) GetStatistic() {
 			condPartNumber = condPartNumber.Or("Part_number__exact", partNumber)
 		}
 	}
+	fmt.Println("condPartNumber: ", condPartNumber)
 
 	// Section Number
 	for _, sectionNumber := range query.SectionNumber {
@@ -947,6 +949,7 @@ func (e *ElectionController) GetStatistic() {
 			condSectionNumber = condSectionNumber.Or("Section_number__exact", sectionNumber)
 		}
 	}
+	fmt.Println("condSectionNumber: ", condSectionNumber)
 
 	// Ac Name English
 	for _, acNameEnglish := range query.AcNameEnglish {
@@ -954,6 +957,7 @@ func (e *ElectionController) GetStatistic() {
 			condAcNameEnglish = condAcNameEnglish.Or("Ac_name_english__exact", acNameEnglish)
 		}
 	}
+	fmt.Println("condAcNameEnglish: ", condAcNameEnglish)
 
 	// Ac Name Hindi
 	for _, acNameHindi := range query.AcNameHindi {
@@ -961,6 +965,7 @@ func (e *ElectionController) GetStatistic() {
 			condAcNameHindi = condAcNameHindi.Or("Ac_name_hindi__exact", acNameHindi)
 		}
 	}
+	fmt.Println("condAcNameHindi: ", condAcNameHindi)
 
 	// Section Name English
 	for _, sectionNameEnglish := range query.SectionNameEnglish {
@@ -968,6 +973,7 @@ func (e *ElectionController) GetStatistic() {
 			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__exact", sectionNameEnglish)
 		}
 	}
+	fmt.Println("condSectionNameEnglish: ", condSectionNameEnglish)
 
 	// Section Name Hindi
 	for _, sectionNameHindi := range query.SectionNameHindi {
@@ -975,6 +981,7 @@ func (e *ElectionController) GetStatistic() {
 			condSectionNameHindi = condSectionNameHindi.Or("Section_name_hindi__ilike", sectionNameHindi)
 		}
 	}
+	fmt.Println("condSectionNameHindi: ", condSectionNameHindi)
 
 	// Age
 	for _, age := range query.Age {
