@@ -1061,7 +1061,7 @@ func (e *ElectionController) GetStatistic() {
 			cond = condVote
 		}
 	}
-
+	fmt.Println("Condition: ", cond)
 	qsRampur = qsRampur.SetCond(cond)
 	qsMoradabad = qsMoradabad.SetCond(cond)
 	qsBijnor = qsBijnor.SetCond(cond)
