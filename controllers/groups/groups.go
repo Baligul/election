@@ -21,8 +21,8 @@ package groups
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 	"sort"
+	"strings"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
@@ -206,9 +206,9 @@ func (e *GroupCtrl) GetGroups() {
 
 func (e *GroupCtrl) CreateGroup() {
 	var (
-		err  		 error
-		num  		 int64
-		user 		 []*modelAccounts.Account
+		err  error
+		num  int64
+		user []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")

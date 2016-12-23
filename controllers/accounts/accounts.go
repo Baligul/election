@@ -4,7 +4,7 @@
    curl -X POST -H "Content-Type: application/json" -d '{"account_id":[1,2,4], "group_id":[1,2,4], "leader_id":[1,2,4]}' "http://107.178.208.219:80/api/accounts?mobile_no=9343352734&token=ed67fb13cdd9ac51"
 
    Update ACCOUNT
-   curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", 
+   curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)",
    "group_id":3, "approved_sections":"civil lines,thana naghfani", "father_name":"Mujeebul Hasan"}' http://107.178.208.219:80/api/account
    curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)",
    "group_id":3, "approved_sections":"civil lines,thana naghfani", "father_name":"Mujeebul Hasan"}' "http://107.178.208.219:80/api/account?mobile_no=9343352734&token=ed67fb13cdd9ac51"
@@ -23,8 +23,8 @@ package accounts
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 	"sort"
+	"strings"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
@@ -204,7 +204,7 @@ func (e *AccountCtrl) GetAccounts() {
 		if userAccount.Group_title == "" {
 			userAccount.Group_title = "N/A"
 		}
-	}	
+	}
 	accounts.Populate(userAccounts)
 
 	if accountsCount > 0 {
@@ -326,22 +326,22 @@ func (e *AccountCtrl) CreateAccount() {
 
 func (e *AccountCtrl) UpdateAccount() {
 	var (
-		err          		error
-		num          		int64
-		user         		[]*modelAccounts.Account
-		userAccounts 		[]*modelAccounts.Account
-		displayName  		string
-		email        		string
-		mobNo        		int64
-		role         		string
-		image        		string
-		groupId      		int
-		leaderId     		int
-		age          		int
-		sex          		string
-		religion     		string
-		fatherName     		string
-		approvedSections	string
+		err              error
+		num              int64
+		user             []*modelAccounts.Account
+		userAccounts     []*modelAccounts.Account
+		displayName      string
+		email            string
+		mobNo            int64
+		role             string
+		image            string
+		groupId          int
+		leaderId         int
+		age              int
+		sex              string
+		religion         string
+		fatherName       string
+		approvedSections string
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -510,17 +510,17 @@ func (e *AccountCtrl) UpdateAccount() {
 		approvedSections = userAccounts[0].Approved_sections
 	}
 	num, err = qsUserAccount.Update(orm.Params{
-		"Display_name": 	 displayName,
-		"Email":        	 email,
-		"Mobile_no":    	 mobNo,
-		"Role":         	 role,
-		"Image":        	 image,
-		"Group_id":     	 groupId,
-		"Leader_id":    	 leaderId,
-		"Age":          	 age,
-		"Sex":          	 sex,
-		"Religion":     	 religion,
-		"Father_name":  	 fatherName,
+		"Display_name":      displayName,
+		"Email":             email,
+		"Mobile_no":         mobNo,
+		"Role":              role,
+		"Image":             image,
+		"Group_id":          groupId,
+		"Leader_id":         leaderId,
+		"Age":               age,
+		"Sex":               sex,
+		"Religion":          religion,
+		"Father_name":       fatherName,
 		"Approved_sections": approvedSections,
 	})
 	if err != nil {

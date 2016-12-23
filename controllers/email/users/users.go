@@ -12,9 +12,9 @@ import (
 	"net/smtp"
 	"os"
 	"os/exec"
+	"sort"
 	"strconv"
 	"strings"
-	"sort"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"

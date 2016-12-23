@@ -71,8 +71,8 @@ func (v ByName) Swap(i, j int)      { v[i], v[j] = v[j], v[i] }
 func (v ByName) Less(i, j int) bool { return v[i].Name_english < v[j].Name_english }
 
 type Voters struct {
-	Total    int64  `json:"total,omitempty"`
-	Voters   ByName `json:"voters,omitempty"`
+	Total  int64  `json:"total,omitempty"`
+	Voters ByName `json:"voters,omitempty"`
 }
 
 // Queries
@@ -230,24 +230,24 @@ type Query struct {
 type Statistic struct {
 	Total         int64   `json:"total,omitempty"`
 	Muslim        int64   `json:"muslim,omitempty"`
-    Dalit         int64   `json:"dalit,omitempty"`
+	Dalit         int64   `json:"dalit,omitempty"`
 	Others        int64   `json:"other,omitempty"`
 	Male          int64   `json:"male,omitempty"`
 	Female        int64   `json:"female,omitempty"`
 	MuslimMale    int64   `json:"muslim_male,omitempty"`
 	MuslimFemale  int64   `json:"muslim_female,omitempty"`
-    DalitMale     int64   `json:"dalit_male,omitempty"`
+	DalitMale     int64   `json:"dalit_male,omitempty"`
 	DalitFemale   int64   `json:"dalit_female,omitempty"`
 	OthersMale    int64   `json:"other_male,omitempty"`
 	OthersFemale  int64   `json:"other_female,omitempty"`
 	MuslimP       float64 `json:"muslim_p,omitempty"`
-    DalitP        float64 `json:"dalit_p,omitempty"`
+	DalitP        float64 `json:"dalit_p,omitempty"`
 	OthersP       float64 `json:"other_p,omitempty"`
 	MaleP         float64 `json:"male_p,omitempty"`
 	FemaleP       float64 `json:"female_p,omitempty"`
 	MuslimMaleP   float64 `json:"muslim_male_p,omitempty"`
 	MuslimFemaleP float64 `json:"muslim_female_p,omitempty"`
-    DalitMaleP    float64 `json:"dalit_male_p,omitempty"`
+	DalitMaleP    float64 `json:"dalit_male_p,omitempty"`
 	DalitFemaleP  float64 `json:"dalit_female_p,omitempty"`
 	OthersMaleP   float64 `json:"other_male_p,omitempty"`
 	OthersFemaleP float64 `json:"other_female_p,omitempty"`
@@ -278,6 +278,8 @@ type UpdateVoter struct {
 	Email    string `json:"email,omitempty"`
 	MobileNo int64  `json:"mobile_no,omitempty"`
 	Image    string `json:"image,omitempty"`
+	Age      int    `json:"age,omitempty"`
+	Religion string `json:"religion,omitempty"`
 }
 
 func NewResponseStatus() *ResponseStatus {

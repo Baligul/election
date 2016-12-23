@@ -25,8 +25,8 @@ package tasks
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 	"sort"
+	"strings"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelTasks "github.com/Baligul/election/models/tasks"

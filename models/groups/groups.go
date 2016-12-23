@@ -24,7 +24,7 @@ type Usergroup struct {
 	Created_by    int       `json:"created_by,omitempty"`
 	Updated_on    time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
 	Created_on    time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
-    Account_id    []int     `orm:"-" json:"Account_id,omitempty"`
+	Account_id    []int     `orm:"-" json:"Account_id,omitempty"`
 }
 
 type GroupQuery struct {
@@ -77,8 +77,8 @@ func (g ByTitle) Swap(i, j int)      { g[i], g[j] = g[j], g[i] }
 func (g ByTitle) Less(i, j int) bool { return g[i].Title < g[j].Title }
 
 type Groups struct {
-	Total    int64   `json:"total,omitempty"`
-	Groups   ByTitle `json:"groups,omitempty"`
+	Total  int64   `json:"total,omitempty"`
+	Groups ByTitle `json:"groups,omitempty"`
 }
 
 func (groups *Groups) Populate(usergroups ByTitle) {

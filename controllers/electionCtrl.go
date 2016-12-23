@@ -55,10 +55,10 @@ import (
 	"math/rand"
 	"net/mail"
 	"net/smtp"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
-	"sort"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"
@@ -357,88 +357,8 @@ func (e *ElectionController) GetVoters() {
 		}
 	}
 
-	if condVoterId != nil && !condVoterId.IsEmpty() {
-		cond = condVoterId
-	}
-
 	if condAcNumber != nil && !condAcNumber.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condAcNumber)
-		} else {
-			cond = condAcNumber
-		}
-	}
-
-	if condPartNumber != nil && !condPartNumber.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condPartNumber)
-		} else {
-			cond = condPartNumber
-		}
-	}
-
-	if condSectionNumber != nil && !condSectionNumber.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condSectionNumber)
-		} else {
-			cond = condSectionNumber
-		}
-	}
-
-	if condSerialNumberInPart != nil && !condSerialNumberInPart.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condSerialNumberInPart)
-		} else {
-			cond = condSerialNumberInPart
-		}
-	}
-
-	if condNameEnglish != nil && !condNameEnglish.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condNameEnglish)
-		} else {
-			cond = condNameEnglish
-		}
-	}
-
-	if condNameHindi != nil && !condNameHindi.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condNameHindi)
-		} else {
-			cond = condNameHindi
-		}
-	}
-
-	if condRelationNameEnglish != nil && !condRelationNameEnglish.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condRelationNameEnglish)
-		} else {
-			cond = condRelationNameEnglish
-		}
-	}
-
-	if condRelationNameHindi != nil && !condRelationNameHindi.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condRelationNameHindi)
-		} else {
-			cond = condRelationNameHindi
-		}
-	}
-
-	if condGender != nil && !condGender.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condGender)
-		} else {
-			cond = condGender
-		}
-	}
-
-	if condIdCardNumber != nil && !condIdCardNumber.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condIdCardNumber)
-		} else {
-			cond = condIdCardNumber
-		}
+		cond = condAcNumber
 	}
 
 	if condAcNameEnglish != nil && !condAcNameEnglish.IsEmpty() {
@@ -526,6 +446,86 @@ func (e *ElectionController) GetVoters() {
 			cond = cond.AndCond(condImage)
 		} else {
 			cond = condImage
+		}
+	}
+
+	if condVoterId != nil && !condVoterId.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condVoterId)
+		} else {
+			cond = condVoterId
+		}
+	}
+
+	if condPartNumber != nil && !condPartNumber.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condPartNumber)
+		} else {
+			cond = condPartNumber
+		}
+	}
+
+	if condSectionNumber != nil && !condSectionNumber.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condSectionNumber)
+		} else {
+			cond = condSectionNumber
+		}
+	}
+
+	if condSerialNumberInPart != nil && !condSerialNumberInPart.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condSerialNumberInPart)
+		} else {
+			cond = condSerialNumberInPart
+		}
+	}
+
+	if condNameEnglish != nil && !condNameEnglish.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condNameEnglish)
+		} else {
+			cond = condNameEnglish
+		}
+	}
+
+	if condNameHindi != nil && !condNameHindi.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condNameHindi)
+		} else {
+			cond = condNameHindi
+		}
+	}
+
+	if condRelationNameEnglish != nil && !condRelationNameEnglish.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condRelationNameEnglish)
+		} else {
+			cond = condRelationNameEnglish
+		}
+	}
+
+	if condRelationNameHindi != nil && !condRelationNameHindi.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condRelationNameHindi)
+		} else {
+			cond = condRelationNameHindi
+		}
+	}
+
+	if condGender != nil && !condGender.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condGender)
+		} else {
+			cond = condGender
+		}
+	}
+
+	if condIdCardNumber != nil && !condIdCardNumber.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condIdCardNumber)
+		} else {
+			cond = condIdCardNumber
 		}
 	}
 
@@ -933,7 +933,6 @@ func (e *ElectionController) GetStatistic() {
 			condAcNumber = condAcNumber.Or("Ac_number__exact", acNumber)
 		}
 	}
-	fmt.Println("condAcNumber: ", condAcNumber)
 
 	// Part Number
 	for _, partNumber := range query.PartNumber {
@@ -941,7 +940,6 @@ func (e *ElectionController) GetStatistic() {
 			condPartNumber = condPartNumber.Or("Part_number__exact", partNumber)
 		}
 	}
-	fmt.Println("condPartNumber: ", condPartNumber)
 
 	// Section Number
 	for _, sectionNumber := range query.SectionNumber {
@@ -949,7 +947,6 @@ func (e *ElectionController) GetStatistic() {
 			condSectionNumber = condSectionNumber.Or("Section_number__exact", sectionNumber)
 		}
 	}
-	fmt.Println("condSectionNumber: ", condSectionNumber)
 
 	// Ac Name English
 	for _, acNameEnglish := range query.AcNameEnglish {
@@ -957,7 +954,6 @@ func (e *ElectionController) GetStatistic() {
 			condAcNameEnglish = condAcNameEnglish.Or("Ac_name_english__exact", acNameEnglish)
 		}
 	}
-	fmt.Println("condAcNameEnglish: ", condAcNameEnglish)
 
 	// Ac Name Hindi
 	for _, acNameHindi := range query.AcNameHindi {
@@ -965,7 +961,6 @@ func (e *ElectionController) GetStatistic() {
 			condAcNameHindi = condAcNameHindi.Or("Ac_name_hindi__exact", acNameHindi)
 		}
 	}
-	fmt.Println("condAcNameHindi: ", condAcNameHindi)
 
 	// Section Name English
 	for _, sectionNameEnglish := range query.SectionNameEnglish {
@@ -973,7 +968,6 @@ func (e *ElectionController) GetStatistic() {
 			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__exact", sectionNameEnglish)
 		}
 	}
-	fmt.Println("condSectionNameEnglish: ", condSectionNameEnglish)
 
 	// Section Name Hindi
 	for _, sectionNameHindi := range query.SectionNameHindi {
@@ -981,7 +975,6 @@ func (e *ElectionController) GetStatistic() {
 			condSectionNameHindi = condSectionNameHindi.Or("Section_name_hindi__ilike", sectionNameHindi)
 		}
 	}
-	fmt.Println("condSectionNameHindi: ", condSectionNameHindi)
 
 	// Age
 	for _, age := range query.Age {
@@ -1036,7 +1029,15 @@ func (e *ElectionController) GetStatistic() {
 			cond = condSectionNameHindi
 		}
 	}
-	
+
+	if condVote != nil && !condVote.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condVote)
+		} else {
+			cond = condVote
+		}
+	}
+
 	if condPartNumber != nil && !condPartNumber.IsEmpty() {
 		if cond != nil && !cond.IsEmpty() {
 			cond = cond.AndCond(condPartNumber)
@@ -1061,14 +1062,6 @@ func (e *ElectionController) GetStatistic() {
 		}
 	}
 
-	if condVote != nil && !condVote.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condVote)
-		} else {
-			cond = condVote
-		}
-	}
-	fmt.Println("Condition: ", cond)
 	qsRampur = qsRampur.SetCond(cond)
 	qsMoradabad = qsMoradabad.SetCond(cond)
 	qsBijnor = qsBijnor.SetCond(cond)
@@ -1718,38 +1711,6 @@ func (e *ElectionController) GetStatistics() {
 		}
 	}
 
-	if condPartNumberQuery != nil && !condPartNumberQuery.IsEmpty() {
-		if condQuery != nil && !condQuery.IsEmpty() {
-			condQuery = condQuery.AndCond(condPartNumberQuery)
-		} else {
-			condQuery = condPartNumberQuery
-		}
-	}
-
-	if condPartNumberScope != nil && !condPartNumberScope.IsEmpty() {
-		if condScope != nil && !condScope.IsEmpty() {
-			condScope = condScope.AndCond(condPartNumberScope)
-		} else {
-			condScope = condPartNumberScope
-		}
-	}
-
-	if condSectionNumberQuery != nil && !condSectionNumberQuery.IsEmpty() {
-		if condQuery != nil && !condQuery.IsEmpty() {
-			condQuery = condQuery.AndCond(condSectionNumberQuery)
-		} else {
-			condQuery = condSectionNumberQuery
-		}
-	}
-
-	if condSectionNumberScope != nil && !condSectionNumberScope.IsEmpty() {
-		if condScope != nil && !condScope.IsEmpty() {
-			condScope = condScope.AndCond(condSectionNumberScope)
-		} else {
-			condScope = condSectionNumberScope
-		}
-	}
-
 	if condAcNameEnglishQuery != nil && !condAcNameEnglishQuery.IsEmpty() {
 		if condQuery != nil && !condQuery.IsEmpty() {
 			condQuery = condQuery.AndCond(condAcNameEnglishQuery)
@@ -1811,6 +1772,38 @@ func (e *ElectionController) GetStatistics() {
 			condScope = condScope.AndCond(condSectionNameHindiScope)
 		} else {
 			condScope = condSectionNameHindiScope
+		}
+	}
+
+	if condPartNumberQuery != nil && !condPartNumberQuery.IsEmpty() {
+		if condQuery != nil && !condQuery.IsEmpty() {
+			condQuery = condQuery.AndCond(condPartNumberQuery)
+		} else {
+			condQuery = condPartNumberQuery
+		}
+	}
+
+	if condPartNumberScope != nil && !condPartNumberScope.IsEmpty() {
+		if condScope != nil && !condScope.IsEmpty() {
+			condScope = condScope.AndCond(condPartNumberScope)
+		} else {
+			condScope = condPartNumberScope
+		}
+	}
+
+	if condSectionNumberQuery != nil && !condSectionNumberQuery.IsEmpty() {
+		if condQuery != nil && !condQuery.IsEmpty() {
+			condQuery = condQuery.AndCond(condSectionNumberQuery)
+		} else {
+			condQuery = condSectionNumberQuery
+		}
+	}
+
+	if condSectionNumberScope != nil && !condSectionNumberScope.IsEmpty() {
+		if condScope != nil && !condScope.IsEmpty() {
+			condScope = condScope.AndCond(condSectionNumberScope)
+		} else {
+			condScope = condSectionNumberScope
 		}
 	}
 
@@ -2016,7 +2009,7 @@ func (e *ElectionController) GetStatistics() {
 			muslimMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Muslim").Count()
 			muslimFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Muslim").Count()
 			dalitMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Dalit").Count()
-			dalitFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Dalit").Count()			
+			dalitFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Dalit").Count()
 			OthersMaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "M").Filter("Religion_english__exact", "Others").Count()
 			OthersFemaleVotersCountBijnor, _ = qsBijnor.Filter("Gender__exact", "F").Filter("Religion_english__exact", "Others").Count()
 		}
@@ -3660,6 +3653,61 @@ func (e *ElectionController) UpdateVoter() {
 				e.ServeJSON()
 			}
 		}
+
+		if voter.Age >= 18 {
+			updatedRows, err := qsMoradabad.Update(orm.Params{
+				"age": voter.Age,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the age.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the age.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+
+		if len(strings.TrimSpace(voter.Religion)) > 0 {
+			relHindi := ""
+			if strings.TrimSpace(voter.Religion) == "Muslim" {
+				relHindi = "मुसलमान"
+			} else if strings.TrimSpace(voter.Religion) == "Others" {
+				relHindi = "अन्य"
+			} else if strings.TrimSpace(voter.Religion) == "Dalit" {
+				relHindi = "दलित"
+			}
+
+			updatedRows, err := qsMoradabad.Update(orm.Params{
+				"religion_english": voter.Religion,
+				"religion_hindi":   relHindi,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the religion.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the religion.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "ok"
 		responseStatus.Message = fmt.Sprintf("The voter data has been successfully updated.")
@@ -3756,6 +3804,60 @@ func (e *ElectionController) UpdateVoter() {
 				e.ServeJSON()
 			}
 		}
+
+		if voter.Age >= 18 {
+			updatedRows, err := qsRampur.Update(orm.Params{
+				"age": voter.Age,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the age.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the age.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+
+		if len(strings.TrimSpace(voter.Religion)) > 0 {
+			relHindi := ""
+			if strings.TrimSpace(voter.Religion) == "Muslim" {
+				relHindi = "मुसलमान"
+			} else if strings.TrimSpace(voter.Religion) == "Others" {
+				relHindi = "अन्य"
+			} else if strings.TrimSpace(voter.Religion) == "Dalit" {
+				relHindi = "दलित"
+			}
+
+			updatedRows, err := qsRampur.Update(orm.Params{
+				"religion_english": voter.Religion,
+				"religion_hindi":   relHindi,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the religion.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the religion.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "ok"
 		responseStatus.Message = fmt.Sprintf("The voter data has been successfully updated.")
@@ -3847,6 +3949,60 @@ func (e *ElectionController) UpdateVoter() {
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the image.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+
+		if voter.Age >= 18 {
+			updatedRows, err := qsBijnor.Update(orm.Params{
+				"age": voter.Age,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the age.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the age.")
+				responseStatus.Error = "The voter id(s) provided is/are not valid."
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+		}
+
+		if len(strings.TrimSpace(voter.Religion)) > 0 {
+			relHindi := ""
+			if strings.TrimSpace(voter.Religion) == "Muslim" {
+				relHindi = "मुसलमान"
+			} else if strings.TrimSpace(voter.Religion) == "Others" {
+				relHindi = "अन्य"
+			} else if strings.TrimSpace(voter.Religion) == "Dalit" {
+				relHindi = "दलित"
+			}
+
+			updatedRows, err := qsBijnor.Update(orm.Params{
+				"religion_english": voter.Religion,
+				"religion_hindi":   relHindi,
+			})
+			if err != nil {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the religion.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if updatedRows < 1 {
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Unable to update the religion.")
 				responseStatus.Error = "The voter id(s) provided is/are not valid."
 				e.Data["json"] = &responseStatus
 				e.ServeJSON()
