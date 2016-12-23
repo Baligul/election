@@ -1005,22 +1005,6 @@ func (e *ElectionController) GetStatistic() {
 		}
 	}
 
-	if condPartNumber != nil && !condPartNumber.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condPartNumber)
-		} else {
-			cond = condPartNumber
-		}
-	}
-
-	if condSectionNumber != nil && !condSectionNumber.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condSectionNumber)
-		} else {
-			cond = condSectionNumber
-		}
-	}
-
 	if condAcNameEnglish != nil && !condAcNameEnglish.IsEmpty() {
 		if cond != nil && !cond.IsEmpty() {
 			cond = cond.AndCond(condAcNameEnglish)
@@ -1050,6 +1034,22 @@ func (e *ElectionController) GetStatistic() {
 			cond = cond.AndCond(condSectionNameHindi)
 		} else {
 			cond = condSectionNameHindi
+		}
+	}
+	
+	if condPartNumber != nil && !condPartNumber.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condPartNumber)
+		} else {
+			cond = condPartNumber
+		}
+	}
+
+	if condSectionNumber != nil && !condSectionNumber.IsEmpty() {
+		if cond != nil && !cond.IsEmpty() {
+			cond = cond.AndCond(condSectionNumber)
+		} else {
+			cond = condSectionNumber
 		}
 	}
 
