@@ -6,7 +6,7 @@
    curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":["PILA TALAB"],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' "http://107.178.208.219:80/api/email/voters/slips?mobile_no=9343352734&token=5c3daf85732856f9"
 
    Voter List
-   
+
    curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":["PILA TALAB"],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' "http://107.178.208.219:80/api/email/voters/list?mobile_no=9343352734&token=5c3daf85732856f9"
 */
 
@@ -27,6 +27,7 @@ import (
 	modelVoters "github.com/Baligul/election/models/voters"
 
 	"github.com/Baligul/election/lib/html"
+	"github.com/Baligul/election/logs"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/lib/pq"
@@ -63,6 +64,8 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	key := e.Ctx.Input.Param(":key")
 
 	if key != "list" && key != "slips" {
+		// Log the error
+		_ = logs.WriteLogs("Wrong parameter passed. Please check your URL again.")
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Wrong parameter passed. Please check your URL again.")

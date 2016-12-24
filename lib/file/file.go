@@ -62,3 +62,13 @@ func Sync(f *os.File) error {
 	}
 	return nil
 }
+
+// Open an existing file and returns the file pointer with error as nil if the
+// file is succesfully opened else return file pointer as nil with the error
+func Open(filePath string) (*os.File, error) {
+	newFile, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		return nil, err
+	}
+	return newFile, nil
+}
