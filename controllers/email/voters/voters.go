@@ -65,10 +65,10 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 
 	if key != "list" && key != "slips" {
 		// Log the error
-		err := logs.WriteLogs("Wrong parameter passed. Please check your URL again.")
+		_ = logs.WriteLogs("Wrong parameter passed. Please check your URL again.")
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Wrong parameter passed. Please check your URL again Error: " + err.Error())
+		responseStatus.Message = fmt.Sprintf("Wrong parameter passed. Please check your URL again.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
