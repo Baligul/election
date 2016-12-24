@@ -12,7 +12,7 @@ func WriteLogs(data string) error {
 	const layout = "Jan 2, 2006 at 3:04pm (MST)"
 
 	// Get log file
-	logFile, err := file.Open("logs.txt")
+	logFile, err := file.Open("logs/logs.txt")
 	defer file.Close(logFile)
 
 	if err != nil {
