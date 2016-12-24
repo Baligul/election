@@ -19,7 +19,7 @@ func WriteLogs(data string) error {
 		return err
 	}
 
-	data = time.Now().Format(layout) + " - " + data
+	data = time.Now().Format(layout) + " - " + data + "\n"
 	_, err = file.Write(logFile, []byte(data))
 
 	if err != nil {
