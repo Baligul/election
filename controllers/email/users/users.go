@@ -20,6 +20,7 @@ import (
 	modelVoters "github.com/Baligul/election/models/voters"
 
 	"github.com/Baligul/election/lib/html"
+	"github.com/Baligul/election/logs"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/lib/pq"
@@ -77,6 +78,8 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Send Email Users API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -107,6 +110,8 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Send Email Users API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -172,6 +177,8 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 		accountsCount, _ = qsUserAccount.Count()
 		_, err = qsUserAccount.Filter("Leader_id__exact", user[0].Account_id).All(&userAccounts)
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Send Email Users API: " + err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
@@ -189,6 +196,8 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 			responseStatus.Response = "ok"
 			responseStatus.Message = "No accounts found with this criteria."
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Send Email Users API: " + err.Error())
 				responseStatus.Error = err.Error()
 			} else {
 				responseStatus.Error = "No Error"
@@ -200,6 +209,8 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 		// PDF creation code start here
 		err = html.GenerateHtmlFile("templates/id_cards.html.tmpl", accounts, filepath+".html")
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Send Email Users API: " + err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")
@@ -210,6 +221,8 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 
 		err = createPdf(filepath)
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Send Email Users API: " + err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")
@@ -221,6 +234,8 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 
 	err = sendEmailWithAttachment(user[0].Email, user[0].Display_name, filepath+".pdf")
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Send Email Users API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")

@@ -63,6 +63,7 @@ import (
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"
 
+	"github.com/Baligul/election/logs"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/craigmj/gototp"
@@ -104,6 +105,8 @@ func (e *ElectionController) GetVoters() {
 	token := e.GetString("token")
 
 	if mobileNo == 0 || token == "" {
+		// Log the error
+		_ = logs.WriteLogs("Get Voters API: Mobile number or token is wrong.")
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
@@ -119,6 +122,8 @@ func (e *ElectionController) GetVoters() {
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
+		// Log the error
+		_ = logs.WriteLogs("Get Voters API: Mobile number does not exists.")
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
@@ -129,6 +134,8 @@ func (e *ElectionController) GetVoters() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Voters API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -139,6 +146,8 @@ func (e *ElectionController) GetVoters() {
 
 	if num > 0 {
 		if user[0].Token != token {
+			// Log the error
+			_ = logs.WriteLogs("Get Voters API: Token is not correct")
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
@@ -147,6 +156,8 @@ func (e *ElectionController) GetVoters() {
 		}
 
 	} else {
+		// Log the error
+		_ = logs.WriteLogs("Get Voters API: Cannot find account")
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -163,6 +174,8 @@ func (e *ElectionController) GetVoters() {
 
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Voters API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -543,6 +556,8 @@ func (e *ElectionController) GetVoters() {
 				votersCountRampur, _ = qsRampur.Count()
 				_, err = qsRampur.Limit(limit, offset).All(&votersRampur)
 				if err != nil {
+					// Log the error
+					_ = logs.WriteLogs("Get Voters API: " + err.Error())
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
 					responseStatus.Message = fmt.Sprintf("Db Error Rampur. Unable to get the voters.")
@@ -553,6 +568,8 @@ func (e *ElectionController) GetVoters() {
 				votersCountMoradabad, _ = qsMoradabad.Count()
 				_, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
 				if err != nil {
+					// Log the error
+					_ = logs.WriteLogs("Get Voters API: " + err.Error())
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
 					responseStatus.Message = fmt.Sprintf("Db Error Moradabad. Unable to get the voters.")
@@ -563,6 +580,8 @@ func (e *ElectionController) GetVoters() {
 				votersCountBijnor, _ = qsBijnor.Count()
 				_, err = qsBijnor.Limit(limit, offset).All(&votersBijnor)
 				if err != nil {
+					// Log the error
+					_ = logs.WriteLogs("Get Voters API: " + err.Error())
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
 					responseStatus.Message = fmt.Sprintf("Db Error Bijnor. Unable to get the voters.")
@@ -576,6 +595,8 @@ func (e *ElectionController) GetVoters() {
 				votersCountBangalore, _ = qsBangalore.Count()
 				_, err = qsBangalore.Limit(limit, offset).All(&votersBangalore)
 				if err != nil {
+					// Log the error
+					_ = logs.WriteLogs("Get Voters API: " + err.Error())
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
 					responseStatus.Message = fmt.Sprintf("Db Error Bangalore. Unable to get the voters.")
@@ -586,6 +607,8 @@ func (e *ElectionController) GetVoters() {
 				votersCountHubli, _ = qsHubli.Count()
 				_, err = qsHubli.Limit(limit, offset).All(&votersHubli)
 				if err != nil {
+					// Log the error
+					_ = logs.WriteLogs("Get Voters API: " + err.Error())
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
 					responseStatus.Message = fmt.Sprintf("Db Error Hubli. Unable to get the voters.")
@@ -604,6 +627,8 @@ func (e *ElectionController) GetVoters() {
 			votersCountMoradabad, _ = qsMoradabad.Count()
 			_, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Voters API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Moradabad. Unable to get the voters.")
@@ -617,6 +642,8 @@ func (e *ElectionController) GetVoters() {
 			votersCountRampur, _ = qsRampur.Count()
 			_, err = qsRampur.Limit(limit, offset).All(&votersRampur)
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Voters API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Rampur. Unable to get the voters.")
@@ -630,6 +657,8 @@ func (e *ElectionController) GetVoters() {
 			votersCountBijnor, _ = qsBijnor.Count()
 			_, err = qsBijnor.Limit(limit, offset).All(&votersBijnor)
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Voters API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Bijnor. Unable to get the voters.")
@@ -646,6 +675,8 @@ func (e *ElectionController) GetVoters() {
 			votersCountMoradabad, _ = qsMoradabad.Count()
 			_, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Voters API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Moradabad. Unable to get the voters.")
@@ -659,6 +690,8 @@ func (e *ElectionController) GetVoters() {
 			votersCountRampur, _ = qsRampur.Count()
 			_, err = qsRampur.Limit(limit, offset).All(&votersRampur)
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Voters API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Rampur. Unable to get the voters.")
@@ -672,6 +705,8 @@ func (e *ElectionController) GetVoters() {
 			votersCountBijnor, _ = qsBijnor.Count()
 			_, err = qsBijnor.Limit(limit, offset).All(&votersBijnor)
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Voters API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Bijnor. Unable to get the voters.")
@@ -688,6 +723,8 @@ func (e *ElectionController) GetVoters() {
 			votersCountMoradabad, _ = qsMoradabad.Count()
 			_, err = qsMoradabad.Limit(limit, offset).All(&votersMoradabad)
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Voters API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Moradabad. Unable to get the voters.")
@@ -701,6 +738,8 @@ func (e *ElectionController) GetVoters() {
 			votersCountRampur, _ = qsRampur.Count()
 			_, err = qsRampur.Limit(limit, offset).All(&votersRampur)
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Voters API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Rampur. Unable to get the voters.")
@@ -714,6 +753,8 @@ func (e *ElectionController) GetVoters() {
 			votersCountBijnor, _ = qsBijnor.Count()
 			_, err = qsBijnor.Limit(limit, offset).All(&votersBijnor)
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Voters API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Bijnor. Unable to get the voters.")
@@ -739,6 +780,8 @@ func (e *ElectionController) GetVoters() {
 		responseStatus.Response = "ok"
 		responseStatus.Message = "No voters found with this criteria."
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Voters API: " + err.Error())
 			responseStatus.Error = err.Error()
 		} else {
 			responseStatus.Error = "No Error"
@@ -869,6 +912,8 @@ func (e *ElectionController) GetStatistic() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Statistic API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -900,6 +945,8 @@ func (e *ElectionController) GetStatistic() {
 
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Statistic API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = "Invalid Json. Unable to parse."
@@ -1359,6 +1406,8 @@ func (e *ElectionController) GetStatistic() {
 		responseStatus.Response = "ok"
 		responseStatus.Message = "No statistic found with this criteria. Please try again!"
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Statistic API: " + err.Error())
 			responseStatus.Error = err.Error()
 		} else {
 			responseStatus.Error = "No Error"
@@ -1492,6 +1541,8 @@ func (e *ElectionController) GetStatistics() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Statistics API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -1523,6 +1574,8 @@ func (e *ElectionController) GetStatistics() {
 
 	err = json.Unmarshal(inputJson, &queries)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Statistics API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = "Invalid Json. Unable to parse."
@@ -2982,6 +3035,8 @@ func (e *ElectionController) GetStatistics() {
 		responseStatus.Response = "ok"
 		responseStatus.Message = "No statistics found with this criteria. Please try again!"
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Statistics API: " + err.Error())
 			responseStatus.Error = err.Error()
 		} else {
 			responseStatus.Error = "No Error"
@@ -3019,6 +3074,8 @@ func (e *ElectionController) OTP() {
 
 	err := json.Unmarshal(inputJson, &account)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get OTP API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -3041,6 +3098,8 @@ func (e *ElectionController) OTP() {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't generate the otp. Please contact electionubda.com team for assistance.")
+		// Log the error
+		_ = logs.WriteLogs("Get OTP API: " + err.Error())
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -3055,6 +3114,8 @@ func (e *ElectionController) OTP() {
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Error occur while updating the otp. Please contact electionubda.com team for assistance.")
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get OTP API: " + err.Error())
 			responseStatus.Error = err.Error()
 		}
 		e.Data["json"] = &responseStatus
@@ -3064,6 +3125,8 @@ func (e *ElectionController) OTP() {
 	_, err = qsRecipient.Filter("Mobile_no__exact", account.Mobile_no).All(&recipient)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get OTP API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't send the otp. Please contact electionubda.com team for assistance.")
@@ -3076,6 +3139,8 @@ func (e *ElectionController) OTP() {
 		err = sendOTP(recipient[0].Otp, recipient[0].Email, recipient[0].Display_name, recipient[0].Mobile_no)
 
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get OTP API: " + err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Couldn't send the otp. Please contact electionubda.com team for assistance.")
@@ -3153,6 +3218,8 @@ func (e *ElectionController) Register() {
 
 	err := json.Unmarshal(inputJson, &account)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Register API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -3172,6 +3239,8 @@ func (e *ElectionController) Register() {
 
 	_, err = qsAccount.Filter("Mobile_no__exact", account.Mobile_no).All(&users)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Register API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't generate the token. Please contact electionubda.com team for assistance.")
@@ -3201,6 +3270,8 @@ func (e *ElectionController) Register() {
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Error occur while updating the token. Please contact electionubda.com team for assistance.")
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Register API: " + err.Error())
 				responseStatus.Error = err.Error()
 			}
 			e.Data["json"] = &responseStatus
@@ -3215,6 +3286,8 @@ func (e *ElectionController) Register() {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't generate the token. Please contact electionubda.com team for assistance.")
+		// Log the error
+		_ = logs.WriteLogs("Register API: " + err.Error())
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -3257,6 +3330,8 @@ func (e *ElectionController) GetList() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get List API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -3287,6 +3362,8 @@ func (e *ElectionController) GetList() {
 
 	err = json.Unmarshal(inputJson, &list)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get List API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -3323,6 +3400,8 @@ func (e *ElectionController) ReadJson() {
 
 	err := json.Unmarshal(inputJson, &readJsons)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get List API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent")
@@ -3518,6 +3597,8 @@ func (e *ElectionController) UpdateVoter() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Voter API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -3548,6 +3629,8 @@ func (e *ElectionController) UpdateVoter() {
 
 	err = json.Unmarshal(inputJson, &voter)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Voter API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -3571,6 +3654,8 @@ func (e *ElectionController) UpdateVoter() {
 				"vote": voter.Vote,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
@@ -3593,6 +3678,8 @@ func (e *ElectionController) UpdateVoter() {
 				"email": voter.Email,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the email.")
@@ -3615,6 +3702,8 @@ func (e *ElectionController) UpdateVoter() {
 				"mobile_no": voter.MobileNo,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the mobile number.")
@@ -3637,6 +3726,8 @@ func (e *ElectionController) UpdateVoter() {
 				"image": voter.Image,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the image.")
@@ -3659,6 +3750,8 @@ func (e *ElectionController) UpdateVoter() {
 				"age": voter.Age,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the age.")
@@ -3691,6 +3784,8 @@ func (e *ElectionController) UpdateVoter() {
 				"religion_hindi":   relHindi,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the religion.")
@@ -3722,6 +3817,8 @@ func (e *ElectionController) UpdateVoter() {
 				"vote": voter.Vote,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
@@ -3744,6 +3841,8 @@ func (e *ElectionController) UpdateVoter() {
 				"email": voter.Email,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the email.")
@@ -3766,6 +3865,8 @@ func (e *ElectionController) UpdateVoter() {
 				"mobile_no": voter.MobileNo,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the mobile number.")
@@ -3788,6 +3889,8 @@ func (e *ElectionController) UpdateVoter() {
 				"image": voter.Image,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the image.")
@@ -3810,6 +3913,8 @@ func (e *ElectionController) UpdateVoter() {
 				"age": voter.Age,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the age.")
@@ -3842,6 +3947,8 @@ func (e *ElectionController) UpdateVoter() {
 				"religion_hindi":   relHindi,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the religion.")
@@ -3872,6 +3979,8 @@ func (e *ElectionController) UpdateVoter() {
 				"vote": voter.Vote,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the vote value.")
@@ -3894,6 +4003,8 @@ func (e *ElectionController) UpdateVoter() {
 				"email": voter.Email,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the email.")
@@ -3916,6 +4027,8 @@ func (e *ElectionController) UpdateVoter() {
 				"mobile_no": voter.MobileNo,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the mobile number.")
@@ -3938,6 +4051,8 @@ func (e *ElectionController) UpdateVoter() {
 				"image": voter.Image,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the image.")
@@ -3960,6 +4075,8 @@ func (e *ElectionController) UpdateVoter() {
 				"age": voter.Age,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the age.")
@@ -3992,6 +4109,8 @@ func (e *ElectionController) UpdateVoter() {
 				"religion_hindi":   relHindi,
 			})
 			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Update Voter API: " + err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Unable to update the religion.")

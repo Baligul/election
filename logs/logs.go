@@ -1,8 +1,8 @@
 package logs
 
 import (
-	"time"
 	"github.com/Baligul/election/lib/file"
+	"time"
 )
 
 // WriteLogs function will be called in main package to automatically
@@ -26,10 +26,10 @@ func WriteLogs(data string) error {
 		return err
 	}
 
-    err = file.Sync(logFile)
+	err = file.Sync(logFile)
 	if err != nil {
 		return err
 	}
-    
+
 	return nil
 }

@@ -30,6 +30,7 @@ import (
 	modelGroups "github.com/Baligul/election/models/groups"
 	modelVoters "github.com/Baligul/election/models/voters"
 
+	"github.com/Baligul/election/logs"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/lib/pq"
@@ -86,6 +87,8 @@ func (e *AccountCtrl) GetAccounts() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Accounts API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -116,6 +119,8 @@ func (e *AccountCtrl) GetAccounts() {
 
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Accounts API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -179,6 +184,8 @@ func (e *AccountCtrl) GetAccounts() {
 	accountsCount, _ = qsUserAccount.Filter("Leader_id__exact", user[0].Account_id).Count()
 	_, err = qsUserAccount.Filter("Leader_id__exact", user[0].Account_id).All(&userAccounts)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Accounts API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
@@ -191,6 +198,8 @@ func (e *AccountCtrl) GetAccounts() {
 		userGroup = nil
 		_, err = o.Raw("SELECT title FROM usergroup WHERE group_id=?", userAccount.Group_id).QueryRows(&userGroup)
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Accounts API: " + err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
@@ -216,6 +225,8 @@ func (e *AccountCtrl) GetAccounts() {
 		responseStatus.Response = "ok"
 		responseStatus.Message = "No accounts found with this criteria."
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Accounts API: " + err.Error())
 			responseStatus.Error = err.Error()
 		} else {
 			responseStatus.Error = "No Error"
@@ -263,6 +274,8 @@ func (e *AccountCtrl) CreateAccount() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Create Account API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -300,6 +313,8 @@ func (e *AccountCtrl) CreateAccount() {
 	userAccount := new(modelAccounts.Account)
 	err = json.Unmarshal(inputJson, &userAccount)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Create Account API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -313,6 +328,8 @@ func (e *AccountCtrl) CreateAccount() {
 	userAccount.Approved_acs = user[0].Approved_acs
 	_, err = o.Insert(userAccount)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Create Account API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -377,6 +394,8 @@ func (e *AccountCtrl) UpdateAccount() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Account API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -414,6 +433,8 @@ func (e *AccountCtrl) UpdateAccount() {
 	userAccount := new(modelAccounts.Account)
 	err = json.Unmarshal(inputJson, &userAccount)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Account API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -426,6 +447,8 @@ func (e *AccountCtrl) UpdateAccount() {
 	qsUserAccount = qsUserAccount.SetCond(condAccountId)
 	num, err = qsUserAccount.All(&userAccounts)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Account API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to find the account.")
@@ -524,6 +547,8 @@ func (e *AccountCtrl) UpdateAccount() {
 		"Approved_sections": approvedSections,
 	})
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Account API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -578,6 +603,8 @@ func (e *AccountCtrl) DeleteAccount() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Delete Account API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -615,6 +642,8 @@ func (e *AccountCtrl) DeleteAccount() {
 	userAccount := new(modelAccounts.Account)
 	err = json.Unmarshal(inputJson, &userAccount)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Delete Account API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -628,6 +657,8 @@ func (e *AccountCtrl) DeleteAccount() {
 		qsUserAccount = qsUserAccount.SetCond(condAccountId)
 		num, err = qsUserAccount.All(&userAccounts)
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Delete Account API: " + err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to find the account.")
@@ -659,6 +690,8 @@ func (e *AccountCtrl) DeleteAccount() {
 	}
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Delete Account API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on account_id. Please contact electionubda.com team for assistance.")
@@ -674,6 +707,8 @@ func (e *AccountCtrl) DeleteAccount() {
 	}
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Delete Account API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on group_id. Please contact electionubda.com team for assistance.")
@@ -689,6 +724,8 @@ func (e *AccountCtrl) DeleteAccount() {
 	}
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Delete Account API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on leader_id. Please contact electionubda.com team for assistance.")

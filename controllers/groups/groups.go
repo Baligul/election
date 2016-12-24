@@ -28,6 +28,7 @@ import (
 	modelGroups "github.com/Baligul/election/models/groups"
 	modelVoters "github.com/Baligul/election/models/voters"
 
+	"github.com/Baligul/election/logs"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/lib/pq"
@@ -83,6 +84,8 @@ func (e *GroupCtrl) GetGroups() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Groups API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -113,6 +116,8 @@ func (e *GroupCtrl) GetGroups() {
 
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Groups API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -175,6 +180,8 @@ func (e *GroupCtrl) GetGroups() {
 	groupsCount, _ = qsGroup.Filter("Created_by__exact", user[0].Account_id).Count()
 	_, err = qsGroup.Filter("Created_by__exact", user[0].Account_id).All(&userGroups)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Groups API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to get the groups.")
@@ -193,6 +200,8 @@ func (e *GroupCtrl) GetGroups() {
 		responseStatus.Response = "ok"
 		responseStatus.Message = "No groups found with this criteria."
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Groups API: " + err.Error())
 			responseStatus.Error = err.Error()
 		} else {
 			responseStatus.Error = "No Error"
@@ -240,6 +249,8 @@ func (e *GroupCtrl) CreateGroup() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Create Group API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -277,6 +288,8 @@ func (e *GroupCtrl) CreateGroup() {
 	userGroup := new(modelGroups.Usergroup)
 	err = json.Unmarshal(inputJson, &userGroup)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Create Group API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -289,6 +302,8 @@ func (e *GroupCtrl) CreateGroup() {
 	userGroup.Created_by = user[0].Account_id
 	newGroupId, err := o.Insert(userGroup)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Create Group API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -316,6 +331,8 @@ func (e *GroupCtrl) CreateGroup() {
 			"Group_id": newGroupId,
 		})
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Create Group API: " + err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -373,6 +390,8 @@ func (e *GroupCtrl) UpdateGroup() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Group API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -410,6 +429,8 @@ func (e *GroupCtrl) UpdateGroup() {
 	userGroup := new(modelGroups.Usergroup)
 	err = json.Unmarshal(inputJson, &userGroup)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Group API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -422,6 +443,8 @@ func (e *GroupCtrl) UpdateGroup() {
 	qsGroup = qsGroup.SetCond(condGroupId)
 	num, err = qsGroup.All(&userGroups)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Group API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to find the group.")
@@ -467,6 +490,8 @@ func (e *GroupCtrl) UpdateGroup() {
 		"Updated_by":    user[0].Account_id,
 	})
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Group API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -494,6 +519,8 @@ func (e *GroupCtrl) UpdateGroup() {
 			"Group_id": userGroup.Group_id,
 		})
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Update Group API: " + err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -549,6 +576,8 @@ func (e *GroupCtrl) DeleteGroup() {
 	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Delete Group API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -586,6 +615,8 @@ func (e *GroupCtrl) DeleteGroup() {
 	userGroup := new(modelGroups.Usergroup)
 	err = json.Unmarshal(inputJson, &userGroup)
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Delete Group API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -599,6 +630,8 @@ func (e *GroupCtrl) DeleteGroup() {
 		qsGroup = qsGroup.SetCond(condGroupId)
 		num, err = qsGroup.All(&userGroups)
 		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Delete Group API: " + err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to find the group.")
@@ -629,6 +662,8 @@ func (e *GroupCtrl) DeleteGroup() {
 	}
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Delete Group API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on group_id. Please contact electionubda.com team for assistance.")
@@ -644,6 +679,8 @@ func (e *GroupCtrl) DeleteGroup() {
 	}
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Delete Group API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on created_by. Please contact electionubda.com team for assistance.")
@@ -659,6 +696,8 @@ func (e *GroupCtrl) DeleteGroup() {
 	}
 
 	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Delete Group API: " + err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on group_lead_id. Please contact electionubda.com team for assistance.")
