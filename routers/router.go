@@ -35,7 +35,7 @@ func init() {
 	beego.Router("/api/accounts", &accounts.AccountCtrl{}, "get,post:GetAccounts")
 	beego.Router("/api/account", &accounts.AccountCtrl{}, "put:UpdateAccount")
 	beego.Router("/api/account", &accounts.AccountCtrl{}, "delete:DeleteAccount")
-	beego.Router("/api/email/voters", &voters.VotersCtrl{}, "post:CreateAndEmailPdf")
+	beego.Router("/api/email/voters/:key", &voters.VotersCtrl{}, "post:CreateAndEmailPdf")
 	beego.Router("/api/email/users", &users.UsersCtrl{}, "post:CreateAndEmailPdf")
 	beego.Router("/api/task", &tasks.TaskCtrl{}, "post:CreateTask")
 	beego.Router("/api/tasks", &tasks.TaskCtrl{}, "get,post:GetTasks")

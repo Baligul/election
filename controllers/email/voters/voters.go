@@ -1,6 +1,13 @@
 /*
    Create and Send Pdf
-   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":["PILA TALAB"],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' "http://107.178.208.219:80/api/email/voters?mobile_no=9343352734&token=ed67fb13cdd9ac51"
+
+   Voter Slips
+
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":["PILA TALAB"],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' "http://107.178.208.219:80/api/email/voters/slips?mobile_no=9343352734&token=5c3daf85732856f9"
+
+   Voter List
+   
+   curl -X POST -H "Content-Type: application/json" -d '{"state_number":[], "district_number":[20], "voter_id":[],"ac_number":[],"part_number":[],"section_number":[],"serial_number_in_part":[],"name_english":[],"name_hindi":[],"relation_name_english":[],"relation_name_hindi":[],"gender":[],"id_card_number":[], "district_name_hindi":[],"district_name_english":[],"ac_name_english":[],"ac_name_hindi":[],"section_name_english":["PILA TALAB"],"section_name_hindi":[],"religion_english":[],"religion_hindi":[],"age":[],"vote":[],"email":[],"mobile_no":[],"image":[]}' "http://107.178.208.219:80/api/email/voters/list?mobile_no=9343352734&token=5c3daf85732856f9"
 */
 
 package voters
@@ -11,7 +18,7 @@ import (
 	"github.com/scorredoira/email"
 	"net/mail"
 	"net/smtp"
-	"os"
+	//"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -53,6 +60,15 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	)
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
+	key := e.Ctx.Input.Param(":key")
+
+	if key != "list" && key != "slips" {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Wrong parameter passed. Please check your URL again.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
 
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
@@ -117,8 +133,9 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 		e.ServeJSON()
 	}
 
-	filepath = createFilePath(query)
-	if _, err := os.Stat(filepath + ".pdf"); os.IsNotExist(err) || filepath == "Downloads/voters_list" {
+	filepath = createFilePath(query, key)
+	// TODO: We need to include back the below condition once our voter data gets perfect
+	//if _, err := os.Stat(filepath + ".pdf"); os.IsNotExist(err) || filepath == match {
 		// Create query string for each and every district
 		qsRampur := o.QueryTable(modelVoters.GetTableName("Rampur"))
 		qsMoradabad := o.QueryTable(modelVoters.GetTableName("Moradabad"))
@@ -305,88 +322,8 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 			}
 		}
 
-		if condVoterId != nil && !condVoterId.IsEmpty() {
-			cond = condVoterId
-		}
-
 		if condAcNumber != nil && !condAcNumber.IsEmpty() {
-			if cond != nil && !cond.IsEmpty() {
-				cond = cond.AndCond(condAcNumber)
-			} else {
-				cond = condAcNumber
-			}
-		}
-
-		if condPartNumber != nil && !condPartNumber.IsEmpty() {
-			if cond != nil && !cond.IsEmpty() {
-				cond = cond.AndCond(condPartNumber)
-			} else {
-				cond = condPartNumber
-			}
-		}
-
-		if condSectionNumber != nil && !condSectionNumber.IsEmpty() {
-			if cond != nil && !cond.IsEmpty() {
-				cond = cond.AndCond(condSectionNumber)
-			} else {
-				cond = condSectionNumber
-			}
-		}
-
-		if condSerialNumberInPart != nil && !condSerialNumberInPart.IsEmpty() {
-			if cond != nil && !cond.IsEmpty() {
-				cond = cond.AndCond(condSerialNumberInPart)
-			} else {
-				cond = condSerialNumberInPart
-			}
-		}
-
-		if condNameEnglish != nil && !condNameEnglish.IsEmpty() {
-			if cond != nil && !cond.IsEmpty() {
-				cond = cond.AndCond(condNameEnglish)
-			} else {
-				cond = condNameEnglish
-			}
-		}
-
-		if condNameHindi != nil && !condNameHindi.IsEmpty() {
-			if cond != nil && !cond.IsEmpty() {
-				cond = cond.AndCond(condNameHindi)
-			} else {
-				cond = condNameHindi
-			}
-		}
-
-		if condRelationNameEnglish != nil && !condRelationNameEnglish.IsEmpty() {
-			if cond != nil && !cond.IsEmpty() {
-				cond = cond.AndCond(condRelationNameEnglish)
-			} else {
-				cond = condRelationNameEnglish
-			}
-		}
-
-		if condRelationNameHindi != nil && !condRelationNameHindi.IsEmpty() {
-			if cond != nil && !cond.IsEmpty() {
-				cond = cond.AndCond(condRelationNameHindi)
-			} else {
-				cond = condRelationNameHindi
-			}
-		}
-
-		if condGender != nil && !condGender.IsEmpty() {
-			if cond != nil && !cond.IsEmpty() {
-				cond = cond.AndCond(condGender)
-			} else {
-				cond = condGender
-			}
-		}
-
-		if condIdCardNumber != nil && !condIdCardNumber.IsEmpty() {
-			if cond != nil && !cond.IsEmpty() {
-				cond = cond.AndCond(condIdCardNumber)
-			} else {
-				cond = condIdCardNumber
-			}
+			cond = condAcNumber
 		}
 
 		if condAcNameEnglish != nil && !condAcNameEnglish.IsEmpty() {
@@ -474,6 +411,86 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 				cond = cond.AndCond(condImage)
 			} else {
 				cond = condImage
+			}
+		}
+
+		if condVoterId != nil && !condVoterId.IsEmpty() {
+			if cond != nil && !cond.IsEmpty() {
+				cond = cond.AndCond(condVoterId)
+			} else {
+				cond = condVoterId
+			}
+		}
+
+		if condPartNumber != nil && !condPartNumber.IsEmpty() {
+			if cond != nil && !cond.IsEmpty() {
+				cond = cond.AndCond(condPartNumber)
+			} else {
+				cond = condPartNumber
+			}
+		}
+
+		if condSectionNumber != nil && !condSectionNumber.IsEmpty() {
+			if cond != nil && !cond.IsEmpty() {
+				cond = cond.AndCond(condSectionNumber)
+			} else {
+				cond = condSectionNumber
+			}
+		}
+
+		if condSerialNumberInPart != nil && !condSerialNumberInPart.IsEmpty() {
+			if cond != nil && !cond.IsEmpty() {
+				cond = cond.AndCond(condSerialNumberInPart)
+			} else {
+				cond = condSerialNumberInPart
+			}
+		}
+
+		if condNameEnglish != nil && !condNameEnglish.IsEmpty() {
+			if cond != nil && !cond.IsEmpty() {
+				cond = cond.AndCond(condNameEnglish)
+			} else {
+				cond = condNameEnglish
+			}
+		}
+
+		if condNameHindi != nil && !condNameHindi.IsEmpty() {
+			if cond != nil && !cond.IsEmpty() {
+				cond = cond.AndCond(condNameHindi)
+			} else {
+				cond = condNameHindi
+			}
+		}
+
+		if condRelationNameEnglish != nil && !condRelationNameEnglish.IsEmpty() {
+			if cond != nil && !cond.IsEmpty() {
+				cond = cond.AndCond(condRelationNameEnglish)
+			} else {
+				cond = condRelationNameEnglish
+			}
+		}
+
+		if condRelationNameHindi != nil && !condRelationNameHindi.IsEmpty() {
+			if cond != nil && !cond.IsEmpty() {
+				cond = cond.AndCond(condRelationNameHindi)
+			} else {
+				cond = condRelationNameHindi
+			}
+		}
+
+		if condGender != nil && !condGender.IsEmpty() {
+			if cond != nil && !cond.IsEmpty() {
+				cond = cond.AndCond(condGender)
+			} else {
+				cond = condGender
+			}
+		}
+
+		if condIdCardNumber != nil && !condIdCardNumber.IsEmpty() {
+			if cond != nil && !cond.IsEmpty() {
+				cond = cond.AndCond(condIdCardNumber)
+			} else {
+				cond = condIdCardNumber
 			}
 		}
 
@@ -694,7 +711,14 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 		}
 
 		// PDF creation code start here
-		err = html.GenerateHtmlFile("templates/voter_slips.html.tmpl", voters, filepath+".html")
+		if key == "slips" {
+			err = html.GenerateHtmlFile("templates/voter_slips.html.tmpl", voters, filepath+".html")
+		}
+
+		if key == "list" {
+			err = html.GenerateHtmlFile("templates/voter_list.html.tmpl", voters, filepath+".html")
+		}
+
 		if err != nil {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
@@ -713,7 +737,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
-	}
+	//}
 
 	err = sendEmailWithAttachment(user[0].Email, user[0].Display_name, filepath+".pdf")
 	if err != nil {
@@ -763,16 +787,26 @@ func sendEmailWithAttachment(toEmail string, displayName string, filepath string
 	return nil
 }
 
-func createFilePath(query *modelVoters.Query) string {
+func createFilePath(query *modelVoters.Query, key string) string {
 	var filepath string
-	filepath = "Downloads/voters_list"
+	var match string
+
+	if key == "list" {
+		filepath = "Downloads/voters_list"
+		match = "Downloads/voters_list"
+	}
+
+	if key == "slips" {
+		filepath = "Downloads/voters_slips"
+		match = "Downloads/voters_slips"
+	}
 
 	if len(query.StateNumber) == 1 && query.StateNumber[0] == 27 {
 		filepath = "Downloads/UP"
 	}
 
 	if len(query.DistrictNameEnglish) == 1 {
-		if filepath == "Downloads/voters_list" {
+		if filepath == match {
 			filepath = "Downloads/" + query.DistrictNameEnglish[0]
 		} else {
 			filepath = filepath + "-" + query.DistrictNameEnglish[0]
@@ -780,7 +814,7 @@ func createFilePath(query *modelVoters.Query) string {
 	}
 
 	if len(query.AcNameEnglish) == 1 {
-		if filepath == "Downloads/voters_list" {
+		if filepath == match {
 			filepath = "Downloads/" + query.AcNameEnglish[0]
 		} else {
 			filepath = filepath + "-" + query.AcNameEnglish[0]
@@ -788,7 +822,7 @@ func createFilePath(query *modelVoters.Query) string {
 	}
 
 	if len(query.SectionNameEnglish) == 1 {
-		if filepath == "Downloads/voters_list" {
+		if filepath == match {
 			filepath = "Downloads/" + query.SectionNameEnglish[0]
 		} else {
 			filepath = filepath + "-" + query.SectionNameEnglish[0]
@@ -796,7 +830,7 @@ func createFilePath(query *modelVoters.Query) string {
 	}
 
 	if len(query.PartNumber) == 1 {
-		if filepath == "Downloads/voters_list" {
+		if filepath == match {
 			filepath = "Downloads/PN_" + strconv.Itoa(query.PartNumber[0])
 		} else {
 			filepath = filepath + "-PN_" + strconv.Itoa(query.PartNumber[0])
@@ -804,7 +838,7 @@ func createFilePath(query *modelVoters.Query) string {
 	}
 
 	if len(query.SerialNumberInPart) == 1 {
-		if filepath == "Downloads/voters_list" {
+		if filepath == match {
 			filepath = "Downloads/SNIP_" + strconv.Itoa(query.SerialNumberInPart[0])
 		} else {
 			filepath = filepath + "-SNIP_" + strconv.Itoa(query.SerialNumberInPart[0])
@@ -812,7 +846,7 @@ func createFilePath(query *modelVoters.Query) string {
 	}
 
 	if len(query.ReligionEnglish) == 1 {
-		if filepath == "Downloads/voters_list" {
+		if filepath == match {
 			filepath = "Downloads/" + query.ReligionEnglish[0]
 		} else {
 			filepath = filepath + "-" + query.ReligionEnglish[0]
@@ -820,15 +854,21 @@ func createFilePath(query *modelVoters.Query) string {
 	}
 
 	if len(query.Vote) == 1 {
-		if filepath == "Downloads/voters_list" {
+		if filepath == match {
 			filepath = "Downloads/Vote_" + strconv.Itoa(query.Vote[0])
 		} else {
 			filepath = filepath + "-Vote_" + strconv.Itoa(query.Vote[0])
 		}
 	}
 
-	if filepath != "Downloads/voters_list" {
-		filepath = filepath + "-voters_list"
+	if filepath != match {
+		if key == "list" {
+			filepath = filepath + "-voters_list"
+		}
+
+		if key == "slips" {
+			filepath = filepath + "-voters_slips"
+		}
 	}
 
 	return filepath
