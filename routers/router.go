@@ -12,6 +12,7 @@ import (
 	"github.com/Baligul/election/controllers/accounts"
 	"github.com/Baligul/election/controllers/email/users"
 	"github.com/Baligul/election/controllers/email/voters"
+	"github.com/Baligul/election/controllers/emails"
 	"github.com/Baligul/election/controllers/groups"
 	"github.com/Baligul/election/controllers/tasks"
 
@@ -43,4 +44,5 @@ func init() {
 	beego.Router("/api/task", &tasks.TaskCtrl{}, "delete:DeleteTask")
 	beego.Router("/api/taskdetail", &tasks.TaskCtrl{}, "get,post:GetTaskDetail")
 	beego.Router("/api/read/json", &controllers.ElectionController{}, "post:ReadJson")
+	beego.Router("/api/emails", &emails.EmailsCtrl{}, "post:SendBulkEmails")
 }

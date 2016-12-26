@@ -39,150 +39,80 @@
             <table style="width:520px; font-size: small; font-family: Arial, Mangal, Helvetica, sans-serif;" cellpadding="5" cellspacing="1" bgcolor="#CCCCFF" border="2">
                <tbody>
                   <tr>
-                     <td colspan="2" class="style4">
-                        VOTER SLIP / मतदाता पर्ची
+                     <td class="style4" colspan="2">
+                      <img src="/static/img/sp-symbol.png" alt="Avatar">&nbsp; &nbsp; &nbsp; &nbsp; सहायता पर्ची &nbsp; &nbsp; &nbsp; &nbsp;<img src="/static/img/avatar.jpg" alt="Avatar">
                      </td>
                   </tr>
                   <tr>
-                     <td colspan="2" class="style4">
-                        <img src="{{$voter.Image}}" alt="Avatar" style="width:50%">
-                     </td>
-                  </tr>
-                  <tr>
-                     <td rowspan="2">District Name / जिले का नाम : </td>
+                     <td>जिले का नाम</td>
                      <td>
-                        <span>{{$voter.District_name_english}}</span>
+                        {{$voter.District_name_hindi}}
                      </td>
                   </tr>
                   <tr>
+                     <td>विधान सभा क्षेत्र(नाम एवम संख्या)</td>
                      <td>
-                        <span>{{$voter.District_name_hindi}}</span>
+                        {{$voter.Ac_number}} {{$voter.Ac_name_hindi}}
                      </td>
                   </tr>
                   <tr>
-                     <td rowspan="2">AC (Name & No.) / विधान सभा क्षेत्र(नाम एवम संख्या) : </td>
+                     <td>मुहल्ला (नाम एवम संख्या)</td>
                      <td>
-                        <span>{{$voter.Ac_number}} {{$voter.Ac_name_english}}</span>
+                        {{$voter.Section_number}} {{$voter.Section_name_hindi}}
                      </td>
                   </tr>
                   <tr>
+                     <td>नाम</td>
                      <td>
-                        <span>{{$voter.Ac_number}} {{$voter.Ac_name_hindi}}</span>
+                       {{$voter.Name_hindi}}
                      </td>
                   </tr>
                   <tr>
-                     <td rowspan="2">Section (Name & No.) / मुहल्ला (नाम एवम संख्या) : </td>
+                     <td>लिंग</td>
                      <td>
-                        <span>{{$voter.Section_number}} {{$voter.Section_name_english}}</span>
+                        {{$voter.Gender}}
                      </td>
                   </tr>
                   <tr>
+                     <td>पहचान पत्र संख्या</td>
                      <td>
-                        <span>{{$voter.Section_number}} {{$voter.Section_name_hindi}}</span>
+                        {{$voter.Id_card_number}}
                      </td>
                   </tr>
                   <tr>
-                     <td rowspan="2">Name / नाम : </td>
+                     <td>पिता/पति का नाम</td>
                      <td>
-                        <span>{{$voter.Name_english}} </span>
+                        {{$voter.Relation_name_hindi}}
                      </td>
                   </tr>
                   <tr>
+                     <td>मतदाता क्रमांक</td>
                      <td>
-                        <span>{{$voter.Name_hindi}} </span>
+                        {{$voter.Serial_number_in_part}}
                      </td>
                   </tr>
                   <tr>
-                     <td>Gender / लिंग : </td>
+                     <td>मतदान स्थल एवम संख्या</td>
                      <td>
-                        <span>{{$voter.Gender}}</span>
+                        {{$voter.Part_number}}
                      </td>
                   </tr>
                   <tr>
-                     <td>ID Card No. / पहचान पत्र संख्या : </td>
-                     <td>
-                        <span>{{$voter.Id_card_number}}</span>
+                     <td>मतदान दिवस</td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                    <td class="style2" colspan="2"><b>नोट</b>: यह सहायता पर्ची आपकी मदद के लिए समाजवादी पार्टी की तरफ से उपलब्ध कराई गयी है। यह आपकी पहचान का प्रमाण नहीं है।
                      </td>
                   </tr>
                   <tr>
-                     <td rowspan="2">Father/Husband Name / पिता/पति का नाम : </td>
-                     <td>
-                        <span>{{$voter.Relation_name_english}} </span>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td>
-                        <span>{{$voter.Relation_name_hindi}} </span>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td>Serial Number In Part / मतदाता क्रमांक : </td>
-                     <td>
-                        <span>{{$voter.Serial_number_in_part}}</span>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td>Part Number / मतदान स्थल एवम संख्या: </td>
-                     <td>
-                        <span>{{$voter.Part_number}}</span>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td>Election Date / मतदान दिवस : </td>
-                     <td><span></span>  </td>
-                  </tr>
-                  <tr>
-                     <td rowspan="2">Religion / धर्म : </td>
-                     <td>
-                        <span>{{$voter.Religion_english}}</span>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td>
-                        <span>{{$voter.Religion_hindi}}</span>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td>Age / आयु : </td>
-                     <td>
-                        <span>{{$voter.Age}}</span>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td>Email / ईमेल : </td>
-                     <td>
-                        <span>{{$voter.Email}}</span>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td>Mobile No. / मोबाइल संख्या : </td>
-                     <td>
-                        <span>{{$voter.Mobile_no}}</span>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class="style2" colspan="2">Note 1 : This Voter Slip is not an identification 
-                        document.
-                     </td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" style="text-align: justify">Note 2 : Bringing this voter slip to the Polling 
-                        Station
-                        is not compulsory. It is issued only as a 
-                        convenience to electors.
-                     </td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" style="text-align: justify">Note 3 : If this voter slip does not have a photograph 
-                        or
-                        it has wrong particulars or photograph, the voter 
-                        can still be allowed to vote based on alternate 
-                        identity documents permitted by 
-                        Election Commission of India.
+                     <td colspan="2" style="text-align: justify">
+                       यह जगह पार्टी के सन्देश अथवा नारे के लिए है।
                      </td>
                   </tr>
                </tbody>
             </table>
+           <p></p>
          </div>
       </div>
      {{ end }}
