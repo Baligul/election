@@ -835,6 +835,7 @@ func sendEmailWithAttachment(toEmail string, displayName string, filepath string
 func createFilePath(query *modelVoters.Query, key string) string {
 	var filepath string
 	var match string
+	var voteVal string
 
 	if key == "list" {
 		filepath = "Downloads/voters_list"
@@ -899,10 +900,16 @@ func createFilePath(query *modelVoters.Query, key string) string {
 	}
 
 	if len(query.Vote) == 1 {
+		if query.Vote[0] == 1 {
+			voteVal = "Voted"
+		}
+		if query.Vote[0] == 0 {
+			voteVal = "NonVoted"
+		}
 		if filepath == match {
-			filepath = "Downloads/Vote_" + strconv.Itoa(query.Vote[0])
+			filepath = "Downloads/" + voteVal
 		} else {
-			filepath = filepath + "-Vote_" + strconv.Itoa(query.Vote[0])
+			filepath = filepath + "-" + voteVal
 		}
 	}
 
