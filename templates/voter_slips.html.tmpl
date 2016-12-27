@@ -49,10 +49,9 @@
       </style>
    </head>
    <body>
-      <br></br>
-      {{ range $voter := .Voters }}
       <div>
          <div>
+          {{ range $voter := .Voters }}
             <table style="width:650px; font-size: 12px; font-family: Arial Narrow, Mangal, Helvetica, sans-serif;" bgcolor="#FFFFFF" border="1">
                <tbody>
                   <tr>
@@ -128,9 +127,10 @@
                   </tr>
                </tbody>
             </table>
-           <p></p>
+            <br></br>
+            <br></br>
+          {{ end }}
          </div>
       </div>
-     {{ end }}
    </body>
 </html>
