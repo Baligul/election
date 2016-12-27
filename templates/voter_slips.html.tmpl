@@ -49,9 +49,9 @@
       </style>
    </head>
    <body>
+      {{ range $voter := .Voters }}
       <div>
          <div>
-          {{ range $voter := .Voters }}
             <table style="width:650px; font-size: 12px; font-family: Arial Narrow, Mangal, Helvetica, sans-serif;" bgcolor="#FFFFFF" border="1">
                <tbody>
                   <tr>
@@ -122,13 +122,14 @@
                      <td></td>
                   </tr>
                   <tr>
-                    <td class="style2" colspan="2"><br></br><b>नोट</b>: यह सहायता पर्ची आपकी मदद के लिए समाजवादी पार्टी की तरफ से उपलब्ध कराई गयी है। यह आपकी पहचान का प्रमाण नहीं है।
+                    <td class="style2" colspan="2"><b>नोट</b>: यह सहायता पर्ची आपकी मदद के लिए समाजवादी पार्टी की तरफ से उपलब्ध कराई गयी है। यह आपकी पहचान का प्रमाण नहीं है।
                      </td>
                   </tr>
                </tbody>
             </table>
-          {{ end }}
+           <p></p>
          </div>
       </div>
+     {{ end }}
    </body>
 </html>
