@@ -214,9 +214,9 @@ func (e *AccountCtrl) GetAccounts() {
 		if userAccount.Group_title == "" {
 			userAccount.Group_title = "N/A"
 		}
-		userAccounts[i] = *userAccount
 	}
 
+	accounts.Populate(userAccounts)
 	if accountsCount > 0 {
 		accounts.Total = accountsCount
 		sort.Sort(modelAccounts.ByDisplayName(accounts.Accounts))
