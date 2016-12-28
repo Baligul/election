@@ -482,9 +482,9 @@ func (e *TaskCtrl) GetTaskDetail() {
 			e.ServeJSON()
 		}
 
-		for _, accountDetail := range accountDetails {
+		for i := range accountDetails {
 			accountDN = nil
-			_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", accountDetail.Status_updated_by).QueryRows(&accountDN)
+			_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", accountDetails[i].Status_updated_by).QueryRows(&accountDN)
 			if err != nil {
 				// Log the error
 				_ = logs.WriteLogs("Get Task Details API: " + err.Error())
@@ -495,10 +495,10 @@ func (e *TaskCtrl) GetTaskDetail() {
 				e.Data["json"] = &responseStatus
 				e.ServeJSON()
 			}
-			accountDetail.Status_updated_by_display_name = accountDN[0].Display_name
+			accountDetails[i].Status_updated_by_display_name = accountDN[0].Display_name
 
 			accountDN = nil
-			_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", accountDetail.Task_assigned_by).QueryRows(&accountDN)
+			_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", accountDetails[i].Task_assigned_by).QueryRows(&accountDN)
 			if err != nil {
 				// Log the error
 				_ = logs.WriteLogs("Get Task Details API: " + err.Error())
@@ -509,9 +509,9 @@ func (e *TaskCtrl) GetTaskDetail() {
 				e.Data["json"] = &responseStatus
 				e.ServeJSON()
 			}
-			accountDetail.Task_assigned_by_display_name = accountDN[0].Display_name
-			if accountDetail.Group_title == "" {
-				accountDetail.Group_title = "N/A"
+			accountDetails[i].Task_assigned_by_display_name = accountDN[0].Display_name
+			if accountDetails[i].Group_title == "" {
+				accountDetails[i].Group_title = "N/A"
 			}
 		}
 		taskDetail.AccountDetails = accountDetails

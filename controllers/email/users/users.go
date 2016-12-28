@@ -17,6 +17,7 @@ import (
 	"strings"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
+	modelGroups "github.com/Baligul/election/models/groups"
 	modelVoters "github.com/Baligul/election/models/voters"
 
 	"github.com/Baligul/election/lib/html"
@@ -44,6 +45,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 		num           int64
 		user          []*modelAccounts.Account
 		filepath      string
+		userGroup     []*modelGroups.Usergroup
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -185,6 +187,24 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
+		}
+		for i := range userAccounts {
+			userGroup = nil
+			userAccount := &userAccounts[i]
+			_, err = o.Raw("SELECT title FROM usergroup WHERE group_id=?", userAccount.Group_id).QueryRows(&userGroup)
+			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Accounts API: " + err.Error())
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if len(userGroup) > 0 {
+				userAccount.Group_title = userGroup[0].Title
+			}
 		}
 		accounts.Populate(userAccounts)
 
