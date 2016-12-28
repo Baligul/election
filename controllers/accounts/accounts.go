@@ -214,6 +214,7 @@ func (e *AccountCtrl) GetAccounts() {
 		if userAccount.Group_title == "" {
 			userAccount.Group_title = "N/A"
 		}
+		userAccounts[i] = *userAccount
 	}
 
 	if accountsCount > 0 {
