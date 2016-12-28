@@ -1097,7 +1097,7 @@ func (e *TaskCtrl) DeleteTask() {
 
 	_, err = qsTaskgroupmap.Filter("Created_by__exact", user[0].Account_id).All(&tgMap)
 	// Delete from Taskgroupmap
-	num, err = qsTaskgroupmap.Delete()
+	num, err = qsTaskgroupmap.Filter("Created_by__exact", user[0].Account_id).Delete()
 	if err != nil {
 		// Log the error
 		_ = logs.WriteLogs("Delete Task API: " + err.Error())
@@ -1121,7 +1121,7 @@ func (e *TaskCtrl) DeleteTask() {
 
 	_, err = qsTaskaccountmap.Filter("Created_by__exact", user[0].Account_id).All(&taMap)
 	// Delete from Taskaccountmap
-	num, err = qsTaskaccountmap.Delete()
+	num, err = qsTaskaccountmap.Filter("Created_by__exact", user[0].Account_id).Delete()
 	if err != nil {
 		// Log the error
 		_ = logs.WriteLogs("Delete Task API: " + err.Error())
