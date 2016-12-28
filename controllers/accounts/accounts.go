@@ -1,21 +1,21 @@
 /*
    GET ACCOUNTS
    curl -X POST -H "Content-Type: application/json" -d '{"account_id":[1,2,4], "group_id":[1,2,4], "leader_id":[1,2,4]}' http://107.178.208.219:80/api/accounts
-   curl -X POST -H "Content-Type: application/json" -d '{"account_id":[1,2,4], "group_id":[1,2,4], "leader_id":[1,2,4]}' "http://107.178.208.219:80/api/accounts?mobile_no=9343352734&token=ed67fb13cdd9ac51"
+   curl -X POST -H "Content-Type: application/json" -d '{}' "http://107.178.208.219:80/api/accounts?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    Update ACCOUNT
    curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)",
    "group_id":3, "approved_sections":"civil lines,thana naghfani", "father_name":"Mujeebul Hasan"}' http://107.178.208.219:80/api/account
    curl -X PUT -H "Content-Type: application/json" -d '{"account_id":2, "display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)",
-   "group_id":3, "approved_sections":"civil lines,thana naghfani", "father_name":"Mujeebul Hasan"}' "http://107.178.208.219:80/api/account?mobile_no=9343352734&token=ed67fb13cdd9ac51"
+   "group_id":3, "approved_sections":"civil lines,thana naghfani", "father_name":"Mujeebul Hasan"}' "http://107.178.208.219:80/api/account?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    Create ACCOUNT
    curl -X POST -H "Content-Type: application/json" -d '{"display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3, "approved_sections":"civil lines,thana naghfani", "father_name":"Mujeebul Hasan"}' http://107.178.208.219:80/api/account
-   curl -X POST -H "Content-Type: application/json" -d '{"display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3, "approved_sections":"civil lines,thana naghfani", "father_name":"Mujeebul Hasan"}' "http://107.178.208.219:80/api/account?mobile_no=9343352734&token=ed67fb13cdd9ac51"
+   curl -X POST -H "Content-Type: application/json" -d '{"display_name":"balig", "email":"balig@gmail.com", "mobile_no":9657432561, "approved_districts":"Moradabad,Rampur", "approved_acs":"Kanth,Bilaspur", "role":"group lead", "image":"sadsd&%^sd99(&*)", "approved_districts":"Moradabad, Rampur", "group_id":3, "approved_sections":"civil lines,thana naghfani", "father_name":"Mujeebul Hasan"}' "http://107.178.208.219:80/api/account?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    Delete ACCOUNT
    curl -X DELETE -H "Content-Type: application/json" -d '{"account_id":1, "group_id":1, "leader_id":2}' http://107.178.208.219:80/api/account
-   curl -X DELETE -H "Content-Type: application/json" -d '{"account_id":1, "group_id":1, "leader_id":2}' "http://107.178.208.219:80/api/account?mobile_no=9343352734&token=ed67fb13cdd9ac51"
+   curl -X DELETE -H "Content-Type: application/json" -d '{"account_id":1, "group_id":1, "leader_id":2}' "http://107.178.208.219:80/api/account?mobile_no=9343352734&token=f8a220f5e8d1741d"
 */
 
 package accounts
@@ -213,6 +213,7 @@ func (e *AccountCtrl) GetAccounts() {
 		if userAccount.Group_title == "" {
 			userAccount.Group_title = "N/A"
 		}
+		fmt.Println("Title: " + userGroup[0].Title + "||" + userAccount.Group_title)
 	}
 	accounts.Populate(userAccounts)
 

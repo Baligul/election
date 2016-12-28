@@ -1,6 +1,6 @@
 /*
    Create and Send Pdf
-   curl -X POST -H "Content-Type: application/json" -d '{"account_id":[], "group_id":[], "leader_id":[2]}' "http://107.178.208.219:80/api/email/users?mobile_no=9343352734&token=ed67fb13cdd9ac51"
+   curl -X POST -H "Content-Type: application/json" -d '{"account_id":[], "group_id":[], "leader_id":[2]}' "http://107.178.208.219:80/api/email/users?mobile_no=9343352734&token=f8a220f5e8d1741d"
 */
 
 package users
