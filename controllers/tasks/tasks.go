@@ -29,6 +29,7 @@ import (
 	"strings"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
+	modelGroups "github.com/Baligul/election/models/groups"
 	modelTasks "github.com/Baligul/election/models/tasks"
 	modelVoters "github.com/Baligul/election/models/voters"
 
@@ -362,6 +363,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 		err            error
 		num            int64
 		user           []*modelAccounts.Account
+		userGroup      []*modelGroups.Usergroup
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -510,10 +512,69 @@ func (e *TaskCtrl) GetTaskDetail() {
 				e.ServeJSON()
 			}
 			accountDetails[i].Task_assigned_by_display_name = accountDN[0].Display_name
+
+			accountDN = nil
+			_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", accountDetails[i].Account_id).QueryRows(&accountDN)
+			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			accountDetails[i].Display_name = accountDN[0].Display_name
+
+			userGroup = nil
+			_, err = o.Raw("SELECT title FROM usergroup WHERE group_id=?", accountDetails[i].Group_id).QueryRows(&userGroup)
+			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Accounts API: " + err.Error())
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			if len(userGroup) > 0 {
+				accountDetails[i].Group_title = userGroup[0].Title
+			}
 			if accountDetails[i].Group_title == "" {
 				accountDetails[i].Group_title = "N/A"
 			}
 		}
+
+		accountDN = nil
+		_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", taskDetail.Created_by).QueryRows(&accountDN)
+		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+		taskDetail.Created_by_display_name = accountDN[0].Display_name
+
+		accountDN = nil
+		_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", taskDetail.Updated_by).QueryRows(&accountDN)
+		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+		taskDetail.Updated_by_display_name = accountDN[0].Display_name
+
 		taskDetail.AccountDetails = accountDetails
 		e.Data["json"] = taskDetail
 	} else {
