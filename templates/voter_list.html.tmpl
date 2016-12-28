@@ -50,7 +50,7 @@
                     <td>{{$voter.Id_card_number}}</td>
                     <td>{{$voter.Name_english}} / {{$voter.Name_hindi}}</td>
                     <td>{{$voter.Relation_name_english}} / {{$voter.Relation_name_hindi}}</td>
-                    <td>{{$voter.Gender}}</td>
+                    <td>{{if eq $voter.Gender "M"}}पुरुष{{else}}महिला{{end}}</td>
                     <td>{{$voter.Mobile_no}}</td>
                     <td>{{$voter.Email}}</td>
                 </tr>
