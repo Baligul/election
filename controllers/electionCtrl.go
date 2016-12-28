@@ -2213,6 +2213,7 @@ func (e *ElectionController) GetStatistics() {
 	OthersMaleVotersCountMoradabad = 0
 	OthersFemaleVotersCountRampur = 0
 	OthersFemaleVotersCountMoradabad = 0
+	votersCountBijnor = 0
 	muslimVotersCountBijnor = 0
 	dalitVotersCountBijnor = 0
 	OthersVotersCountBijnor = 0

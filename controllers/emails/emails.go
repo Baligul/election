@@ -4,9 +4,9 @@
 /*
    Send Bulk Emails
 
-   curl -X POST -H "Content-Type: application/json" -d '{}' "http://107.178.208.219:80/api/email/voters/slips?mobile_no=9343352734&token=5c3daf85732856f9"
+   curl -X POST -H "Content-Type: application/json" -d '{}' "http://107.178.208.219:80/api/email/voters/slips?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
-   curl -X POST -H "Content-Type: application/json" -d '{}' "http://localhost:8080/api/emails?mobile_no=9343352734&token=5c3daf85732856f9"
+   curl -X POST -H "Content-Type: application/json" -d '{}' "http://localhost:8080/api/emails?mobile_no=9343352734&token=f8a220f5e8d1741d"
 */
 
 package emails
