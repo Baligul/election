@@ -115,7 +115,7 @@ func (e *AccountCtrl) GetAccounts() {
 		e.ServeJSON()
 	}
 
-	_, err = qsAccount.Update(orm.Params{
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
 		"Last_login": time.Now(),
 	})
 	if err != nil {
@@ -311,6 +311,14 @@ func (e *AccountCtrl) CreateAccount() {
 		e.ServeJSON()
 	}
 
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Create Account API: " + err.Error())
+	}
+
 	if user[0].Role != "Leader" && user[0].Role != "leader" && user[0].Role != "group lead" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -429,6 +437,14 @@ func (e *AccountCtrl) UpdateAccount() {
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Update Account API: " + err.Error())
 	}
 
 	if user[0].Role != "Leader" && user[0].Role != "leader" && user[0].Role != "group lead" {
@@ -638,6 +654,14 @@ func (e *AccountCtrl) DeleteAccount() {
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Delete Account API: " + err.Error())
 	}
 
 	if user[0].Role != "Leader" && user[0].Role != "leader" && user[0].Role != "group lead" {

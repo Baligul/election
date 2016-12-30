@@ -165,6 +165,14 @@ func (e *ElectionController) GetVoters() {
 		e.ServeJSON()
 	}
 
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Get Voters API: " + err.Error())
+	}
+
 	if limit == 0 {
 		limit = -1
 	}
@@ -939,6 +947,14 @@ func (e *ElectionController) GetStatistic() {
 		e.ServeJSON()
 	}
 
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Get Statistic API: " + err.Error())
+	}
+
 	inputJson := e.Ctx.Input.RequestBody
 	query := new(modelVoters.Query)
 	statistic := new(modelVoters.Statistic)
@@ -1566,6 +1582,14 @@ func (e *ElectionController) GetStatistics() {
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Get Statistics API: " + err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -3106,6 +3130,14 @@ func (e *ElectionController) OTP() {
 		e.ServeJSON()
 	}
 
+	_, err = qsAccount.Filter("Mobile_no__exact", account.Mobile_no).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Get OTP API: " + err.Error())
+	}
+
 	num, err = qsAccount.Filter("Mobile_no__exact", account.Mobile_no).Update(orm.Params{
 		"OTP": otp,
 	})
@@ -3356,6 +3388,14 @@ func (e *ElectionController) GetList() {
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Get Districts or Acs API: " + err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -3623,6 +3663,14 @@ func (e *ElectionController) UpdateVoter() {
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Update Voter API: " + err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody

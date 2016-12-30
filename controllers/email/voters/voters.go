@@ -22,6 +22,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"
@@ -127,6 +128,15 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Send Email Voters API: " + err.Error())
+	}
+
 	inputJson := e.Ctx.Input.RequestBody
 	query := new(modelVoters.Query)
 

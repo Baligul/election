@@ -27,6 +27,7 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	"time"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
@@ -128,6 +129,14 @@ func (e *TaskCtrl) GetTasks() {
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Get Tasks API: " + err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -425,6 +434,14 @@ func (e *TaskCtrl) GetTaskDetail() {
 		e.ServeJSON()
 	}
 
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Get Task Details API: " + err.Error())
+	}
+
 	inputJson := e.Ctx.Input.RequestBody
 	query := new(modelTasks.Task)
 
@@ -651,6 +668,14 @@ func (e *TaskCtrl) CreateTask() {
 		e.ServeJSON()
 	}
 
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Create Task API: " + err.Error())
+	}
+
 	if user[0].Role != "Leader" && user[0].Role != "leader" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -842,6 +867,14 @@ func (e *TaskCtrl) UpdateTask() {
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Update Task API: " + err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -1058,6 +1091,14 @@ func (e *TaskCtrl) DeleteTask() {
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Delete Task API: " + err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody

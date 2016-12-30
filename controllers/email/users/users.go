@@ -15,6 +15,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
@@ -105,6 +106,14 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Send Email Users API: " + err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody

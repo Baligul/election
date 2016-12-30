@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	"time"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
@@ -109,6 +110,14 @@ func (e *GroupCtrl) GetGroups() {
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Get Groups API: " + err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -276,6 +285,14 @@ func (e *GroupCtrl) CreateGroup() {
 		e.ServeJSON()
 	}
 
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Create Group API: " + err.Error())
+	}
+
 	if user[0].Role != "Leader" && user[0].Role != "leader" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -415,6 +432,14 @@ func (e *GroupCtrl) UpdateGroup() {
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Update Group API: " + err.Error())
 	}
 
 	if user[0].Role != "Leader" && user[0].Role != "leader" {
@@ -601,6 +626,14 @@ func (e *GroupCtrl) DeleteGroup() {
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Delete Group API: " + err.Error())
 	}
 
 	if user[0].Role != "Leader" && user[0].Role != "leader" {
