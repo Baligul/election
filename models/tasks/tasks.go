@@ -96,6 +96,7 @@ type AccountDetails struct {
 	Display_name                   string    `json:"display_name,omitempty"`
 	Group_id                       int       `json:"group_id,omitempty"`
 	Group_title                    string    `json:"group_title,omitempty"`
+	Last_login                     time.Time `json:"last_login,omitempty"`
 }
 
 type AccountDisplayName struct {

@@ -489,7 +489,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 
 	if num > 0 {
 		taskDetail.Populate(tasks[0])
-		_, err = o.Raw("SELECT tam.account_id, tam.status, tam.updated_by AS status_updated_by, tam.updated_on AS status_updated_on, tam.created_by AS task_assigned_by, tam.created_on AS task_assigned_on, a.display_name, g.group_id, g.title AS group_title FROM taskaccountmap AS tam LEFT OUTER JOIN account AS a ON tam.account_id = a.account_id LEFT OUTER JOIN usergroup AS g ON a.group_id = g.group_id WHERE tam.task_id=?", query.Task_id).QueryRows(&accountDetails)
+		_, err = o.Raw("SELECT DISTINCT tam.account_id, tam.status, tam.updated_by AS status_updated_by, tam.updated_on AS status_updated_on, tam.created_by AS task_assigned_by, tam.created_on AS task_assigned_on, a.display_name, a.last_login, g.group_id, g.title AS group_title FROM taskaccountmap AS tam LEFT OUTER JOIN account AS a ON tam.account_id = a.account_id LEFT OUTER JOIN usergroup AS g ON a.group_id = g.group_id WHERE tam.task_id=?", query.Task_id).QueryRows(&accountDetails)
 		if err != nil {
 			// Log the error
 			_ = logs.WriteLogs("Get Task Details API: " + err.Error())
@@ -734,7 +734,7 @@ func (e *TaskCtrl) CreateTask() {
 			e.ServeJSON()
 		}
 		accounts = nil
-		_, err = qsAccount.All(&accounts)
+		_, err = qsAccount.Filter("Group_id__exact", groupId).All(&accounts)
 		if err != nil {
 			// Log the error
 			_ = logs.WriteLogs("Create Task API: " + err.Error())
@@ -939,6 +939,14 @@ func (e *TaskCtrl) UpdateTask() {
 		e.ServeJSON()
 	}
 
+	status := ""
+
+	if userTask.Status != "in process" && userTask.Status != "completed" {
+		status = "new"
+	} else {
+		status = userTask.Status
+	}
+
 	for _, groupId := range userTask.Groups_assigned {
 		condTaskgroupmap = condTaskgroupmap.And("Task_id__exact", userTask.Task_id).And("Group_id__exact", groupId)
 		qsTaskgroupmap = qsTaskgroupmap.SetCond(condTaskgroupmap)
@@ -963,7 +971,7 @@ func (e *TaskCtrl) UpdateTask() {
 		}
 
 		num, err = qsTaskgroupmap.Update(orm.Params{
-			"Status": userTask.Status,
+			"Status": status,
 		})
 		if err != nil {
 			// Log the error
@@ -1001,7 +1009,7 @@ func (e *TaskCtrl) UpdateTask() {
 		}
 
 		num, err = qsTaskaccountmap.Update(orm.Params{
-			"Status": userTask.Status,
+			"Status": status,
 		})
 		if err != nil {
 			// Log the error
