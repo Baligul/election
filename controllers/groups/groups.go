@@ -1,7 +1,7 @@
 /*
    GET GROUPS
    curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4]}, "group_lead_id":[1,2,4]}' http://localhost:8080/api/groups
-   curl -X POST -H "Content-Type: application/json" -d '{"group_id":[1,2,4], "created_by":[2,3,4], "group_lead_id":[1,2,4]}' "http://107.178.208.219:80/api/groups?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X POST -H "Content-Type: application/json" -d '{}' "http://107.178.208.219:80/api/groups?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    Update GROUP
    curl -X PUT -H "Content-Type: application/json" -d '{"group_id":1, "title":"new title", "description":"new description", "group_lead_id":5, "account_id":[2]}' http://localhost:8080/api/group
@@ -199,7 +199,6 @@ func (e *GroupCtrl) GetGroups() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	groups.Populate(userGroups)
 	for i := range userGroups {
 			_, err = o.Raw("SELECT * FROM account WHERE group_id=?", userGroups[i].Group_id).QueryRows(&users)
 			if err != nil {
@@ -214,6 +213,7 @@ func (e *GroupCtrl) GetGroups() {
 			}
 			userGroups[i].Accounts = users
 	}
+	groups.Populate(userGroups)
 
 	if groupsCount > 0 {
 		groups.Total = groupsCount
