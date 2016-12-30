@@ -116,7 +116,7 @@ func (e *AccountCtrl) GetAccounts() {
 	}
 
 	_, err = qsAccount.Update(orm.Params{
-		"Last_login": time.Now().Unix(),
+		"Last_login": time.Now(),
 	})
 	if err != nil {
 		// Log the error
