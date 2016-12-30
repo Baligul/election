@@ -167,7 +167,7 @@ func (e *GroupCtrl) GetGroups() {
 		cond = condGroupId
 	}
 
-	if condCreatedBy != nil && !condCreatedBy.IsEmpty() { 
+	if condCreatedBy != nil && !condCreatedBy.IsEmpty() {
 		if cond != nil && !cond.IsEmpty() {
 			cond = cond.AndCond(condCreatedBy)
 		} else {
@@ -200,18 +200,18 @@ func (e *GroupCtrl) GetGroups() {
 		e.ServeJSON()
 	}
 	for i := range userGroups {
-			_, err = o.Raw("SELECT * FROM account WHERE group_id=?", userGroups[i].Group_id).QueryRows(&users)
-			if err != nil {
-				// Log the error
-				_ = logs.WriteLogs("Get Task Details API: " + err.Error())
-				responseStatus := modelVoters.NewResponseStatus()
-				responseStatus.Response = "error"
-				responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
-				responseStatus.Error = err.Error()
-				e.Data["json"] = &responseStatus
-				e.ServeJSON()
-			}
-			userGroups[i].Accounts = users
+		_, err = o.Raw("SELECT * FROM account WHERE group_id=?", userGroups[i].Group_id).QueryRows(&users)
+		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+		userGroups[i].Accounts = users
 	}
 	groups.Populate(userGroups)
 
