@@ -1,6 +1,9 @@
 package groups
 
-import "time"
+import (
+    "time"
+    modelAccounts "github.com/Baligul/election/models/accounts"
+)
 
 /* user_group
 {
@@ -16,15 +19,16 @@ import "time"
 */
 
 type Usergroup struct {
-	Group_id      int       `form:"-" orm:"auto" json:"group_id,omitempty"`
-	Title         string    `json:"title,omitempty"`
-	Description   string    `json:"description,omitempty"`
-	Group_lead_id int       `json:"group_lead_id,omitempty"`
-	Updated_by    int       `json:"updated_by,omitempty"`
-	Created_by    int       `json:"created_by,omitempty"`
-	Updated_on    time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
-	Created_on    time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
-	Account_id    []int     `orm:"-" json:"Account_id,omitempty"`
+	Group_id      int                       `form:"-" orm:"auto" json:"group_id,omitempty"`
+	Title         string                    `json:"title,omitempty"`
+	Description   string                    `json:"description,omitempty"`
+	Group_lead_id int                       `json:"group_lead_id,omitempty"`
+	Updated_by    int                       `json:"updated_by,omitempty"`
+	Created_by    int                       `json:"created_by,omitempty"`
+	Updated_on    time.Time                 `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
+	Created_on    time.Time                 `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
+	Account_id    []int                     `orm:"-" json:"account_id,omitempty"`
+    Accounts      []*modelAccounts.Account  `orm:"-" json:"accounts,omitempty"`
 }
 
 type GroupQuery struct {

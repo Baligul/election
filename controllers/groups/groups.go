@@ -51,6 +51,7 @@ func (e *GroupCtrl) GetGroups() {
 		err         error
 		num         int64
 		user        []*modelAccounts.Account
+		users       []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -166,7 +167,7 @@ func (e *GroupCtrl) GetGroups() {
 		cond = condGroupId
 	}
 
-	if condCreatedBy != nil && !condCreatedBy.IsEmpty() {
+	if condCreatedBy != nil && !condCreatedBy.IsEmpty() { 
 		if cond != nil && !cond.IsEmpty() {
 			cond = cond.AndCond(condCreatedBy)
 		} else {
@@ -199,6 +200,20 @@ func (e *GroupCtrl) GetGroups() {
 		e.ServeJSON()
 	}
 	groups.Populate(userGroups)
+	for i := range userGroups {
+			_, err = o.Raw("SELECT * FROM account WHERE group_id=?", userGroups[i].Group_id).QueryRows(&users)
+			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			userGroups[i].Accounts = users
+	}
 
 	if groupsCount > 0 {
 		groups.Total = groupsCount
