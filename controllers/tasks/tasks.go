@@ -202,15 +202,6 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		for _, tg := range tgMap {
 			condTaskId = condTaskId.Or("Task_id__exact", tg.Task_id)
 		}
-
-		if condTaskId == nil || condTaskId.IsEmpty() {
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "ok"
-			responseStatus.Message = "No tasks found with this criteria."
-			responseStatus.Error = "No Error"
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
 	}
 
 	if condAccountsAssigned != nil && !condAccountsAssigned.IsEmpty() {
@@ -236,33 +227,33 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		for _, ta := range taMap {
 			condTaskId = condTaskId.Or("Task_id__exact", ta.Task_id)
 		}
+	}
 
-		if condTaskId == nil || condTaskId.IsEmpty() {
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "ok"
-			responseStatus.Message = "No tasks found with this criteria."
-			responseStatus.Error = "No Error"
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
+	if (condTaskId == nil || condTaskId.IsEmpty()) && (condAccountsAssigned != nil || !condAccountsAssigned.IsEmpty() || condGroupsAssigned != nil || !condGroupsAssigned.IsEmpty()) {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "ok"
+		responseStatus.Message = "No tasks found with this criteria."
+		responseStatus.Error = "No Error"
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
 	}
 
 	if condTaskId != nil && !condTaskId.IsEmpty() {
 		qsTask = qsTask.SetCond(condTaskId)
+	}
 
-		// Get tasks
-		tasksCount, _ = qsTask.Filter("Created_by__exact", user[0].Account_id).Count()
-		_, err = qsTask.Filter("Created_by__exact", user[0].Account_id).All(&userTasks)
-		if err != nil {
-			// Log the error
-			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the tasks.")
-			responseStatus.Error = err.Error()
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
+	// Get tasks
+	tasksCount, _ = qsTask.Filter("Created_by__exact", user[0].Account_id).Count()
+	_, err = qsTask.Filter("Created_by__exact", user[0].Account_id).All(&userTasks)
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the tasks.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
 	}
 
 	if tasksCount > 0 {
