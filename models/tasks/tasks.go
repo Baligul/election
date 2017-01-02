@@ -22,15 +22,15 @@ import (
 */
 
 type Task struct {
-	Task_id     int       				 	`form:"-" orm:"auto" json:"task_id,omitempty"`
-	Title       string    				 	`json:"title,omitempty"`
-	Description string   				 	`json:"description,omitempty"`
-	Accounts 	modelAccounts.ByDisplayName `orm:"-" json:"accounts,omitempty"`
-	Groups 	 	modelGroups.ByTitle 	   	`orm:"-" json:"groups,omitempty"`
-	Updated_by  int      				 	`json:"updated_by,omitempty"`
-	Created_by  int      				 	`json:"created_by,omitempty"`
-	Updated_on  time.Time				 	`orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
-	Created_on  time.Time				 	`orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
+	Task_id     int                         `form:"-" orm:"auto" json:"task_id,omitempty"`
+	Title       string                      `json:"title,omitempty"`
+	Description string                      `json:"description,omitempty"`
+	Accounts    modelAccounts.ByDisplayName `orm:"-" json:"accounts,omitempty"`
+	Groups      modelGroups.ByTitle         `orm:"-" json:"groups,omitempty"`
+	Updated_by  int                         `json:"updated_by,omitempty"`
+	Created_by  int                         `json:"created_by,omitempty"`
+	Updated_on  time.Time                   `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
+	Created_on  time.Time                   `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
 }
 
 type Taskgroupmap struct {
@@ -158,10 +158,10 @@ func (a ByTitle) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByTitle) Less(i, j int) bool { return a[i].Title < a[j].Title }
 
 type Tasks struct {
-	Total 	 int64   	   				 `json:"total,omitempty"`
-	Tasks 	 ByTitle 	   				 `json:"tasks,omitempty"`
-	Accounts modelAccounts.Accounts 	 `json:"accounts,omitempty"`
-	Groups 	 modelGroups.Groups 	   	 `json:"groups,omitempty"`
+	Total    int64                  `json:"total,omitempty"`
+	Tasks    ByTitle                `json:"tasks,omitempty"`
+	Accounts modelAccounts.Accounts `json:"accounts,omitempty"`
+	Groups   modelGroups.Groups     `json:"groups,omitempty"`
 }
 
 func (tasks *Tasks) Populate(tasksList ByTitle) {

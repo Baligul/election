@@ -57,17 +57,17 @@ type TaskCtrl struct {
 func (e *TaskCtrl) GetCreatedTasks() {
 	var (
 		tasksCount int64
-		tasks      		modelTasks.Tasks
-		userTasks  		modelTasks.ByTitle
-		userGroups 		modelGroups.ByTitle
-		groups     		modelGroups.Groups
-		users			modelAccounts.ByDisplayName
-		accounts    	modelAccounts.Accounts
-		tgMap      		[]*modelTasks.Taskgroupmap
-		taMap      		[]*modelTasks.Taskaccountmap
-		err        		error
-		num        		int64
-		user       		[]*modelAccounts.Account
+		tasks      modelTasks.Tasks
+		userTasks  modelTasks.ByTitle
+		userGroups modelGroups.ByTitle
+		groups     modelGroups.Groups
+		users      modelAccounts.ByDisplayName
+		accounts   modelAccounts.Accounts
+		tgMap      []*modelTasks.Taskgroupmap
+		taMap      []*modelTasks.Taskaccountmap
+		err        error
+		num        int64
+		user       []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -301,7 +301,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 
 	for i := range userTasks {
 
-		users = nil		
+		users = nil
 		// Get array of accounts
 		_, err = o.Raw("SELECT DISTINCT tam.account_id, a.display_name FROM taskaccountmap AS tam LEFT OUTER JOIN account AS a ON tam.account_id = a.account_id WHERE tam.task_id=?", userTasks[i].Task_id).QueryRows(&users)
 
