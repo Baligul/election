@@ -203,10 +203,10 @@ func (e *GroupCtrl) GetGroups() {
 		_, err = o.Raw("SELECT * FROM account WHERE group_id=?", userGroups[i].Group_id).QueryRows(&users)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+			_ = logs.WriteLogs("Get Groups API: " + err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
+			responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to get the groups.")
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()

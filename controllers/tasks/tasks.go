@@ -57,13 +57,17 @@ type TaskCtrl struct {
 func (e *TaskCtrl) GetCreatedTasks() {
 	var (
 		tasksCount int64
-		tasks      modelTasks.Tasks
-		userTasks  modelTasks.ByTitle
-		tgMap      []*modelTasks.Taskgroupmap
-		taMap      []*modelTasks.Taskaccountmap
-		err        error
-		num        int64
-		user       []*modelAccounts.Account
+		tasks      		modelTasks.Tasks
+		userTasks  		modelTasks.ByTitle
+		userGroups 		modelGroups.ByTitle
+		groups     		modelGroups.Groups
+		users			modelAccounts.ByDisplayName
+		accounts    	modelAccounts.Accounts
+		tgMap      		[]*modelTasks.Taskgroupmap
+		taMap      		[]*modelTasks.Taskaccountmap
+		err        		error
+		num        		int64
+		user       		[]*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -82,6 +86,9 @@ func (e *TaskCtrl) GetCreatedTasks() {
 
 	// Create query string for account table
 	qsAccount := o.QueryTable("account")
+
+	// Create query string for usergroup table
+	qsGroup := o.QueryTable("usergroup")
 
 	// Create query string for task table
 	qsTask := o.QueryTable("task")
@@ -257,11 +264,83 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
+
+	// Get accounts
+	accountsCount, _ := qsAccount.Filter("Leader_id__exact", user[0].Account_id).Count()
+	_, err = qsAccount.Filter("Leader_id__exact", user[0].Account_id).All(&users)
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+	accounts.Populate(users)
+	accounts.Total = accountsCount
+	sort.Sort(modelAccounts.ByDisplayName(accounts.Accounts))
+
+	// Get groups
+	groupsCount, _ := qsGroup.Filter("Created_by__exact", user[0].Account_id).Count()
+	_, err = qsGroup.Filter("Created_by__exact", user[0].Account_id).All(&userGroups)
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to get the groups.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+	groups.Populate(userGroups)
+	groups.Total = groupsCount
+	sort.Sort(modelGroups.ByTitle(groups.Groups))
+
+	for i := range userTasks {
+
+		users = nil		
+		// Get array of accounts
+		_, err = o.Raw("SELECT DISTINCT tam.account_id, a.display_name FROM taskaccountmap AS tam LEFT OUTER JOIN account AS a ON tam.account_id = a.account_id WHERE tam.task_id=?", userTasks[i].Task_id).QueryRows(&users)
+
+		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the assigned accounts to task.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+		userTasks[i].Accounts = users
+
+		userGroups = nil
+		// Get array of groups
+		_, err = o.Raw("SELECT DISTINCT tgm.group_id, g.title AS group_title FROM taskgroupmap AS tgm LEFT OUTER JOIN usergroup AS g ON tgm.group_id = g.group_id WHERE tgm.task_id=?", userTasks[i].Task_id).QueryRows(&userGroups)
+
+		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the assigned groups to task.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+		userTasks[i].Groups = userGroups
+	}
+
 	tasks.Populate(userTasks)
 
 	if tasksCount > 0 {
 		tasks.Total = tasksCount
 		sort.Sort(modelTasks.ByTitle(tasks.Tasks))
+		tasks.Accounts = accounts
+		tasks.Groups = groups
 		e.Data["json"] = tasks
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
