@@ -229,10 +229,10 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		}
 	}
 
-	if (condTaskId == nil || condTaskId.IsEmpty()) && (condAccountsAssigned != nil || !condAccountsAssigned.IsEmpty() || condGroupsAssigned != nil || !condGroupsAssigned.IsEmpty()) {
+	if (len(query.AccountsAssigned) > 0 || len(query.GroupsAssigned) > 0) && (condTaskId == nil || condTaskId.IsEmpty()) {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "ok"
-		responseStatus.Message = "No tasks found with this criteria."
+		responseStatus.Message = "Groups or Accounts passed has no tasks assigned to them."
 		responseStatus.Error = "No Error"
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
