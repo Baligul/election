@@ -385,22 +385,22 @@ func (e *TaskCtrl) GetMyTasks() {
 
 	if condTaskId != nil && !condTaskId.IsEmpty() {
 		qsTask = qsTask.SetCond(condTaskId)
+		
+		// Get tasks
+		tasksCount, _ = qsTask.Count()
+		_, err = qsTask.All(&userTasks)
+		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the tasks.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+		tasks.Populate(userTasks)
 	}
-
-	// Get tasks
-	tasksCount, _ = qsTask.Count()
-	_, err = qsTask.All(&userTasks)
-	if err != nil {
-		// Log the error
-		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
-		responseStatus := modelVoters.NewResponseStatus()
-		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the tasks.")
-		responseStatus.Error = err.Error()
-		e.Data["json"] = &responseStatus
-		e.ServeJSON()
-	}
-	tasks.Populate(userTasks)
 
 	if tasksCount > 0 {
 		tasks.Total = tasksCount
