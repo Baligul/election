@@ -1,11 +1,11 @@
 /*
    GET Created TASKS
-   curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete"}' http://107.178.208.219:80/api/tasks/created
-   curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete"}' "http://107.178.208.219:80/api/tasks/created?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"completed"}' http://107.178.208.219:80/api/tasks/created
+   curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"completed"}' "http://107.178.208.219:80/api/tasks/created?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    GET My TASKS
-   curl -X POST -H "Content-Type: application/json" -d '{"status":"complete"}' http://107.178.208.219:80/api/tasks/my
-   curl -X POST -H "Content-Type: application/json" -d '{"status":"complete"}' "http://107.178.208.219:80/api/tasks/my?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X POST -H "Content-Type: application/json" -d '{"status":"completed"}' http://107.178.208.219:80/api/tasks/my
+   curl -X POST -H "Content-Type: application/json" -d '{"status":"completed"}' "http://107.178.208.219:80/api/tasks/my?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    Update TASK
    curl -X PUT -H "Content-Type: application/json" -d '{"task_id": 2, "title":"updated title", "description":"updated description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"in process"}' http://107.178.208.219:80/api/task
@@ -16,8 +16,8 @@
    curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4]}' "http://107.178.208.219:80/api/task?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    Delete TASK
-   curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' http://107.178.208.219:80/api/task
-   curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' "http://107.178.208.219:80/api/task?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"completed", "updated_by":[2,3,4], "created_by":[2,3,4]}' http://107.178.208.219:80/api/task
+   curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"completed", "updated_by":[2,3,4], "created_by":[2,3,4]}' "http://107.178.208.219:80/api/task?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    GET TASK DETAILS
    curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' http://107.178.208.219:80/api/taskdetail
@@ -183,7 +183,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 	if condGroupsAssigned != nil && !condGroupsAssigned.IsEmpty() {
 		qsTaskgroupmap = qsTaskgroupmap.SetCond(condGroupsAssigned)
 		// Status
-		if query.Status == "new" || query.Status == "in process" || query.Status == "complete" {
+		if query.Status == "new" || query.Status == "in process" || query.Status == "completed" {
 			_, err = qsTaskgroupmap.Filter("Status__exact", query.Status).All(&tgMap)
 		} else {
 			_, err = qsTaskgroupmap.All(&tgMap)
@@ -207,7 +207,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 	if condAccountsAssigned != nil && !condAccountsAssigned.IsEmpty() {
 		qsTaskaccountmap = qsTaskaccountmap.SetCond(condAccountsAssigned)
 		// Status
-		if query.Status == "new" || query.Status == "in process" || query.Status == "complete" {
+		if query.Status == "new" || query.Status == "in process" || query.Status == "completed" {
 			_, err = qsTaskaccountmap.Filter("Status__exact", query.Status).All(&taMap)
 		} else {
 			_, err = qsTaskaccountmap.All(&taMap)
@@ -446,7 +446,7 @@ func (e *TaskCtrl) GetMyTasks() {
 	}
 
 	// Status
-	if query.Status == "new" || query.Status == "in process" || query.Status == "complete" {
+	if query.Status == "new" || query.Status == "in process" || query.Status == "completed" {
 		_, err = qsTaskaccountmap.Filter("Account_id__exact", user[0].Account_id).Filter("Status__exact", query.Status).All(&taMap)
 	} else {
 		_, err = qsTaskaccountmap.Filter("Account_id__exact", user[0].Account_id).All(&taMap)
@@ -1348,7 +1348,7 @@ func (e *TaskCtrl) DeleteTask() {
 	}
 
 	// Status
-	if query.Status == "new" || query.Status == "in process" || query.Status == "complete" {
+	if query.Status == "new" || query.Status == "in process" || query.Status == "completed" {
 		condStatus = condStatus.And("Status__exact", query.Status)
 	}
 
