@@ -1,7 +1,11 @@
 /*
-   GET TASKS
-   curl -X POST -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' http://104.197.6.26:8080/api/tasks
-   curl -X POST -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' "http://104.197.6.26:8080/api/tasks?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   GET Created TASKS
+   curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete"}' http://104.197.6.26:8080/api/tasks/created
+   curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete"}' "http://104.197.6.26:8080/api/tasks/created?mobile_no=9343352734&token=f8a220f5e8d1741d"
+
+   GET My TASKS
+   curl -X POST -H "Content-Type: application/json" -d '{"status":"complete"}' http://104.197.6.26:8080/api/tasks/my
+   curl -X POST -H "Content-Type: application/json" -d '{"status":"complete"}' "http://104.197.6.26:8080/api/tasks/my?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    Update TASK
    curl -X PUT -H "Content-Type: application/json" -d '{"task_id": 2, "title":"updated title", "description":"updated description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"in process"}' http://104.197.6.26:8080/api/task
@@ -50,18 +54,16 @@ type TaskCtrl struct {
 	beego.Controller
 }
 
-func (e *TaskCtrl) GetTasks() {
+func (e *TaskCtrl) GetCreatedTasks() {
 	var (
-		tasksCount     int64
-		tasks          modelTasks.Tasks
-		userTasks      modelTasks.ByTitle
-		tasksCreatedBy []*modelTasks.Task
-		tgMap          []*modelTasks.Taskgroupmap
-		taMap          []*modelTasks.Taskaccountmap
-		accountsMap    []*modelTasks.Taskaccountmap
-		err            error
-		num            int64
-		user           []*modelAccounts.Account
+		tasksCount int64
+		tasks      modelTasks.Tasks
+		userTasks  modelTasks.ByTitle
+		tgMap      []*modelTasks.Taskgroupmap
+		taMap      []*modelTasks.Taskaccountmap
+		err        error
+		num        int64
+		user       []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -83,14 +85,12 @@ func (e *TaskCtrl) GetTasks() {
 
 	// Create query string for task table
 	qsTask := o.QueryTable("task")
-	qsTaskCreatedBy := o.QueryTable("task")
 
 	// Create query string for Taskgroupmap table
 	qsTaskgroupmap := o.QueryTable("Taskgroupmap")
 
 	// Create query string for Taskaccountmap table
 	qsTaskaccountmap := o.QueryTable("Taskaccountmap")
-	qsAccountAssigned := o.QueryTable("Taskaccountmap")
 
 	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
 	if !exist {
@@ -154,22 +154,11 @@ func (e *TaskCtrl) GetTasks() {
 		e.ServeJSON()
 	}
 
-	cond := orm.NewCondition()
 	condTaskId := orm.NewCondition()
 	condGroupsAssigned := orm.NewCondition()
 	condAccountsAssigned := orm.NewCondition()
-	condStatus := orm.NewCondition()
-	condUpdatedBy := orm.NewCondition()
-	condCreatedBy := orm.NewCondition()
 
 	// Apply filters for each query string
-	// Task Id
-	for _, taskId := range query.TaskId {
-		if taskId > 0 {
-			condTaskId = condTaskId.Or("Task_id__exact", taskId)
-		}
-	}
-
 	// Groups Assigned
 	for _, groupAssigned := range query.GroupsAssigned {
 		if groupAssigned > 0 {
@@ -184,55 +173,14 @@ func (e *TaskCtrl) GetTasks() {
 		}
 	}
 
-	// Status
-	if query.Status == "new" || query.Status == "in process" || query.Status == "complete" {
-		condStatus = condStatus.And("Status__exact", query.Status)
-	}
-
-	// Updated By
-	for _, updatedBy := range query.UpdatedBy {
-		if updatedBy > 0 {
-			condUpdatedBy = condUpdatedBy.Or("Updated_by__exact", updatedBy)
-		}
-	}
-
-	// Created By
-	for _, createdBy := range query.CreatedBy {
-		if createdBy > 0 {
-			condCreatedBy = condCreatedBy.Or("Created_by__exact", createdBy)
-		}
-	}
-
-	if condTaskId != nil && !condTaskId.IsEmpty() {
-		cond = condTaskId
-	}
-
-	if condUpdatedBy != nil && !condUpdatedBy.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condUpdatedBy)
-		} else {
-			cond = condUpdatedBy
-		}
-	}
-
-	//condCreatedBy = condCreatedBy.Or("Created_by__exact", user[0].Account_id)
-	if condCreatedBy != nil && !condCreatedBy.IsEmpty() {
-		if cond != nil && !cond.IsEmpty() {
-			cond = cond.AndCond(condCreatedBy)
-		} else {
-			cond = condCreatedBy
-		}
-	}
-
-	if cond != nil && !cond.IsEmpty() {
-		qsTask = qsTask.SetCond(cond)
-	}
-
 	if condGroupsAssigned != nil && !condGroupsAssigned.IsEmpty() {
 		qsTaskgroupmap = qsTaskgroupmap.SetCond(condGroupsAssigned)
-		qsTaskgroupmap = qsTaskgroupmap.SetCond(condStatus)
-
-		_, err = qsTaskgroupmap.All(&tgMap)
+		// Status
+		if query.Status == "new" || query.Status == "in process" || query.Status == "complete" {
+			_, err = qsTaskgroupmap.Filter("Status__exact", query.Status).All(&tgMap)
+		} else {
+			_, err = qsTaskgroupmap.All(&tgMap)
+		}
 		if err != nil {
 			// Log the error
 			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
@@ -244,22 +192,20 @@ func (e *TaskCtrl) GetTasks() {
 			e.ServeJSON()
 		}
 
-		condTaskId = orm.NewCondition()
-
 		for _, tg := range tgMap {
 			condTaskId = condTaskId.Or("Task_id__exact", tg.Task_id)
-		}
-
-		if condTaskId != nil && !condTaskId.IsEmpty() {
-			qsTask = qsTask.SetCond(condTaskId)
 		}
 	}
 
 	if condAccountsAssigned != nil && !condAccountsAssigned.IsEmpty() {
 		qsTaskaccountmap = qsTaskaccountmap.SetCond(condAccountsAssigned)
-		qsTaskaccountmap = qsTaskaccountmap.SetCond(condStatus)
+		// Status
+		if query.Status == "new" || query.Status == "in process" || query.Status == "complete" {
+			_, err = qsTaskaccountmap.Filter("Status__exact", query.Status).All(&taMap)
+		} else {
+			_, err = qsTaskaccountmap.All(&taMap)
+		}
 
-		_, err = qsTaskaccountmap.All(&taMap)
 		if err != nil {
 			// Log the error
 			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
@@ -271,18 +217,155 @@ func (e *TaskCtrl) GetTasks() {
 			e.ServeJSON()
 		}
 
-		condTaskId = orm.NewCondition()
-
 		for _, ta := range taMap {
 			condTaskId = condTaskId.Or("Task_id__exact", ta.Task_id)
 		}
-
-		if condTaskId != nil && !condTaskId.IsEmpty() {
-			qsTask = qsTask.SetCond(condTaskId)
-		}
 	}
 
-	_, err = qsAccountAssigned.Filter("Account_id__exact", user[0].Account_id).All(&accountsMap)
+	if condTaskId != nil && !condTaskId.IsEmpty() {
+		qsTask = qsTask.SetCond(condTaskId)
+	}
+
+	// Get tasks
+	tasksCount, _ = qsTask.Filter("Created_by__exact", user[0].Account_id).Count()
+	_, err = qsTask.Filter("Created_by__exact", user[0].Account_id).All(&userTasks)
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the tasks.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+	tasks.Populate(userTasks)
+
+	if tasksCount > 0 {
+		tasks.Total = tasksCount
+		sort.Sort(modelTasks.ByTitle(tasks.Tasks))
+		e.Data["json"] = tasks
+	} else {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "ok"
+		responseStatus.Message = "No tasks found with this criteria."
+		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+			responseStatus.Error = err.Error()
+		} else {
+			responseStatus.Error = "No Error"
+		}
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	e.ServeJSON()
+}
+
+func (e *TaskCtrl) GetMyTasks() {
+	var (
+		tasksCount int64
+		tasks      modelTasks.Tasks
+		userTasks  modelTasks.ByTitle
+		taMap      []*modelTasks.Taskaccountmap
+		err        error
+		num        int64
+		user       []*modelAccounts.Account
+	)
+
+	mobileNo, _ := e.GetInt("mobile_no")
+	token := e.GetString("token")
+
+	if mobileNo == 0 || token == "" {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	// Create query string for account table
+	qsAccount := o.QueryTable("account")
+
+	// Create query string for task table
+	qsTask := o.QueryTable("task")
+
+	// Create query string for Taskaccountmap table
+	qsTaskaccountmap := o.QueryTable("Taskaccountmap")
+
+	exist := qsAccount.Filter("Mobile_no__exact", mobileNo).Exist()
+	if !exist {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	num, err = qsAccount.Filter("Mobile_no__exact", mobileNo).All(&user)
+
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	if num > 0 {
+		if user[0].Token != token {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+	} else {
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
+		"Last_login": time.Now(),
+	})
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Update Last Login in Get Tasks API: " + err.Error())
+	}
+
+	inputJson := e.Ctx.Input.RequestBody
+	query := new(modelTasks.TaskQuery)
+
+	err = json.Unmarshal(inputJson, &query)
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+
+	// Status
+	if query.Status == "new" || query.Status == "in process" || query.Status == "complete" {
+		_, err = qsTaskaccountmap.Filter("Account_id__exact", user[0].Account_id).Filter("Status__exact", query.Status).All(&taMap)
+	} else {
+		_, err = qsTaskaccountmap.Filter("Account_id__exact", user[0].Account_id).All(&taMap)
+	}
+
 	if err != nil {
 		// Log the error
 		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
@@ -294,32 +377,10 @@ func (e *TaskCtrl) GetTasks() {
 		e.ServeJSON()
 	}
 
-	condTaskId = orm.NewCondition()
+	condTaskId := orm.NewCondition()
 
-	for _, am := range accountsMap {
+	for _, am := range taMap {
 		condTaskId = condTaskId.Or("Task_id__exact", am.Task_id)
-	}
-
-	if condTaskId != nil && !condTaskId.IsEmpty() {
-		qsTask = qsTask.SetCond(condTaskId)
-	}
-
-	_, err = qsTaskCreatedBy.Filter("Created_by__exact", user[0].Account_id).All(&tasksCreatedBy)
-	if err != nil {
-		// Log the error
-		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
-		responseStatus := modelVoters.NewResponseStatus()
-		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Db Error tasks. Unable to get the tasks.")
-		responseStatus.Error = err.Error()
-		e.Data["json"] = &responseStatus
-		e.ServeJSON()
-	}
-
-	condTaskId = orm.NewCondition()
-
-	for _, tcb := range tasksCreatedBy {
-		condTaskId = condTaskId.Or("Task_id__exact", tcb.Task_id)
 	}
 
 	if condTaskId != nil && !condTaskId.IsEmpty() {
@@ -368,6 +429,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 		tasks          []*modelTasks.Task
 		taskDetail     modelTasks.TaskDetail
 		accountDetails []*modelTasks.AccountDetails
+		groups         []*modelGroups.Usergroup
 		accountDN      []*modelTasks.AccountDisplayName
 		err            error
 		num            int64
@@ -489,6 +551,8 @@ func (e *TaskCtrl) GetTaskDetail() {
 
 	if num > 0 {
 		taskDetail.Populate(tasks[0])
+
+		// Get array of account details
 		_, err = o.Raw("SELECT DISTINCT tam.account_id, tam.status, tam.updated_by AS status_updated_by, tam.updated_on AS status_updated_on, tam.created_by AS task_assigned_by, tam.created_on AS task_assigned_on, a.display_name, a.last_login, g.group_id, g.title AS group_title FROM taskaccountmap AS tam LEFT OUTER JOIN account AS a ON tam.account_id = a.account_id LEFT OUTER JOIN usergroup AS g ON a.group_id = g.group_id WHERE tam.task_id=?", query.Task_id).QueryRows(&accountDetails)
 		if err != nil {
 			// Log the error
@@ -592,6 +656,21 @@ func (e *TaskCtrl) GetTaskDetail() {
 		}
 		taskDetail.Updated_by_display_name = accountDN[0].Display_name
 
+		// Get array of groups
+		_, err = o.Raw("SELECT DISTINCT tgm.group_id, g.title AS group_title FROM taskgroupmap AS tgm LEFT OUTER JOIN usergroup AS g ON tgm.group_id = g.group_id WHERE tgm.task_id=?", query.Task_id).QueryRows(&groups)
+
+		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
+
+		taskDetail.Groups = groups
 		taskDetail.AccountDetails = accountDetails
 		e.Data["json"] = taskDetail
 	} else {

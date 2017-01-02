@@ -1,6 +1,9 @@
 package tasks
 
-import "time"
+import (
+	modelGroups "github.com/Baligul/election/models/groups"
+	"time"
+)
 
 /* task
 {
@@ -72,16 +75,17 @@ type TaskCreateDelete struct {
 }
 
 type TaskDetail struct {
-	Task_id                 int               `json:"task_id,omitempty"`
-	Title                   string            `json:"title,omitempty"`
-	Description             string            `json:"description,omitempty"`
-	AccountDetails          []*AccountDetails `json:"account_details,omitempty"`
-	Updated_by              int               `json:"updated_by,omitempty"`
-	Created_by              int               `json:"created_by,omitempty"`
-	Updated_by_display_name string            `json:"updated_by_display_name,omitempty"`
-	Created_by_display_name string            `json:"created_by_display_name,omitempty"`
-	Updated_on              time.Time         `json:"updated_on,omitempty"`
-	Created_on              time.Time         `json:"created_on,omitempty"`
+	Task_id                 int                      `json:"task_id,omitempty"`
+	Title                   string                   `json:"title,omitempty"`
+	Description             string                   `json:"description,omitempty"`
+	AccountDetails          []*AccountDetails        `json:"account_details,omitempty"`
+	Groups                  []*modelGroups.Usergroup `json:"groups,omitempty"`
+	Updated_by              int                      `json:"updated_by,omitempty"`
+	Created_by              int                      `json:"created_by,omitempty"`
+	Updated_by_display_name string                   `json:"updated_by_display_name,omitempty"`
+	Created_by_display_name string                   `json:"created_by_display_name,omitempty"`
+	Updated_on              time.Time                `json:"updated_on,omitempty"`
+	Created_on              time.Time                `json:"created_on,omitempty"`
 }
 
 type AccountDetails struct {
