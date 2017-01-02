@@ -180,6 +180,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		}
 	}
 
+	condTaskId = nil
 	if condGroupsAssigned != nil && !condGroupsAssigned.IsEmpty() {
 		qsTaskgroupmap = qsTaskgroupmap.SetCond(condGroupsAssigned)
 		// Status
@@ -202,6 +203,8 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		for _, tg := range tgMap {
 			condTaskId = condTaskId.Or("Task_id__exact", tg.Task_id)
 		}
+
+		fmt.Println("condGroupsAssigned found and condTaskId is %v", condTaskId)
 	}
 
 	if condAccountsAssigned != nil && !condAccountsAssigned.IsEmpty() {
@@ -227,6 +230,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		for _, ta := range taMap {
 			condTaskId = condTaskId.Or("Task_id__exact", ta.Task_id)
 		}
+		fmt.Println("condAccountsAssigned found and condTaskId is %v", condTaskId)
 	}
 
 	if (len(query.AccountsAssigned) > 0 || len(query.GroupsAssigned) > 0) && (condTaskId == nil || condTaskId.IsEmpty()) {
@@ -238,12 +242,15 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		e.ServeJSON()
 	}
 
+	fmt.Println("condTaskId is %v", condTaskId)
+
 	if condTaskId != nil && !condTaskId.IsEmpty() {
 		qsTask = qsTask.SetCond(condTaskId)
 	}
 
 	// Get tasks
 	tasksCount, _ = qsTask.Filter("Created_by__exact", user[0].Account_id).Count()
+	fmt.Println("tasksCount is %d", tasksCount)
 	_, err = qsTask.Filter("Created_by__exact", user[0].Account_id).All(&userTasks)
 	if err != nil {
 		// Log the error
