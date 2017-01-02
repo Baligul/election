@@ -1,27 +1,27 @@
 /*
    GET Created TASKS
-   curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete"}' http://104.197.6.26:8080/api/tasks/created
-   curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete"}' "http://104.197.6.26:8080/api/tasks/created?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete"}' http://107.178.208.219:80/api/tasks/created
+   curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete"}' "http://107.178.208.219:80/api/tasks/created?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    GET My TASKS
-   curl -X POST -H "Content-Type: application/json" -d '{"status":"complete"}' http://104.197.6.26:8080/api/tasks/my
-   curl -X POST -H "Content-Type: application/json" -d '{"status":"complete"}' "http://104.197.6.26:8080/api/tasks/my?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X POST -H "Content-Type: application/json" -d '{"status":"complete"}' http://107.178.208.219:80/api/tasks/my
+   curl -X POST -H "Content-Type: application/json" -d '{"status":"complete"}' "http://107.178.208.219:80/api/tasks/my?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    Update TASK
-   curl -X PUT -H "Content-Type: application/json" -d '{"task_id": 2, "title":"updated title", "description":"updated description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"in process"}' http://104.197.6.26:8080/api/task
-   curl -X PUT -H "Content-Type: application/json" -d '{"task_id": 2, "title":"updated title", "description":"updated description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"in process"}' "http://104.197.6.26:8080/api/task?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X PUT -H "Content-Type: application/json" -d '{"task_id": 2, "title":"updated title", "description":"updated description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"in process"}' http://107.178.208.219:80/api/task
+   curl -X PUT -H "Content-Type: application/json" -d '{"task_id": 2, "title":"updated title", "description":"updated description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"in process"}' "http://107.178.208.219:80/api/task?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    Create TASK
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4]}' http://104.197.6.26:8080/api/task
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4]}' "http://104.197.6.26:8080/api/task?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4]}' http://107.178.208.219:80/api/task
+   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4]}' "http://107.178.208.219:80/api/task?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    Delete TASK
-   curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' http://104.197.6.26:8080/api/task
-   curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' "http://104.197.6.26:8080/api/task?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' http://107.178.208.219:80/api/task
+   curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"complete", "updated_by":[2,3,4], "created_by":[2,3,4]}' "http://107.178.208.219:80/api/task?mobile_no=9343352734&token=f8a220f5e8d1741d"
 
    GET TASK DETAILS
-   curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' http://104.197.6.26:8080/api/taskdetail
-   curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' "http://104.197.6.26:8080/api/taskdetail?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' http://107.178.208.219:80/api/taskdetail
+   curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' "http://107.178.208.219:80/api/taskdetail?mobile_no=9343352734&token=f8a220f5e8d1741d"
 */
 
 package tasks
@@ -195,6 +195,15 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		for _, tg := range tgMap {
 			condTaskId = condTaskId.Or("Task_id__exact", tg.Task_id)
 		}
+
+		if condTaskId == nil || condTaskId.IsEmpty() {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "ok"
+			responseStatus.Message = "No tasks found with this criteria."
+			responseStatus.Error = "No Error"
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
 	}
 
 	if condAccountsAssigned != nil && !condAccountsAssigned.IsEmpty() {
@@ -219,6 +228,15 @@ func (e *TaskCtrl) GetCreatedTasks() {
 
 		for _, ta := range taMap {
 			condTaskId = condTaskId.Or("Task_id__exact", ta.Task_id)
+		}
+
+		if condTaskId == nil || condTaskId.IsEmpty() {
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "ok"
+			responseStatus.Message = "No tasks found with this criteria."
+			responseStatus.Error = "No Error"
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
 		}
 	}
 
@@ -385,7 +403,7 @@ func (e *TaskCtrl) GetMyTasks() {
 
 	if condTaskId != nil && !condTaskId.IsEmpty() {
 		qsTask = qsTask.SetCond(condTaskId)
-		
+
 		// Get tasks
 		tasksCount, _ = qsTask.Count()
 		_, err = qsTask.All(&userTasks)
@@ -878,10 +896,11 @@ func (e *TaskCtrl) UpdateTask() {
 		num         int64
 		user        []*modelAccounts.Account
 		userTasks   []*modelTasks.Task
-		tgMap       []*modelTasks.Taskgroupmap
-		taMap       []*modelTasks.Taskaccountmap
+		arrTgMap    []*modelTasks.Taskgroupmap
+		arrTaMap    []*modelTasks.Taskaccountmap
 		title       string
 		description string
+		accounts    []*modelAccounts.Account
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -905,7 +924,6 @@ func (e *TaskCtrl) UpdateTask() {
 	qsTask := o.QueryTable("task")
 	condTaskId := orm.NewCondition()
 	qsTaskgroupmap := o.QueryTable("Taskgroupmap")
-	condTaskgroupmap := orm.NewCondition()
 	qsTaskaccountmap := o.QueryTable("Taskaccountmap")
 	condTaskaccountmap := orm.NewCondition()
 
@@ -1018,87 +1036,115 @@ func (e *TaskCtrl) UpdateTask() {
 		e.ServeJSON()
 	}
 
-	status := ""
-
-	if userTask.Status != "in process" && userTask.Status != "completed" {
-		status = "new"
-	} else {
-		status = userTask.Status
-	}
-
-	for _, groupId := range userTask.Groups_assigned {
-		condTaskgroupmap = condTaskgroupmap.And("Task_id__exact", userTask.Task_id).And("Group_id__exact", groupId)
-		qsTaskgroupmap = qsTaskgroupmap.SetCond(condTaskgroupmap)
-		num, err = qsTaskgroupmap.All(&tgMap)
-		if err != nil {
-			// Log the error
-			_ = logs.WriteLogs("Update Task API: " + err.Error())
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error Taskgroupmap. Unable to find the Taskgroupmap.")
-			responseStatus.Error = err.Error()
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-
-		if num == 0 {
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error Taskgroupmap. Unable to find the Taskgroupmap.")
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-
-		num, err = qsTaskgroupmap.Update(orm.Params{
-			"Status": status,
-		})
-		if err != nil {
-			// Log the error
-			_ = logs.WriteLogs("Update Task API: " + err.Error())
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
-			responseStatus.Error = err.Error()
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-	}
-
-	for _, accountId := range userTask.Accounts_assigned {
-		condTaskaccountmap = condTaskaccountmap.And("Task_id__exact", userTask.Task_id).And("Account_id__exact", accountId)
+	if userTask.Status == "in process" || userTask.Status == "completed" || userTask.Status == "new" {
+		// Update the status of the current user
+		condTaskaccountmap = nil
+		condTaskaccountmap = condTaskaccountmap.And("Task_id__exact", userTask.Task_id).And("Account_id__exact", user[0].Account_id)
 		qsTaskaccountmap = qsTaskaccountmap.SetCond(condTaskaccountmap)
-		num, err = qsTaskaccountmap.All(&taMap)
-		if err != nil {
-			// Log the error
-			_ = logs.WriteLogs("Update Task API: " + err.Error())
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error Taskaccountmap. Unable to find the Taskaccountmap.")
-			responseStatus.Error = err.Error()
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-
-		if num == 0 {
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error Taskaccountmap. Unable to find the Taskaccountmap.")
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-
 		num, err = qsTaskaccountmap.Update(orm.Params{
-			"Status": status,
+			"Status":     userTask.Status,
+			"Updated_by": user[0].Account_id,
+			"Updated_on": time.Now(),
 		})
-		if err != nil {
-			// Log the error
-			_ = logs.WriteLogs("Update Task API: " + err.Error())
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
-			responseStatus.Error = err.Error()
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
+	} else {
+		// Change the groups assigned or accounts assigned or both
+		if len(userTask.Groups_assigned) > 0 {
+			// Get all the groups assigned for a task
+			qsTaskgroupmap.Filter("Task_id__exact", userTask.Task_id).All(&arrTgMap)
+			for _, tgMap := range arrTgMap {
+				if !contains(userTask.Groups_assigned, tgMap.Group_id) {
+					// Delete from Taskgroupmap
+					_, err = qsTaskgroupmap.Filter("Task_id__exact", userTask.Task_id).Filter("Group_id__exact", tgMap.Group_id).Delete()
+				}
+			}
+
+			for _, groupId := range userTask.Groups_assigned {
+				if !qsTaskgroupmap.Filter("Task_id__exact", userTask.Task_id).Filter("Group_id__exact", groupId).Exist() {
+					tgMap := new(modelTasks.Taskgroupmap)
+					tgMap.Task_id = int(userTask.Task_id)
+					tgMap.Group_id = groupId
+					tgMap.Status = "new"
+					tgMap.Updated_by = user[0].Account_id
+					tgMap.Created_by = user[0].Account_id
+					_, err := o.Insert(tgMap)
+					if err != nil {
+						// Log the error
+						_ = logs.WriteLogs("Create Task API: " + err.Error())
+						responseStatus := modelVoters.NewResponseStatus()
+						responseStatus.Response = "error"
+						responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+						responseStatus.Error = err.Error()
+						e.Data["json"] = &responseStatus
+						e.ServeJSON()
+					}
+					accounts = nil
+					_, err = qsAccount.Filter("Group_id__exact", groupId).All(&accounts)
+					if err != nil {
+						// Log the error
+						_ = logs.WriteLogs("Create Task API: " + err.Error())
+						responseStatus := modelVoters.NewResponseStatus()
+						responseStatus.Response = "error"
+						responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+						responseStatus.Error = err.Error()
+						e.Data["json"] = &responseStatus
+						e.ServeJSON()
+					}
+
+					taMap := new(modelTasks.Taskaccountmap)
+
+					for _, account := range accounts {
+						taMap.Task_id = int(userTask.Task_id)
+						taMap.Account_id = account.Account_id
+						taMap.Status = "new"
+						taMap.Updated_by = user[0].Account_id
+						taMap.Created_by = user[0].Account_id
+						_, err := o.Insert(taMap)
+						if err != nil {
+							// Log the error
+							_ = logs.WriteLogs("Create Task API: " + err.Error())
+							responseStatus := modelVoters.NewResponseStatus()
+							responseStatus.Response = "error"
+							responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+							responseStatus.Error = err.Error()
+							e.Data["json"] = &responseStatus
+							e.ServeJSON()
+						}
+					}
+				}
+			}
+		}
+
+		if len(userTask.Accounts_assigned) > 0 {
+			// Get all the accounts assigned for a task
+			qsTaskaccountmap.Filter("Task_id__exact", userTask.Task_id).All(&arrTaMap)
+			for _, taMap := range arrTaMap {
+				if !contains(userTask.Accounts_assigned, taMap.Account_id) {
+					// Delete from Taskaccountmap
+					_, err = qsTaskaccountmap.Filter("Task_id__exact", userTask.Task_id).Filter("Account_id__exact", taMap.Account_id).Delete()
+				}
+			}
+
+			for _, accountId := range userTask.Accounts_assigned {
+				if !qsTaskaccountmap.Filter("Task_id__exact", userTask.Task_id).Filter("Account_id__exact", accountId).Exist() {
+					taMap := new(modelTasks.Taskaccountmap)
+					taMap.Task_id = int(userTask.Task_id)
+					taMap.Account_id = accountId
+					taMap.Status = "new"
+					taMap.Updated_by = user[0].Account_id
+					taMap.Created_by = user[0].Account_id
+					_, err := o.Insert(taMap)
+					if err != nil {
+						// Log the error
+						_ = logs.WriteLogs("Create Task API: " + err.Error())
+						responseStatus := modelVoters.NewResponseStatus()
+						responseStatus.Response = "error"
+						responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+						responseStatus.Error = err.Error()
+						e.Data["json"] = &responseStatus
+						e.ServeJSON()
+					}
+				}
+			}
 		}
 	}
 
@@ -1347,4 +1393,13 @@ func (e *TaskCtrl) DeleteTask() {
 
 	e.Data["json"] = fmt.Sprintf("%d rows deleted.", num)
 	e.ServeJSON()
+}
+
+func contains(s []int, e int) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
