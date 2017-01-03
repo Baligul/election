@@ -474,6 +474,7 @@ func (e *TaskCtrl) GetMyTasks() {
 
 
 	condTaskId := orm.NewCondition()
+	condTaskId = nil
 
 	fmt.Println("condTaskId is ", condTaskId)
 
@@ -503,7 +504,7 @@ func (e *TaskCtrl) GetMyTasks() {
 		}
 		tasks.Populate(userTasks)
 	}
-
+fmt.Println("tasksCount ", tasksCount)
 	if tasksCount > 0 {
 		tasks.Total = tasksCount
 		sort.Sort(modelTasks.ByTitle(tasks.Tasks))
