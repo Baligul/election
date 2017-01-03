@@ -21,28 +21,28 @@ package accounts
 */
 
 type Account struct {
-	Account_id         int       `orm:"auto" json:"account_id,omitempty"`
-	Otp                int       `json:"otp,omitempty"`
-	Display_name       string    `json:"display_name,omitempty"`
-	Email              string    `json:"email,omitempty"`
-	Mobile_no          int64     `json:"mobile_no,omitempty"`
-	Token              string    `json:"token,omitempty"`
-	Approved_districts string    `json:"approved_districts,omitempty"`
-	Approved_acs       string    `json:"approved_acs,omitempty"`
-	Last_login         string    `json:"last_login,omitempty"`
-	Updated_on         string    `json:"updated_on,omitempty"`
-	Created_on         string    `json:"created_on,omitempty"`
-	Role               string    `json:"role,omitempty"`
-	Image              string    `json:"image,omitempty"`
-	Group_id           int       `json:"group_id,omitempty"`
-	Leader_id          int       `json:"leader_id,omitempty"`
-	Age                int       `json:"age,omitempty"`
-	Sex                string    `json:"sex,omitempty"`
-	Religion           string    `json:"religion,omitempty"`
-	Father_name        string    `json:"father_name,omitempty"`
-	Approved_sections  string    `json:"approved_sections,omitempty"`
-	Approved_booths    string    `json:"approved_booths,omitempty"`
-	Group_title        string    `json:"group_title,omitempty"`
+	Account_id         int    `orm:"auto" json:"account_id,omitempty"`
+	Otp                int    `json:"otp,omitempty"`
+	Display_name       string `json:"display_name,omitempty"`
+	Email              string `json:"email,omitempty"`
+	Mobile_no          int64  `json:"mobile_no,omitempty"`
+	Token              string `json:"token,omitempty"`
+	Approved_districts string `json:"approved_districts,omitempty"`
+	Approved_acs       string `json:"approved_acs,omitempty"`
+	Last_login         string `json:"last_login,omitempty"`
+	Updated_on         string `json:"updated_on,omitempty"`
+	Created_on         string `json:"created_on,omitempty"`
+	Role               string `json:"role,omitempty"`
+	Image              string `json:"image,omitempty"`
+	Group_id           int    `json:"group_id,omitempty"`
+	Leader_id          int    `json:"leader_id,omitempty"`
+	Age                int    `json:"age,omitempty"`
+	Sex                string `json:"sex,omitempty"`
+	Religion           string `json:"religion,omitempty"`
+	Father_name        string `json:"father_name,omitempty"`
+	Approved_sections  string `json:"approved_sections,omitempty"`
+	Approved_booths    string `json:"approved_booths,omitempty"`
+	Group_title        string `json:"group_title,omitempty"`
 }
 
 type AccountQuery struct {

@@ -60,7 +60,7 @@ type Voter struct {
 	Email                 string `form:"email" json:"email,omitempty"`
 	Mobile_no             int64  `form:"mobile_no" json:"mobile_no,omitempty"`
 	Image                 string `form:"image" json:"image,omitempty"`
-    Updated_on            string `json:"updated_on,omitempty"`
+	Updated_on            string `json:"updated_on,omitempty"`
 }
 
 // ByName implements sort.Interface for []Voter based on

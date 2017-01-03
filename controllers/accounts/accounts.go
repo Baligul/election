@@ -29,7 +29,7 @@ import (
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
 	modelVoters "github.com/Baligul/election/models/voters"
-	
+
 	"github.com/Baligul/election/formattime"
 	"github.com/Baligul/election/logs"
 	"github.com/astaxie/beego"

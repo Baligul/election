@@ -21,7 +21,7 @@ func WriteLogs(data string) error {
 		return err
 	}
 
-	t, err := time.ParseInLocation(layout, time.Now().Format(layout),  loc)
+	t, err := time.ParseInLocation(layout, time.Now().Format(layout), loc)
 	if err != nil {
 		return err
 	}
