@@ -447,8 +447,11 @@ func (e *TaskCtrl) GetMyTasks() {
 
 	fmt.Printf("Query is %v", query)
 
+	fmt.Printf("Status is %v", query.Status)
+
 	// Status
 	if query.Status == "new" || query.Status == "in process" || query.Status == "completed" {
+		fmt.Printf("Query is set here")
 		_, err = qsTaskaccountmap.Filter("Account_id__exact", user[0].Account_id).Filter("Status__exact", query.Status).All(&taMap)
 	} else {
 		_, err = qsTaskaccountmap.Filter("Account_id__exact", user[0].Account_id).All(&taMap)
