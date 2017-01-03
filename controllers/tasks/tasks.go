@@ -977,7 +977,7 @@ func (e *TaskCtrl) UpdateTask() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance. 1, Mobile #:", mobileNo, " token is ", token)
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -999,7 +999,7 @@ func (e *TaskCtrl) UpdateTask() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance. 2")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -1021,7 +1021,7 @@ func (e *TaskCtrl) UpdateTask() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance. 3")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -1096,12 +1096,11 @@ func (e *TaskCtrl) UpdateTask() {
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
-		}	
+		}
 	}
 
 	if userTask.Status == "in process" || userTask.Status == "completed" || userTask.Status == "new" {
 		// Update the status of the current user
-		condTaskaccountmap = nil
 		condTaskaccountmap = condTaskaccountmap.And("Task_id__exact", userTask.Task_id).And("Account_id__exact", user[0].Account_id)
 		qsTaskaccountmap = qsTaskaccountmap.SetCond(condTaskaccountmap)
 		num, err = qsTaskaccountmap.Update(orm.Params{
