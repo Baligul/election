@@ -1045,6 +1045,7 @@ func (e *TaskCtrl) UpdateTask() {
 	inputJson := e.Ctx.Input.RequestBody
 	userTask := new(modelTasks.TaskCreateDelete)
 	err = json.Unmarshal(inputJson, &userTask)
+	fmt.Println("The json sent by Iftekhar is: ", inputJson)
 	if err != nil {
 		// Log the error
 		_ = logs.WriteLogs("Update Task API: " + err.Error())
