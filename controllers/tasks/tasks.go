@@ -445,6 +445,8 @@ func (e *TaskCtrl) GetMyTasks() {
 		e.ServeJSON()
 	}
 
+	fmt.Printf("Query is %v", query)
+
 	// Status
 	if query.Status == "new" || query.Status == "in process" || query.Status == "completed" {
 		_, err = qsTaskaccountmap.Filter("Account_id__exact", user[0].Account_id).Filter("Status__exact", query.Status).All(&taMap)
@@ -1066,14 +1068,6 @@ func (e *TaskCtrl) UpdateTask() {
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to find the task.")
 		responseStatus.Error = err.Error()
-		e.Data["json"] = &responseStatus
-		e.ServeJSON()
-	}
-
-	if num == 0 {
-		responseStatus := modelVoters.NewResponseStatus()
-		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to find the task.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
