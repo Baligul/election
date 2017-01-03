@@ -2,7 +2,6 @@ package groups
 
 import (
 	modelAccounts "github.com/Baligul/election/models/accounts"
-	"time"
 )
 
 /* user_group
@@ -25,8 +24,8 @@ type Usergroup struct {
 	Group_lead_id int                      `json:"group_lead_id,omitempty"`
 	Updated_by    int                      `json:"updated_by,omitempty"`
 	Created_by    int                      `json:"created_by,omitempty"`
-	Updated_on    time.Time                `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
-	Created_on    time.Time                `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
+	Updated_on    string                   `json:"updated_on,omitempty"`
+	Created_on    string                   `json:"created_on,omitempty"`
 	Account_id    []int                    `orm:"-" json:"account_id,omitempty"`
 	Accounts      []*modelAccounts.Account `orm:"-" json:"accounts,omitempty"`
 }

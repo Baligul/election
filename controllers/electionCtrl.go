@@ -63,6 +63,7 @@ import (
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"
 
+	"github.com/Baligul/election/formattime"
 	"github.com/Baligul/election/logs"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -166,7 +167,7 @@ func (e *ElectionController) GetVoters() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -948,7 +949,7 @@ func (e *ElectionController) GetStatistic() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -1585,7 +1586,7 @@ func (e *ElectionController) GetStatistics() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -3131,7 +3132,7 @@ func (e *ElectionController) OTP() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", account.Mobile_no).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -3391,7 +3392,7 @@ func (e *ElectionController) GetList() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -3666,7 +3667,7 @@ func (e *ElectionController) UpdateVoter() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error

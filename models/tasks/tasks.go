@@ -3,7 +3,6 @@ package tasks
 import (
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
-	"time"
 )
 
 /* task
@@ -29,8 +28,8 @@ type Task struct {
 	Groups      modelGroups.ByTitle         `orm:"-" json:"groups,omitempty"`
 	Updated_by  int                         `json:"updated_by,omitempty"`
 	Created_by  int                         `json:"created_by,omitempty"`
-	Updated_on  time.Time                   `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
-	Created_on  time.Time                   `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
+	Updated_on  string                   	`json:"updated_on,omitempty"`
+	Created_on  string                   	`json:"created_on,omitempty"`
 }
 
 type Taskgroupmap struct {
@@ -40,8 +39,8 @@ type Taskgroupmap struct {
 	Status            string    `json:"status,omitempty"`
 	Updated_by        int       `json:"updated_by,omitempty"`
 	Created_by        int       `json:"created_by,omitempty"`
-	Updated_on        time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
-	Created_on        time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
+	Updated_on        string 	`json:"updated_on,omitempty"`
+	Created_on        string 	`json:"created_on,omitempty"`
 }
 
 type Taskaccountmap struct {
@@ -51,8 +50,8 @@ type Taskaccountmap struct {
 	Status              string    `json:"status,omitempty"`
 	Updated_by          int       `json:"updated_by,omitempty"`
 	Created_by          int       `json:"created_by,omitempty"`
-	Updated_on          time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
-	Created_on          time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
+	Updated_on          string    `json:"updated_on,omitempty"`
+	Created_on          string    `json:"created_on,omitempty"`
 }
 
 type TaskQuery struct {
@@ -73,8 +72,8 @@ type TaskCreateDelete struct {
 	Status            string    `json:"status,omitempty"`
 	Updated_by        int       `json:"updated_by,omitempty"`
 	Created_by        int       `json:"created_by,omitempty"`
-	Updated_on        time.Time `json:"updated_on,omitempty"`
-	Created_on        time.Time `json:"created_on,omitempty"`
+	Updated_on        string 	`json:"updated_on,omitempty"`
+	Created_on        string 	`json:"created_on,omitempty"`
 }
 
 type TaskDetail struct {
@@ -87,8 +86,8 @@ type TaskDetail struct {
 	Created_by              int                      `json:"created_by,omitempty"`
 	Updated_by_display_name string                   `json:"updated_by_display_name,omitempty"`
 	Created_by_display_name string                   `json:"created_by_display_name,omitempty"`
-	Updated_on              time.Time                `json:"updated_on,omitempty"`
-	Created_on              time.Time                `json:"created_on,omitempty"`
+	Updated_on              string                	 `json:"updated_on,omitempty"`
+	Created_on              string                	 `json:"created_on,omitempty"`
 }
 
 type AccountDetails struct {
@@ -96,14 +95,14 @@ type AccountDetails struct {
 	Status                         string    `json:"status,omitempty"`
 	Status_updated_by              int       `json:"status_updated_by,omitempty"`
 	Status_updated_by_display_name string    `json:"status_updated_by_display_name,omitempty"`
-	Status_updated_on              time.Time `json:"status_updated_on,omitempty"`
+	Status_updated_on              string 	 `json:"status_updated_on,omitempty"`
 	Task_assigned_by               int       `json:"task_assigned_by,omitempty"`
 	Task_assigned_by_display_name  string    `json:"task_assigned_by_display_name,omitempty"`
-	Task_assigned_on               time.Time `json:"task_assigned_on,omitempty"`
+	Task_assigned_on               string 	 `json:"task_assigned_on,omitempty"`
 	Display_name                   string    `json:"display_name,omitempty"`
 	Group_id                       int       `json:"group_id,omitempty"`
 	Group_title                    string    `json:"group_title,omitempty"`
-	Last_login                     time.Time `json:"last_login,omitempty"`
+	Last_login                     string    `json:"last_login,omitempty"`
 }
 
 type AccountDisplayName struct {

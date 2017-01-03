@@ -23,12 +23,12 @@ import (
 	"fmt"
 	"sort"
 	"strings"
-	"time"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
 	modelVoters "github.com/Baligul/election/models/voters"
 
+	"github.com/Baligul/election/formattime"
 	"github.com/Baligul/election/logs"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -114,7 +114,7 @@ func (e *GroupCtrl) GetGroups() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -301,7 +301,7 @@ func (e *GroupCtrl) CreateGroup() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -450,7 +450,7 @@ func (e *GroupCtrl) UpdateGroup() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -545,6 +545,21 @@ func (e *GroupCtrl) UpdateGroup() {
 		// Create query string for account table
 		qsUserAccount := o.QueryTable("account")
 		condAccountId := orm.NewCondition()
+
+		// First set the group_id as null for all the accounts where group id is current group id
+		_, err = qsUserAccount.Filter("Group_id__exact", userGroup.Group_id).Update(orm.Params{
+			"Group_id": nil,
+		})
+		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Update Group API: " + err.Error())
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}
 
 		// Account Id
 		for _, accountId := range userGroup.Account_id {
@@ -644,7 +659,7 @@ func (e *GroupCtrl) DeleteGroup() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error

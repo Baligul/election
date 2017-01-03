@@ -1,7 +1,5 @@
 package accounts
 
-import "time"
-
 /* account
 {
     "account_id":1,
@@ -31,9 +29,9 @@ type Account struct {
 	Token              string    `json:"token,omitempty"`
 	Approved_districts string    `json:"approved_districts,omitempty"`
 	Approved_acs       string    `json:"approved_acs,omitempty"`
-	Last_login         time.Time `json:"last_login,omitempty"`
-	Updated_on         time.Time `orm:"auto_now;type(datetime)" json:"updated_on,omitempty"`
-	Created_on         time.Time `orm:"auto_now_add;type(datetime)" json:"created_on,omitempty"`
+	Last_login         string    `json:"last_login,omitempty"`
+	Updated_on         string    `json:"updated_on,omitempty"`
+	Created_on         string    `json:"created_on,omitempty"`
 	Role               string    `json:"role,omitempty"`
 	Image              string    `json:"image,omitempty"`
 	Group_id           int       `json:"group_id,omitempty"`

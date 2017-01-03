@@ -31,13 +31,13 @@ import (
 	"fmt"
 	"sort"
 	"strings"
-	"time"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelGroups "github.com/Baligul/election/models/groups"
 	modelTasks "github.com/Baligul/election/models/tasks"
 	modelVoters "github.com/Baligul/election/models/voters"
 
+	"github.com/Baligul/election/formattime"
 	"github.com/Baligul/election/logs"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -139,7 +139,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -423,7 +423,7 @@ func (e *TaskCtrl) GetMyTasks() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -583,7 +583,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -834,7 +834,7 @@ func (e *TaskCtrl) CreateTask() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -1035,7 +1035,7 @@ func (e *TaskCtrl) UpdateTask() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error
@@ -1045,7 +1045,6 @@ func (e *TaskCtrl) UpdateTask() {
 	inputJson := e.Ctx.Input.RequestBody
 	userTask := new(modelTasks.TaskCreateDelete)
 	err = json.Unmarshal(inputJson, &userTask)
-	fmt.Println("The json sent by Iftekhar is: ", inputJson)
 	if err != nil {
 		// Log the error
 		_ = logs.WriteLogs("Update Task API: " + err.Error())
@@ -1106,7 +1105,7 @@ func (e *TaskCtrl) UpdateTask() {
 		num, err = qsTaskaccountmap.Update(orm.Params{
 			"Status":     userTask.Status,
 			"Updated_by": user[0].Account_id,
-			"Updated_on": time.Now(),
+			"Updated_on": formattime.CurrentTime(),
 		})
 	} else {
 		// Change the groups assigned or accounts assigned or both
@@ -1289,7 +1288,7 @@ func (e *TaskCtrl) DeleteTask() {
 	}
 
 	_, err = qsAccount.Filter("Mobile_no__exact", mobileNo).Update(orm.Params{
-		"Last_login": time.Now(),
+		"Last_login": formattime.CurrentTime(),
 	})
 	if err != nil {
 		// Log the error

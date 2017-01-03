@@ -9,6 +9,8 @@ import (
 // write errors to the log file at logFilePath
 func WriteLogs(data string) error {
 
+	// First, we create an instance of a timezone location object
+	loc, _ := time.LoadLocation("Asia/Kolkata")
 	const layout = "Jan 2, 2006 at 3:04pm (MST)"
 
 	// Get log file
@@ -19,7 +21,12 @@ func WriteLogs(data string) error {
 		return err
 	}
 
-	data = time.Now().Format(layout) + " - " + data + "\n"
+	t, err := time.ParseInLocation(layout, time.Now().Format(layout),  loc)
+	if err != nil {
+		return err
+	}
+
+	data = t.Format(layout) + " - " + data + "\n"
 	_, err = file.Write(logFile, []byte(data))
 
 	if err != nil {
