@@ -977,7 +977,7 @@ func (e *TaskCtrl) UpdateTask() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance. 1")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance. 1, Mobile #:", mobileNo, " token is ", token)
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
