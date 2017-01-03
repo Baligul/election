@@ -1069,31 +1069,33 @@ func (e *TaskCtrl) UpdateTask() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-	
-	if strings.TrimSpace(userTask.Title) != "" {
-		title = strings.TrimSpace(userTask.Title)
-	} else {
-		title = strings.TrimSpace(userTasks[0].Title)
-	}
-	if strings.TrimSpace(userTask.Description) != "" {
-		description = strings.TrimSpace(userTask.Description)
-	} else {
-		description = strings.TrimSpace(userTasks[0].Description)
-	}
-	num, err = qsTask.Update(orm.Params{
-		"Title":       title,
-		"Description": description,
-		"Updated_by":  user[0].Account_id,
-	})
-	if err != nil {
-		// Log the error
-		_ = logs.WriteLogs("Update Task API: " + err.Error())
-		responseStatus := modelVoters.NewResponseStatus()
-		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
-		responseStatus.Error = err.Error()
-		e.Data["json"] = &responseStatus
-		e.ServeJSON()
+
+	if num > 0 {
+		if strings.TrimSpace(userTask.Title) != "" {
+			title = strings.TrimSpace(userTask.Title)
+		} else {
+			title = strings.TrimSpace(userTasks[0].Title)
+		}
+		if strings.TrimSpace(userTask.Description) != "" {
+			description = strings.TrimSpace(userTask.Description)
+		} else {
+			description = strings.TrimSpace(userTasks[0].Description)
+		}
+		num, err = qsTask.Update(orm.Params{
+			"Title":       title,
+			"Description": description,
+			"Updated_by":  user[0].Account_id,
+		})
+		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("Update Task API: " + err.Error())
+			responseStatus := modelVoters.NewResponseStatus()
+			responseStatus.Response = "error"
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Error = err.Error()
+			e.Data["json"] = &responseStatus
+			e.ServeJSON()
+		}	
 	}
 
 	if userTask.Status == "in process" || userTask.Status == "completed" || userTask.Status == "new" {
