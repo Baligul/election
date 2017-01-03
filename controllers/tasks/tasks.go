@@ -445,13 +445,8 @@ func (e *TaskCtrl) GetMyTasks() {
 		e.ServeJSON()
 	}
 
-	fmt.Println("Query is ", query)
-
-	fmt.Println("Status is ", query.Status)
-
 	// Status
 	if query.Status == "new" || query.Status == "in process" || query.Status == "completed" {
-		fmt.Println("Query is set here")
 		_, err = qsTaskaccountmap.Filter("Account_id__exact", user[0].Account_id).Filter("Status__exact", query.Status).All(&taMap)
 	} else {
 		_, err = qsTaskaccountmap.Filter("Account_id__exact", user[0].Account_id).All(&taMap)
@@ -468,29 +463,17 @@ func (e *TaskCtrl) GetMyTasks() {
 		e.ServeJSON()
 	}
 
-	fmt.Println("TasksAccountMap ids found to be ", len(taMap))
-	
-
-
-
 	condTaskId := orm.NewCondition()
-	condTaskId = nil
-
-	fmt.Println("condTaskId is ", condTaskId)
 
 	for _, am := range taMap {
 		condTaskId = condTaskId.Or("Task_id__exact", am.Task_id)
 	}
-
-	fmt.Println("condTaskId becomes ", condTaskId)
 
 	if condTaskId != nil && !condTaskId.IsEmpty() {
 		qsTask = qsTask.SetCond(condTaskId)
 
 		// Get tasks
 		tasksCount, _ = qsTask.Count()
-
-		fmt.Println("Here we got the tasks count as ", tasksCount)
 		_, err = qsTask.All(&userTasks)
 		if err != nil {
 			// Log the error
@@ -504,7 +487,7 @@ func (e *TaskCtrl) GetMyTasks() {
 		}
 		tasks.Populate(userTasks)
 	}
-fmt.Println("tasksCount ", tasksCount)
+
 	if tasksCount > 0 {
 		tasks.Total = tasksCount
 		sort.Sort(modelTasks.ByTitle(tasks.Tasks))
@@ -1086,7 +1069,7 @@ func (e *TaskCtrl) UpdateTask() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
-
+	
 	if strings.TrimSpace(userTask.Title) != "" {
 		title = strings.TrimSpace(userTask.Title)
 	} else {
