@@ -344,6 +344,7 @@ func (e *AccountCtrl) CreateAccount() {
 	userAccount.Leader_id = user[0].Account_id
 	userAccount.Approved_districts = user[0].Approved_districts
 	userAccount.Approved_acs = user[0].Approved_acs
+	userAccount.Last_login = "not logged in yet"
 	_, err = o.Insert(userAccount)
 	if err != nil {
 		// Log the error
