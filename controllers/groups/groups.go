@@ -553,7 +553,7 @@ func (e *GroupCtrl) UpdateGroup() {
 
 		// First set the group_id as null for all the accounts where group id is current group id
 		_, err = qsUserAccount.Filter("Group_id__exact", userGroup.Group_id).Update(orm.Params{
-			"Group_id": nil,
+			"Group_id": 0,
 		})
 		if err != nil {
 			// Log the error
@@ -577,7 +577,6 @@ func (e *GroupCtrl) UpdateGroup() {
 
 		_, err = qsUserAccount.Update(orm.Params{
 			"Group_id":   userGroup.Group_id,
-			"Updated_by": user[0].Account_id,
 			"Updated_on": formattime.CurrentTime(),
 		})
 		if err != nil {
