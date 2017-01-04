@@ -3701,7 +3701,8 @@ func (e *ElectionController) UpdateVoter() {
 		qsMoradabad = qsMoradabad.SetCond(condVoterId)
 		if voter.Vote == 1 || voter.Vote == 0 {
 			updatedRows, err := qsMoradabad.Update(orm.Params{
-				"vote": voter.Vote,
+				"Vote":       voter.Vote,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -3725,7 +3726,8 @@ func (e *ElectionController) UpdateVoter() {
 
 		if len(strings.TrimSpace(voter.Email)) > 0 {
 			updatedRows, err := qsMoradabad.Update(orm.Params{
-				"email": voter.Email,
+				"Email":      voter.Email,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -3749,7 +3751,8 @@ func (e *ElectionController) UpdateVoter() {
 
 		if voter.MobileNo > 0 {
 			updatedRows, err := qsMoradabad.Update(orm.Params{
-				"mobile_no": voter.MobileNo,
+				"Mobile_no":  voter.MobileNo,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -3773,7 +3776,8 @@ func (e *ElectionController) UpdateVoter() {
 
 		if len(strings.TrimSpace(voter.Image)) > 0 {
 			updatedRows, err := qsMoradabad.Update(orm.Params{
-				"image": voter.Image,
+				"Image":      voter.Image,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -3797,7 +3801,8 @@ func (e *ElectionController) UpdateVoter() {
 
 		if voter.Age >= 18 {
 			updatedRows, err := qsMoradabad.Update(orm.Params{
-				"age": voter.Age,
+				"Age":        voter.Age,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -3830,8 +3835,9 @@ func (e *ElectionController) UpdateVoter() {
 			}
 
 			updatedRows, err := qsMoradabad.Update(orm.Params{
-				"religion_english": voter.Religion,
-				"religion_hindi":   relHindi,
+				"Religion_english": voter.Religion,
+				"Religion_hindi":   relHindi,
+				"Updated_on":       formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -3864,7 +3870,8 @@ func (e *ElectionController) UpdateVoter() {
 		qsRampur = qsRampur.SetCond(condVoterId)
 		if voter.Vote == 1 || voter.Vote == 0 {
 			updatedRows, err := qsRampur.Update(orm.Params{
-				"vote": voter.Vote,
+				"Vote":       voter.Vote,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -3888,7 +3895,8 @@ func (e *ElectionController) UpdateVoter() {
 
 		if len(strings.TrimSpace(voter.Email)) > 0 {
 			updatedRows, err := qsRampur.Update(orm.Params{
-				"email": voter.Email,
+				"Email":      voter.Email,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -3912,7 +3920,8 @@ func (e *ElectionController) UpdateVoter() {
 
 		if voter.MobileNo > 0 {
 			updatedRows, err := qsRampur.Update(orm.Params{
-				"mobile_no": voter.MobileNo,
+				"Mobile_no":  voter.MobileNo,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -3936,7 +3945,8 @@ func (e *ElectionController) UpdateVoter() {
 
 		if len(strings.TrimSpace(voter.Image)) > 0 {
 			updatedRows, err := qsRampur.Update(orm.Params{
-				"image": voter.Image,
+				"Image":      voter.Image,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -3960,7 +3970,8 @@ func (e *ElectionController) UpdateVoter() {
 
 		if voter.Age >= 18 {
 			updatedRows, err := qsRampur.Update(orm.Params{
-				"age": voter.Age,
+				"Age":        voter.Age,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -3993,8 +4004,9 @@ func (e *ElectionController) UpdateVoter() {
 			}
 
 			updatedRows, err := qsRampur.Update(orm.Params{
-				"religion_english": voter.Religion,
-				"religion_hindi":   relHindi,
+				"Religion_english": voter.Religion,
+				"Religion_hindi":   relHindi,
+				"Updated_on":       formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -4026,7 +4038,8 @@ func (e *ElectionController) UpdateVoter() {
 		qsBijnor = qsBijnor.SetCond(condVoterId)
 		if voter.Vote == 1 || voter.Vote == 0 {
 			updatedRows, err := qsBijnor.Update(orm.Params{
-				"vote": voter.Vote,
+				"Vote":       voter.Vote,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -4050,7 +4063,8 @@ func (e *ElectionController) UpdateVoter() {
 
 		if len(strings.TrimSpace(voter.Email)) > 0 {
 			updatedRows, err := qsBijnor.Update(orm.Params{
-				"email": voter.Email,
+				"Email":      voter.Email,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -4074,7 +4088,8 @@ func (e *ElectionController) UpdateVoter() {
 
 		if voter.MobileNo > 0 {
 			updatedRows, err := qsBijnor.Update(orm.Params{
-				"mobile_no": voter.MobileNo,
+				"Mobile_no":  voter.MobileNo,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -4098,7 +4113,8 @@ func (e *ElectionController) UpdateVoter() {
 
 		if len(strings.TrimSpace(voter.Image)) > 0 {
 			updatedRows, err := qsBijnor.Update(orm.Params{
-				"image": voter.Image,
+				"Image":      voter.Image,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -4122,7 +4138,8 @@ func (e *ElectionController) UpdateVoter() {
 
 		if voter.Age >= 18 {
 			updatedRows, err := qsBijnor.Update(orm.Params{
-				"age": voter.Age,
+				"Age":        voter.Age,
+				"Updated_on": formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error
@@ -4155,8 +4172,9 @@ func (e *ElectionController) UpdateVoter() {
 			}
 
 			updatedRows, err := qsBijnor.Update(orm.Params{
-				"religion_english": voter.Religion,
-				"religion_hindi":   relHindi,
+				"Religion_english": voter.Religion,
+				"Religion_hindi":   relHindi,
+				"Updated_on":       formattime.CurrentTime(),
 			})
 			if err != nil {
 				// Log the error

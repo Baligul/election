@@ -1,27 +1,27 @@
 /*
    GET Created TASKS
    curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"completed"}' http://107.178.208.219:80/api/tasks/created
-   curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"completed"}' "http://107.178.208.219:80/api/tasks/created?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X POST -H "Content-Type: application/json" -d '{"groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"completed"}' "http://107.178.208.219:80/api/tasks/created?mobile_no=9343352734&token=b4704cf9a3dc3faa"
 
    GET My TASKS
    curl -X POST -H "Content-Type: application/json" -d '{"status":"completed"}' http://107.178.208.219:80/api/tasks/my
-   curl -X POST -H "Content-Type: application/json" -d '{"status":"completed"}' "http://107.178.208.219:80/api/tasks/my?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X POST -H "Content-Type: application/json" -d '{"status":"completed"}' "http://107.178.208.219:80/api/tasks/my?mobile_no=9343352734&token=b4704cf9a3dc3faa"
 
    Update TASK
    curl -X PUT -H "Content-Type: application/json" -d '{"task_id": 2, "title":"updated title", "description":"updated description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"in process"}' http://107.178.208.219:80/api/task
-   curl -X PUT -H "Content-Type: application/json" -d '{"task_id": 2, "title":"updated title", "description":"updated description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"in process"}' "http://107.178.208.219:80/api/task?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X PUT -H "Content-Type: application/json" -d '{"task_id": 2, "title":"updated title", "description":"updated description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"in process"}' "http://107.178.208.219:80/api/task?mobile_no=9343352734&token=b4704cf9a3dc3faa"
 
    Create TASK
    curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4]}' http://107.178.208.219:80/api/task
-   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4]}' "http://107.178.208.219:80/api/task?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X POST -H "Content-Type: application/json" -d '{"title":"new title", "description":"new description", "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4]}' "http://107.178.208.219:80/api/task?mobile_no=9343352734&token=b4704cf9a3dc3faa"
 
    Delete TASK
    curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"completed", "updated_by":[2,3,4], "created_by":[2,3,4]}' http://107.178.208.219:80/api/task
-   curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"completed", "updated_by":[2,3,4], "created_by":[2,3,4]}' "http://107.178.208.219:80/api/task?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X DELETE -H "Content-Type: application/json" -d '{"task_id":[1,2,4], "groups_assigned":[2,3,4], "accounts_assigned":[2,3,4], "status":"completed", "updated_by":[2,3,4], "created_by":[2,3,4]}' "http://107.178.208.219:80/api/task?mobile_no=9343352734&token=b4704cf9a3dc3faa"
 
    GET TASK DETAILS
    curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' http://107.178.208.219:80/api/taskdetail
-   curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' "http://107.178.208.219:80/api/taskdetail?mobile_no=9343352734&token=f8a220f5e8d1741d"
+   curl -X POST -H "Content-Type: application/json" -d '{"task_id":1}' "http://107.178.208.219:80/api/taskdetail?mobile_no=9343352734&token=b4704cf9a3dc3faa"
 */
 
 package tasks
@@ -865,8 +865,10 @@ func (e *TaskCtrl) CreateTask() {
 	}
 
 	task.Transpose(userTask)
-	task.Updated_by = user[0].Account_id
 	task.Created_by = user[0].Account_id
+	task.Created_on = formattime.CurrentTime()
+	task.Updated_by = user[0].Account_id
+	task.Updated_on = formattime.CurrentTime()
 	taskId, err := o.Insert(task)
 	if err != nil {
 		// Log the error
@@ -885,8 +887,10 @@ func (e *TaskCtrl) CreateTask() {
 		tgMap.Task_id = int(taskId)
 		tgMap.Group_id = groupId
 		tgMap.Status = "new"
-		tgMap.Updated_by = user[0].Account_id
 		tgMap.Created_by = user[0].Account_id
+		tgMap.Created_on = formattime.CurrentTime()
+		tgMap.Updated_by = user[0].Account_id
+		tgMap.Updated_on = formattime.CurrentTime()
 		_, err := o.Insert(tgMap)
 		if err != nil {
 			// Log the error
@@ -917,8 +921,10 @@ func (e *TaskCtrl) CreateTask() {
 			taMap.Task_id = int(taskId)
 			taMap.Account_id = account.Account_id
 			taMap.Status = "new"
-			taMap.Updated_by = user[0].Account_id
 			taMap.Created_by = user[0].Account_id
+			taMap.Created_on = formattime.CurrentTime()
+			taMap.Updated_by = user[0].Account_id
+			taMap.Updated_on = formattime.CurrentTime()
 			_, err := o.Insert(taMap)
 			if err != nil {
 				// Log the error
@@ -939,8 +945,10 @@ func (e *TaskCtrl) CreateTask() {
 		taMap.Task_id = int(taskId)
 		taMap.Account_id = accountId
 		taMap.Status = "new"
-		taMap.Updated_by = user[0].Account_id
 		taMap.Created_by = user[0].Account_id
+		taMap.Created_on = formattime.CurrentTime()
+		taMap.Updated_by = user[0].Account_id
+		taMap.Updated_on = formattime.CurrentTime()
 		_, err := o.Insert(taMap)
 		if err != nil {
 			// Log the error
@@ -1085,6 +1093,7 @@ func (e *TaskCtrl) UpdateTask() {
 			"Title":       title,
 			"Description": description,
 			"Updated_by":  user[0].Account_id,
+			"Updated_on":  formattime.CurrentTime(),
 		})
 		if err != nil {
 			// Log the error
@@ -1125,8 +1134,10 @@ func (e *TaskCtrl) UpdateTask() {
 					tgMap.Task_id = int(userTask.Task_id)
 					tgMap.Group_id = groupId
 					tgMap.Status = "new"
-					tgMap.Updated_by = user[0].Account_id
 					tgMap.Created_by = user[0].Account_id
+					tgMap.Created_on = formattime.CurrentTime()
+					tgMap.Updated_by = user[0].Account_id
+					tgMap.Updated_on = formattime.CurrentTime()
 					_, err := o.Insert(tgMap)
 					if err != nil {
 						// Log the error
@@ -1157,8 +1168,10 @@ func (e *TaskCtrl) UpdateTask() {
 						taMap.Task_id = int(userTask.Task_id)
 						taMap.Account_id = account.Account_id
 						taMap.Status = "new"
-						taMap.Updated_by = user[0].Account_id
 						taMap.Created_by = user[0].Account_id
+						taMap.Created_on = formattime.CurrentTime()
+						taMap.Updated_by = user[0].Account_id
+						taMap.Updated_on = formattime.CurrentTime()
 						_, err := o.Insert(taMap)
 						if err != nil {
 							// Log the error
@@ -1191,8 +1204,10 @@ func (e *TaskCtrl) UpdateTask() {
 					taMap.Task_id = int(userTask.Task_id)
 					taMap.Account_id = accountId
 					taMap.Status = "new"
-					taMap.Updated_by = user[0].Account_id
 					taMap.Created_by = user[0].Account_id
+					taMap.Created_on = formattime.CurrentTime()
+					taMap.Updated_by = user[0].Account_id
+					taMap.Updated_on = formattime.CurrentTime()
 					_, err := o.Insert(taMap)
 					if err != nil {
 						// Log the error
