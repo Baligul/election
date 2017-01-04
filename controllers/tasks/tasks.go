@@ -256,41 +256,41 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		e.ServeJSON()
 	}
 
+	// Get accounts
+	accountsCount, _ := qsAccount.Filter("Leader_id__exact", user[0].Account_id).Count()
+	_, err = qsAccount.Filter("Leader_id__exact", user[0].Account_id).All(&users)
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+	accounts.Populate(users)
+	accounts.Total = accountsCount
+	sort.Sort(modelAccounts.ByDisplayName(accounts.Accounts))
+
+	// Get groups
+	groupsCount, _ := qsGroup.Filter("Created_by__exact", user[0].Account_id).Count()
+	_, err = qsGroup.Filter("Created_by__exact", user[0].Account_id).All(&userGroups)
+	if err != nil {
+		// Log the error
+		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		responseStatus := modelVoters.NewResponseStatus()
+		responseStatus.Response = "error"
+		responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to get the groups.")
+		responseStatus.Error = err.Error()
+		e.Data["json"] = &responseStatus
+		e.ServeJSON()
+	}
+	groups.Populate(userGroups)
+	groups.Total = groupsCount
+	sort.Sort(modelGroups.ByTitle(groups.Groups))
+
 	if tasksCount > 0 {
-		// Get accounts
-		accountsCount, _ := qsAccount.Filter("Leader_id__exact", user[0].Account_id).Count()
-		_, err = qsAccount.Filter("Leader_id__exact", user[0].Account_id).All(&users)
-		if err != nil {
-			// Log the error
-			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
-			responseStatus.Error = err.Error()
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-		accounts.Populate(users)
-		accounts.Total = accountsCount
-		sort.Sort(modelAccounts.ByDisplayName(accounts.Accounts))
-
-		// Get groups
-		groupsCount, _ := qsGroup.Filter("Created_by__exact", user[0].Account_id).Count()
-		_, err = qsGroup.Filter("Created_by__exact", user[0].Account_id).All(&userGroups)
-		if err != nil {
-			// Log the error
-			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
-			responseStatus := modelVoters.NewResponseStatus()
-			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to get the groups.")
-			responseStatus.Error = err.Error()
-			e.Data["json"] = &responseStatus
-			e.ServeJSON()
-		}
-		groups.Populate(userGroups)
-		groups.Total = groupsCount
-		sort.Sort(modelGroups.ByTitle(groups.Groups))
-
 		for i := range userTasks {
 			users = nil
 			// Get array of accounts
@@ -332,7 +332,9 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		tasks.Groups = groups
 		e.Data["json"] = tasks
 	} else {
-		responseStatus := modelVoters.NewResponseStatus()
+		// Iftekhar does not want the message instead he wants the empty task array to be submitted
+		// So I have commented the below code.
+		/*responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "ok"
 		responseStatus.Message = "No tasks found with this criteria."
 		if err != nil {
@@ -342,7 +344,11 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		} else {
 			responseStatus.Error = "No Error"
 		}
-		e.Data["json"] = &responseStatus
+		e.Data["json"] = &responseStatus*/
+		tasks.Total = 0
+		tasks.Accounts = accounts
+		tasks.Groups = groups
+		e.Data["json"] = tasks
 		e.ServeJSON()
 	}
 
