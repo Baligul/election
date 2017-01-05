@@ -643,6 +643,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 
 	if num > 0 {
 		taskDetail.Populate(tasks[0])
+		accountDetails = nil
 
 		// Get array of account details
 		_, err = o.Raw("SELECT DISTINCT tam.account_id, tam.status, tam.updated_by AS status_updated_by, tam.updated_on AS status_updated_on, tam.created_by AS task_assigned_by, tam.created_on AS task_assigned_on, a.display_name, a.last_login, g.group_id, g.title AS group_title FROM taskaccountmap AS tam LEFT OUTER JOIN account AS a ON tam.account_id = a.account_id LEFT OUTER JOIN usergroup AS g ON a.group_id = g.group_id WHERE tam.task_id=?", query.Task_id).QueryRows(&accountDetails)
@@ -748,6 +749,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 		}
 		taskDetail.Updated_by_display_name = accountDN[0].Display_name
 
+		groups = nil
 		// Get array of groups
 		_, err = o.Raw("SELECT DISTINCT tgm.group_id, g.title AS group_title FROM taskgroupmap AS tgm LEFT OUTER JOIN usergroup AS g ON tgm.group_id = g.group_id WHERE tgm.task_id=?", query.Task_id).QueryRows(&groups)
 

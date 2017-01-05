@@ -200,6 +200,7 @@ func (e *GroupCtrl) GetGroups() {
 		e.ServeJSON()
 	}
 	for i := range userGroups {
+		users = nil
 		_, err = o.Raw("SELECT * FROM account WHERE group_id=?", userGroups[i].Group_id).QueryRows(&users)
 		if err != nil {
 			// Log the error

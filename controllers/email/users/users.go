@@ -198,6 +198,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 			e.ServeJSON()
 		}
 		for i := range userAccounts {
+			userGroup = nil
 			userAccount := &userAccounts[i]
 			_, err = o.Raw("SELECT title FROM usergroup WHERE group_id=?", userAccount.Group_id).QueryRows(&userGroup)
 			if err != nil {
