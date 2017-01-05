@@ -66,7 +66,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 
 	if key != "list" && key != "slips" {
 		// Log the error
-		_ = logs.WriteLogs("Wrong parameter passed. Please check your URL again.")
+		_ = logs.WriteLogs("logs/error_logs.txt", "Wrong parameter passed. Please check your URL again.")
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Wrong parameter passed. Please check your URL again.")
@@ -76,7 +76,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 
 	if mobileNo == 0 || token == "" {
 		// Log the error
-		_ = logs.WriteLogs("Mobile number or token is wrong.")
+		_ = logs.WriteLogs("logs/error_logs.txt", "Mobile number or token is wrong.")
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
@@ -103,7 +103,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -134,7 +134,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Send Email Voters API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Send Email Voters API: "+err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -143,7 +143,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -528,7 +528,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 				_, err = qsRampur.Limit(-1).All(&votersRampur)
 				if err != nil {
 					// Log the error
-					_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+					_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
 					responseStatus.Message = fmt.Sprintf("Db Error Rampur. Unable to get the voters.")
@@ -540,7 +540,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 				_, err = qsMoradabad.Limit(-1).All(&votersMoradabad)
 				if err != nil {
 					// Log the error
-					_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+					_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
 					responseStatus.Message = fmt.Sprintf("Db Error Moradabad. Unable to get the voters.")
@@ -552,7 +552,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 				_, err = qsBijnor.Limit(-1).All(&votersBijnor)
 				if err != nil {
 					// Log the error
-					_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+					_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
 					responseStatus.Message = fmt.Sprintf("Db Error Bijnor. Unable to get the voters.")
@@ -567,7 +567,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 				_, err = qsBangalore.Limit(-1).All(&votersBangalore)
 				if err != nil {
 					// Log the error
-					_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+					_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
 					responseStatus.Message = fmt.Sprintf("Db Error Bangalore. Unable to get the voters.")
@@ -579,7 +579,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 				_, err = qsHubli.Limit(-1).All(&votersHubli)
 				if err != nil {
 					// Log the error
-					_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+					_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 					responseStatus := modelVoters.NewResponseStatus()
 					responseStatus.Response = "error"
 					responseStatus.Message = fmt.Sprintf("Db Error Hubli. Unable to get the voters.")
@@ -599,7 +599,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 			_, err = qsMoradabad.Limit(-1).All(&votersMoradabad)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Moradabad. Unable to get the voters.")
@@ -614,7 +614,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 			_, err = qsRampur.Limit(-1).All(&votersRampur)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Rampur. Unable to get the voters.")
@@ -629,7 +629,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 			_, err = qsBijnor.Limit(-1).All(&votersBijnor)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Bijnor. Unable to get the voters.")
@@ -647,7 +647,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 			_, err = qsMoradabad.Limit(-1).All(&votersMoradabad)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Moradabad. Unable to get the voters.")
@@ -662,7 +662,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 			_, err = qsRampur.Limit(-1).All(&votersRampur)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Rampur. Unable to get the voters.")
@@ -677,7 +677,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 			_, err = qsBijnor.Limit(-1).All(&votersBijnor)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Bijnor. Unable to get the voters.")
@@ -695,7 +695,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 			_, err = qsMoradabad.Limit(-1).All(&votersMoradabad)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Moradabad. Unable to get the voters.")
@@ -710,7 +710,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 			_, err = qsRampur.Limit(-1).All(&votersRampur)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Rampur. Unable to get the voters.")
@@ -725,7 +725,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 			_, err = qsBijnor.Limit(-1).All(&votersBijnor)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Bijnor. Unable to get the voters.")
@@ -750,7 +750,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 		responseStatus.Message = "No voters found with this criteria."
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 			responseStatus.Error = err.Error()
 		} else {
 			responseStatus.Error = "No Error"
@@ -770,7 +770,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")
@@ -782,7 +782,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	err = createPdf(filepath)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")
@@ -795,7 +795,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	err = sendEmailWithAttachment(user[0].Email, user[0].Display_name, filepath+".pdf")
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Send Email Voters API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")

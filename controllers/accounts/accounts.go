@@ -58,6 +58,8 @@ func (e *AccountCtrl) GetAccounts() {
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: Get /api/accounts, Json: %s", e.Ctx.Input.RequestBody))
 
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
@@ -89,7 +91,7 @@ func (e *AccountCtrl) GetAccounts() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Accounts API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Accounts API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -120,7 +122,7 @@ func (e *AccountCtrl) GetAccounts() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Get Accounts API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Get Accounts API: "+err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -129,7 +131,7 @@ func (e *AccountCtrl) GetAccounts() {
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Accounts API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Accounts API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -194,7 +196,7 @@ func (e *AccountCtrl) GetAccounts() {
 	_, err = qsUserAccount.Filter("Leader_id__exact", user[0].Account_id).All(&userAccounts)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Accounts API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Accounts API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
@@ -209,7 +211,7 @@ func (e *AccountCtrl) GetAccounts() {
 		_, err = o.Raw("SELECT title FROM usergroup WHERE group_id=?", userAccount.Group_id).QueryRows(&userGroup)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Accounts API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Get Accounts API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
@@ -236,7 +238,7 @@ func (e *AccountCtrl) GetAccounts() {
 		responseStatus.Message = "No accounts found with this criteria."
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Accounts API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Get Accounts API: "+err.Error())
 			responseStatus.Error = err.Error()
 		} else {
 			responseStatus.Error = "No Error"
@@ -285,7 +287,7 @@ func (e *AccountCtrl) CreateAccount() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Create Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Create Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -316,7 +318,7 @@ func (e *AccountCtrl) CreateAccount() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Create Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Create Account API: "+err.Error())
 	}
 
 	if user[0].Role != "Leader" && user[0].Role != "leader" && user[0].Role != "group lead" {
@@ -332,7 +334,7 @@ func (e *AccountCtrl) CreateAccount() {
 	err = json.Unmarshal(inputJson, &userAccount)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Create Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Create Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -349,7 +351,7 @@ func (e *AccountCtrl) CreateAccount() {
 	_, err = o.Insert(userAccount)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Create Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Create Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -415,7 +417,7 @@ func (e *AccountCtrl) UpdateAccount() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -446,7 +448,7 @@ func (e *AccountCtrl) UpdateAccount() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Update Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Update Account API: "+err.Error())
 	}
 
 	if user[0].Role != "Leader" && user[0].Role != "leader" && user[0].Role != "group lead" {
@@ -462,7 +464,7 @@ func (e *AccountCtrl) UpdateAccount() {
 	err = json.Unmarshal(inputJson, &userAccount)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -476,7 +478,7 @@ func (e *AccountCtrl) UpdateAccount() {
 	num, err = qsUserAccount.All(&userAccounts)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to find the account.")
@@ -577,7 +579,7 @@ func (e *AccountCtrl) UpdateAccount() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -633,7 +635,7 @@ func (e *AccountCtrl) DeleteAccount() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -664,7 +666,7 @@ func (e *AccountCtrl) DeleteAccount() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Delete Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Delete Account API: "+err.Error())
 	}
 
 	if user[0].Role != "Leader" && user[0].Role != "leader" && user[0].Role != "group lead" {
@@ -680,7 +682,7 @@ func (e *AccountCtrl) DeleteAccount() {
 	err = json.Unmarshal(inputJson, &userAccount)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -695,7 +697,7 @@ func (e *AccountCtrl) DeleteAccount() {
 		num, err = qsUserAccount.All(&userAccounts)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Delete Account API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Delete Account API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to find the account.")
@@ -728,7 +730,7 @@ func (e *AccountCtrl) DeleteAccount() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on account_id. Please contact electionubda.com team for assistance.")
@@ -745,7 +747,7 @@ func (e *AccountCtrl) DeleteAccount() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on group_id. Please contact electionubda.com team for assistance.")
@@ -762,7 +764,7 @@ func (e *AccountCtrl) DeleteAccount() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Account API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on leader_id. Please contact electionubda.com team for assistance.")

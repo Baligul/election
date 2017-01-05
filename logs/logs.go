@@ -7,13 +7,13 @@ import (
 
 // WriteLogs function will be called in main package to automatically
 // write errors to the log file at logFilePath
-func WriteLogs(data string) error {
+func WriteLogs(filepath, data string) error {
 
 	// First, we create an instance of a timezone location object
 	const layout = "Jan 2, 2006 at 3:04 PM"
 
 	// Get log file
-	logFile, err := file.Open("logs/logs.txt")
+	logFile, err := file.Open(filepath)
 	defer file.Close(logFile)
 
 	if err != nil {

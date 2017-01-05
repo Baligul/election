@@ -82,7 +82,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Send Email Users API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Users API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -113,7 +113,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Send Email Users API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Send Email Users API: "+err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -122,7 +122,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Send Email Users API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Users API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -189,7 +189,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 		_, err = qsUserAccount.Filter("Leader_id__exact", user[0].Account_id).All(&userAccounts)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Send Email Users API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Users API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
@@ -203,7 +203,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 			_, err = o.Raw("SELECT title FROM usergroup WHERE group_id=?", userAccount.Group_id).QueryRows(&userGroup)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Get Accounts API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Get Accounts API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
@@ -226,7 +226,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 			responseStatus.Message = "No accounts found with this criteria."
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Send Email Users API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Users API: "+err.Error())
 				responseStatus.Error = err.Error()
 			} else {
 				responseStatus.Error = "No Error"
@@ -239,7 +239,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 		err = html.GenerateHtmlFile("templates/id_cards.html.tmpl", accounts, filepath+".html")
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Send Email Users API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Users API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")
@@ -251,7 +251,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 		err = createPdf(filepath)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Send Email Users API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Users API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")
@@ -264,7 +264,7 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 	err = sendEmailWithAttachment(user[0].Email, user[0].Display_name, filepath+".pdf")
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Send Email Users API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Users API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Could not send the pdf file.")

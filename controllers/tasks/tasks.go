@@ -112,7 +112,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -143,7 +143,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Get Tasks API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Get Tasks API: "+err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -152,7 +152,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -190,7 +190,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		}
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Taskgroupmap. Unable to get the tasks.")
@@ -215,7 +215,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Taskaccountmap. Unable to get the tasks.")
@@ -247,7 +247,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 	_, err = qsTask.Filter("Created_by__exact", user[0].Account_id).All(&userTasks)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the tasks.")
@@ -261,7 +261,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 	_, err = qsAccount.Filter("Leader_id__exact", user[0].Account_id).All(&users)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
@@ -278,7 +278,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 	_, err = qsGroup.Filter("Created_by__exact", user[0].Account_id).All(&userGroups)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to get the groups.")
@@ -298,7 +298,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the assigned accounts to task.")
@@ -314,7 +314,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the assigned groups to task.")
@@ -339,7 +339,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		responseStatus.Message = "No tasks found with this criteria."
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt","Get Tasks API: " + err.Error())
 			responseStatus.Error = err.Error()
 		} else {
 			responseStatus.Error = "No Error"
@@ -402,7 +402,7 @@ func (e *TaskCtrl) GetMyTasks() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -433,7 +433,7 @@ func (e *TaskCtrl) GetMyTasks() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Get Tasks API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Get Tasks API: "+err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -442,7 +442,7 @@ func (e *TaskCtrl) GetMyTasks() {
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -460,7 +460,7 @@ func (e *TaskCtrl) GetMyTasks() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Taskgroupmap. Unable to get the tasks.")
@@ -483,7 +483,7 @@ func (e *TaskCtrl) GetMyTasks() {
 		_, err = qsTask.All(&userTasks)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the tasks.")
@@ -504,7 +504,7 @@ func (e *TaskCtrl) GetMyTasks() {
 		responseStatus.Message = "No tasks found with this criteria."
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Tasks API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 			responseStatus.Error = err.Error()
 		} else {
 			responseStatus.Error = "No Error"
@@ -562,7 +562,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Task Details API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -593,7 +593,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Get Task Details API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Get Task Details API: "+err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -602,7 +602,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Task Details API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -632,7 +632,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 	num, err = qsTask.All(&tasks)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Task Details API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
@@ -649,7 +649,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 		_, err = o.Raw("SELECT DISTINCT tam.account_id, tam.status, tam.updated_by AS status_updated_by, tam.updated_on AS status_updated_on, tam.created_by AS task_assigned_by, tam.created_on AS task_assigned_on, a.display_name, a.last_login, g.group_id, g.title AS group_title FROM taskaccountmap AS tam LEFT OUTER JOIN account AS a ON tam.account_id = a.account_id LEFT OUTER JOIN usergroup AS g ON a.group_id = g.group_id WHERE tam.task_id=?", query.Task_id).QueryRows(&accountDetails)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Get Task Details API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
@@ -663,7 +663,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 			_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", accountDetails[i].Status_updated_by).QueryRows(&accountDN)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Get Task Details API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
@@ -677,7 +677,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 			_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", accountDetails[i].Task_assigned_by).QueryRows(&accountDN)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Get Task Details API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
@@ -691,7 +691,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 			_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", accountDetails[i].Account_id).QueryRows(&accountDN)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Get Task Details API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
@@ -705,7 +705,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 			_, err = o.Raw("SELECT title FROM usergroup WHERE group_id=?", accountDetails[i].Group_id).QueryRows(&userGroup)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Get Accounts API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Get Accounts API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Db Error Accounts. Unable to get the accounts.")
@@ -725,7 +725,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 		_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", taskDetail.Created_by).QueryRows(&accountDN)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Get Task Details API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
@@ -739,7 +739,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 		_, err = o.Raw("SELECT display_name FROM account WHERE account_id=?", taskDetail.Updated_by).QueryRows(&accountDN)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Get Task Details API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
@@ -755,7 +755,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Task Details API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Get Task Details API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to get the task details.")
@@ -815,7 +815,7 @@ func (e *TaskCtrl) CreateTask() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Create Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -846,7 +846,7 @@ func (e *TaskCtrl) CreateTask() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Create Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Create Task API: "+err.Error())
 	}
 
 	if user[0].Role != "Leader" && user[0].Role != "leader" {
@@ -863,7 +863,7 @@ func (e *TaskCtrl) CreateTask() {
 	err = json.Unmarshal(inputJson, &userTask)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Create Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -880,7 +880,7 @@ func (e *TaskCtrl) CreateTask() {
 	taskId, err := o.Insert(task)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Create Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -902,7 +902,7 @@ func (e *TaskCtrl) CreateTask() {
 		_, err := o.Insert(tgMap)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Create Task API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -914,7 +914,7 @@ func (e *TaskCtrl) CreateTask() {
 		_, err = qsAccount.Filter("Group_id__exact", groupId).All(&accounts)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Create Task API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -936,7 +936,7 @@ func (e *TaskCtrl) CreateTask() {
 			_, err := o.Insert(taMap)
 			if err != nil {
 				// Log the error
-				_ = logs.WriteLogs("Create Task API: " + err.Error())
+				_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
 				responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -960,7 +960,7 @@ func (e *TaskCtrl) CreateTask() {
 		_, err := o.Insert(taMap)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Create Task API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -1024,7 +1024,7 @@ func (e *TaskCtrl) UpdateTask() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -1055,7 +1055,7 @@ func (e *TaskCtrl) UpdateTask() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Update Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Update Task API: "+err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -1063,7 +1063,7 @@ func (e *TaskCtrl) UpdateTask() {
 	err = json.Unmarshal(inputJson, &userTask)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -1077,7 +1077,7 @@ func (e *TaskCtrl) UpdateTask() {
 	num, err = qsTask.All(&userTasks)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Tasks. Unable to find the task.")
@@ -1105,7 +1105,7 @@ func (e *TaskCtrl) UpdateTask() {
 		})
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Update Task API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Update Task API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -1149,7 +1149,7 @@ func (e *TaskCtrl) UpdateTask() {
 					_, err := o.Insert(tgMap)
 					if err != nil {
 						// Log the error
-						_ = logs.WriteLogs("Create Task API: " + err.Error())
+						_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 						responseStatus := modelVoters.NewResponseStatus()
 						responseStatus.Response = "error"
 						responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -1161,7 +1161,7 @@ func (e *TaskCtrl) UpdateTask() {
 					_, err = qsAccount.Filter("Group_id__exact", groupId).All(&accounts)
 					if err != nil {
 						// Log the error
-						_ = logs.WriteLogs("Create Task API: " + err.Error())
+						_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 						responseStatus := modelVoters.NewResponseStatus()
 						responseStatus.Response = "error"
 						responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -1183,7 +1183,7 @@ func (e *TaskCtrl) UpdateTask() {
 						_, err := o.Insert(taMap)
 						if err != nil {
 							// Log the error
-							_ = logs.WriteLogs("Create Task API: " + err.Error())
+							_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 							responseStatus := modelVoters.NewResponseStatus()
 							responseStatus.Response = "error"
 							responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -1219,7 +1219,7 @@ func (e *TaskCtrl) UpdateTask() {
 					_, err := o.Insert(taMap)
 					if err != nil {
 						// Log the error
-						_ = logs.WriteLogs("Create Task API: " + err.Error())
+						_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 						responseStatus := modelVoters.NewResponseStatus()
 						responseStatus.Response = "error"
 						responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -1284,7 +1284,7 @@ func (e *TaskCtrl) DeleteTask() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -1315,7 +1315,7 @@ func (e *TaskCtrl) DeleteTask() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Delete Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Delete Task API: "+err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -1324,7 +1324,7 @@ func (e *TaskCtrl) DeleteTask() {
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -1419,7 +1419,7 @@ func (e *TaskCtrl) DeleteTask() {
 	num, err = qsTaskgroupmap.Filter("Created_by__exact", user[0].Account_id).Delete()
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete task based on task_id. Please contact electionubda.com team for assistance.")
@@ -1443,7 +1443,7 @@ func (e *TaskCtrl) DeleteTask() {
 	num, err = qsTaskaccountmap.Filter("Created_by__exact", user[0].Account_id).Delete()
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete task based on task_id. Please contact electionubda.com team for assistance.")
@@ -1466,7 +1466,7 @@ func (e *TaskCtrl) DeleteTask() {
 	num, err = qsTask.Filter("Created_by__exact", user[0].Account_id).Delete()
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Task API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete task based on task_id. Please contact electionubda.com team for assistance.")

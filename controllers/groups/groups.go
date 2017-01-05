@@ -87,7 +87,7 @@ func (e *GroupCtrl) GetGroups() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Groups API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Groups API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -118,7 +118,7 @@ func (e *GroupCtrl) GetGroups() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Get Groups API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Get Groups API: "+err.Error())
 	}
 
 	inputJson := e.Ctx.Input.RequestBody
@@ -127,7 +127,7 @@ func (e *GroupCtrl) GetGroups() {
 	err = json.Unmarshal(inputJson, &query)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Groups API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Groups API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -191,7 +191,7 @@ func (e *GroupCtrl) GetGroups() {
 	_, err = qsGroup.Filter("Created_by__exact", user[0].Account_id).All(&userGroups)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Get Groups API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Get Groups API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to get the groups.")
@@ -204,7 +204,7 @@ func (e *GroupCtrl) GetGroups() {
 		_, err = o.Raw("SELECT * FROM account WHERE group_id=?", userGroups[i].Group_id).QueryRows(&users)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Groups API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Get Groups API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to get the groups.")
@@ -226,7 +226,7 @@ func (e *GroupCtrl) GetGroups() {
 		responseStatus.Message = "No groups found with this criteria."
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Get Groups API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Get Groups API: "+err.Error())
 			responseStatus.Error = err.Error()
 		} else {
 			responseStatus.Error = "No Error"
@@ -275,7 +275,7 @@ func (e *GroupCtrl) CreateGroup() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Create Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Create Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -306,7 +306,7 @@ func (e *GroupCtrl) CreateGroup() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Create Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Create Group API: "+err.Error())
 	}
 
 	if user[0].Role != "Leader" && user[0].Role != "leader" {
@@ -322,7 +322,7 @@ func (e *GroupCtrl) CreateGroup() {
 	err = json.Unmarshal(inputJson, &userGroup)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Create Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Create Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -338,7 +338,7 @@ func (e *GroupCtrl) CreateGroup() {
 	newGroupId, err := o.Insert(userGroup)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Create Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Create Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -369,7 +369,7 @@ func (e *GroupCtrl) CreateGroup() {
 		})
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Create Group API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Create Group API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -428,7 +428,7 @@ func (e *GroupCtrl) UpdateGroup() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -459,7 +459,7 @@ func (e *GroupCtrl) UpdateGroup() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Update Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Update Group API: "+err.Error())
 	}
 
 	if user[0].Role != "Leader" && user[0].Role != "leader" {
@@ -475,7 +475,7 @@ func (e *GroupCtrl) UpdateGroup() {
 	err = json.Unmarshal(inputJson, &userGroup)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -489,7 +489,7 @@ func (e *GroupCtrl) UpdateGroup() {
 	num, err = qsGroup.All(&userGroups)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to find the group.")
@@ -537,7 +537,7 @@ func (e *GroupCtrl) UpdateGroup() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -558,7 +558,7 @@ func (e *GroupCtrl) UpdateGroup() {
 		})
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Update Group API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Update Group API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -582,7 +582,7 @@ func (e *GroupCtrl) UpdateGroup() {
 		})
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Update Group API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Update Group API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -639,7 +639,7 @@ func (e *GroupCtrl) DeleteGroup() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -670,7 +670,7 @@ func (e *GroupCtrl) DeleteGroup() {
 	})
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Update Last Login in Delete Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Update Last Login in Delete Group API: "+err.Error())
 	}
 
 	if user[0].Role != "Leader" && user[0].Role != "leader" {
@@ -686,7 +686,7 @@ func (e *GroupCtrl) DeleteGroup() {
 	err = json.Unmarshal(inputJson, &userGroup)
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Invalid Json. Unable to parse. Please check your JSON sent as: %s", inputJson)
@@ -701,7 +701,7 @@ func (e *GroupCtrl) DeleteGroup() {
 		num, err = qsGroup.All(&userGroups)
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Delete Group API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Delete Group API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Db Error Groups. Unable to find the group.")
@@ -738,7 +738,7 @@ func (e *GroupCtrl) DeleteGroup() {
 		})
 		if err != nil {
 			// Log the error
-			_ = logs.WriteLogs("Update Group API: " + err.Error())
+			_ = logs.WriteLogs("logs/error_logs.txt", "Update Group API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
 			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
@@ -750,7 +750,7 @@ func (e *GroupCtrl) DeleteGroup() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on group_id. Please contact electionubda.com team for assistance.")
@@ -767,7 +767,7 @@ func (e *GroupCtrl) DeleteGroup() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on created_by. Please contact electionubda.com team for assistance.")
@@ -784,7 +784,7 @@ func (e *GroupCtrl) DeleteGroup() {
 
 	if err != nil {
 		// Log the error
-		_ = logs.WriteLogs("Delete Group API: " + err.Error())
+		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
 		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on group_lead_id. Please contact electionubda.com team for assistance.")
