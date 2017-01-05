@@ -64,6 +64,9 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	token := e.GetString("token")
 	key := e.Ctx.Input.Param(":key")
 
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: POST /api/email/voters/%s, Json: %s", mobileNo, key, e.Ctx.Input.RequestBody))
+
 	if key != "list" && key != "slips" {
 		// Log the error
 		_ = logs.WriteLogs("logs/error_logs.txt", "Wrong parameter passed. Please check your URL again.")

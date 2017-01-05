@@ -59,8 +59,7 @@ func (e *AccountCtrl) GetAccounts() {
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 	// Log the request
-	err = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: Get /api/accounts, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
-	if err != nil {fmt.Println("Error: ", err.Error())}
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: GET/POST /api/accounts, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
 
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
@@ -261,6 +260,9 @@ func (e *AccountCtrl) CreateAccount() {
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: POST /api/account, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
+
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -386,6 +388,9 @@ func (e *AccountCtrl) UpdateAccount() {
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
+
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: PUT /api/account, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
 
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
@@ -604,6 +609,9 @@ func (e *AccountCtrl) DeleteAccount() {
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
+
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: DELETE /api/account, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
 
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()

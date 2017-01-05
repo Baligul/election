@@ -73,6 +73,9 @@ func (e *TaskCtrl) GetCreatedTasks() {
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: GET/POST /api/tasks/created, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
+
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -369,6 +372,9 @@ func (e *TaskCtrl) GetMyTasks() {
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: GET/POST /api/tasks/my, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
+
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -531,6 +537,9 @@ func (e *TaskCtrl) GetTaskDetail() {
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
+
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: GET/POST /api/taskdetail, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
 
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
@@ -788,6 +797,9 @@ func (e *TaskCtrl) CreateTask() {
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: POST /api/task, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
+
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -989,6 +1001,9 @@ func (e *TaskCtrl) UpdateTask() {
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
+
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: PUT /api/task, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
 
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
@@ -1247,6 +1262,9 @@ func (e *TaskCtrl) DeleteTask() {
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
+
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: DELETE /api/task, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
 
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()

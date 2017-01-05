@@ -105,6 +105,9 @@ func (e *ElectionController) GetVoters() {
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: GET/POST /api/voters, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
+
 	if mobileNo == 0 || token == "" {
 		// Log the error
 		_ = logs.WriteLogs("logs/error_logs.txt", "Get Voters API: Mobile number or token is wrong.")
@@ -895,6 +898,9 @@ func (e *ElectionController) GetStatistic() {
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: POST /api/statistic, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
+
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
@@ -1531,6 +1537,9 @@ func (e *ElectionController) GetStatistics() {
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
+
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: POST /api/statistics, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
 
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
@@ -3091,6 +3100,9 @@ func (e *ElectionController) OTP() {
 	o := orm.NewOrm()
 	o.Using("default")
 
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Request: POST /api/otp, Json: %s", e.Ctx.Input.RequestBody))
+
 	// Create query string for account table
 	qsAccount := o.QueryTable("account")
 	qsRecipient := o.QueryTable("account")
@@ -3244,6 +3256,9 @@ func (e *ElectionController) Register() {
 	o := orm.NewOrm()
 	o.Using("default")
 
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Request: POST /api/register, Json: %s", e.Ctx.Input.RequestBody))
+
 	// Create query string for account table
 	qsAccount := o.QueryTable("account")
 
@@ -3337,6 +3352,9 @@ func (e *ElectionController) GetList() {
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
+
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: POST /api/list, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
 
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
@@ -3615,6 +3633,9 @@ func (e *ElectionController) UpdateVoter() {
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
+
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: POST /api/voter, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
 
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()

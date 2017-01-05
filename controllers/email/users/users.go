@@ -52,6 +52,9 @@ func (e *UsersCtrl) CreateAndEmailPdf() {
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 
+	// Log the request
+	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: POST /api/email/users, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
+
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
