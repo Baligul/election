@@ -59,7 +59,8 @@ func (e *AccountCtrl) GetAccounts() {
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
 	// Log the request
-	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: Get /api/accounts, Json: %s", e.Ctx.Input.RequestBody))
+	err = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: Get /api/accounts, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
+	fmt.Println("Error: ", err.Error())
 
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
