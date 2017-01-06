@@ -280,7 +280,7 @@ type UpdateVoter struct {
 	MobileNo int64  `json:"mobile_no,omitempty"`
 	Image    string `json:"image,omitempty"`
 	Age      int    `json:"age,omitempty"`
-	Religion string `json:"religion,omitempty"`
+	Religion string `json:"religion_english,omitempty"`
 }
 
 func NewResponseStatus() *ResponseStatus {
