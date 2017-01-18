@@ -1,0 +1,6 @@
+Jan 18, 2017 at 4:17 PM - Mobile no.: 9343352734, Request: POST /api/list, Json: {"districts": ["Moradabad"], "acs":["Kanth", "Bilari"]}
+Jan 18, 2017 at 4:17 PM - Mobile no.: 9343352734, Request: POST /api/list, Json: {"districts": ["Moradabad"], "a
+Jan 18, 2017 at 4:18 PM - Mobile no.: 9343352734, Request: POST /api/list, Json: {"districts": ["Moradabad"]}
+Jan 18, 2017 at 4:18 PM - Mobile no.: 9343352734, Request: POST /api/list, Json: {}
+Jan 18, 2017 at 4:18 PM - Mobile no.: 9343352734, Request: POST /api/list, Json: {}
+Jan 18, 2017 at 4:18 PM - Mobile no.: 9343352734, Request: POST /api/list, Json: {"districts": ["Moradabad"]}

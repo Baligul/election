@@ -319,3 +319,9 @@ type ReadJson struct {
 type ReadJsons struct {
 	ReadJsons []ReadJson
 }
+
+type Section struct {
+	Section  string `json:"section,omitempty"`
+	Religion string `json:"religion,omitempty"`
+	Count    int    `json:"count,omitempty"`
+}
