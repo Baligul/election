@@ -270,6 +270,7 @@ type ResponseStatus struct {
 type List struct {
 	Districts []string `json:"districts,omitempty"`
 	Acs       []string `json:"acs,omitempty"`
+	Religion  string   `json:"religion,omitempty"`
 }
 
 type UpdateVoter struct {

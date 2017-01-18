@@ -3352,7 +3352,6 @@ func (e *ElectionController) GetList() {
 
 	mobileNo, _ := e.GetInt("mobile_no")
 	token := e.GetString("token")
-	religion := e.GetString("religion")
 
 	// Log the request
 	_ = logs.WriteLogs("logs/logs.txt", fmt.Sprintf("Mobile no.: %d, Request: POST /api/list, Json: %s", mobileNo, e.Ctx.Input.RequestBody))
@@ -3432,6 +3431,8 @@ func (e *ElectionController) GetList() {
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
+
+	religion := list.Religion
 
 	if len(list.Acs) > 0 {
 		sections := getApprovedSections(user[0].Approved_acs, list.Acs, user[0].Approved_sections, religion)
