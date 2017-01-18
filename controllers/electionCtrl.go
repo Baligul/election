@@ -3493,10 +3493,11 @@ func getApprovedAcs(csvDistricts string, districts []string, csvApprovedAcs stri
 
 func getSections(acs []string) []string {
 	var (
-		sections   []string
-		dbSections []*modelVoters.Section
-		err        error
-		tableName  string
+		sections      []string
+		dbSections    []*modelVoters.Section
+		err           error
+		tableName     string
+		strPercentage string
 	)
 
 	o := orm.NewOrm()
@@ -3530,8 +3531,9 @@ func getSections(acs []string) []string {
 		for _, section := range dbSections {
 			if section.Religion == "Muslim" {
 				total := sectionName[section.Section]
-				percentage := (section.Count / total) * 100
-				section.Section = section.Section + " -> " + strconv.Itoa(section.Count) + "|" + strconv.Itoa(percentage) + "%"
+				percentage := (float32(section.Count) / float32(total)) * float32(100)
+				strPercentage = fmt.Sprintf("%0.2f", percentage)
+				section.Section = section.Section + " -> " + strconv.Itoa(section.Count) + "|" + strPercentage + "%"
 				sections = append(sections, section.Section)
 			}
 		}
@@ -3540,7 +3542,7 @@ func getSections(acs []string) []string {
 	return sections
 }
 
-func getAcs(districts []string) []string {
+/*func getAcs(districts []string) []string {
 	var (
 		acs   []string
 		dbAcs []string
@@ -3559,6 +3561,41 @@ func getAcs(districts []string) []string {
 		}
 		for _, dbAc := range dbAcs {
 			acs = append(acs, dbAc)
+		}
+	}
+	return acs
+}*/
+
+func getAcs(districts []string) []string {
+	var acs []string
+
+	for _, district := range districts {
+		switch district {
+		case "Moradabad":
+			acs = append(acs,
+				"Kanth",
+				"Thakurdwara",
+				"Moradabad Rural",
+				"Moradabad Nagar",
+				"Kundarki",
+				"Bilari")
+		case "Rampur":
+			acs = append(acs,
+				"Suar",
+				"Chamraua",
+				"Bilaspur",
+				"Rampur",
+				"Milak")
+		case "Bijnor":
+			acs = append(acs,
+				"Najibabad",
+				"Nagina",
+				"Barhapur",
+				"Dhampur",
+				"Nehtaur",
+				"Bijnor",
+				"Chandpur",
+				"Noorpur")
 		}
 	}
 	return acs
