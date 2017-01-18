@@ -321,8 +321,8 @@ func (e *ElectionController) GetVoters() {
 
 	// Section Name English
 	for _, sectionNameEnglish := range query.SectionNameEnglish {
-		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
-			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__exact", sectionNameEnglish)
+		if len(strings.TrimSpace(strings.Split(sectionNameEnglish, "->")[0])) > 0 {
+			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__exact", strings.TrimSpace(strings.Split(sectionNameEnglish, "->")[0]))
 		}
 	}
 
@@ -1034,8 +1034,8 @@ func (e *ElectionController) GetStatistic() {
 
 	// Section Name English
 	for _, sectionNameEnglish := range query.SectionNameEnglish {
-		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
-			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__exact", sectionNameEnglish)
+		if len(strings.TrimSpace(strings.Split(sectionNameEnglish, "->")[0])) > 0 {
+			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__exact", strings.TrimSpace(strings.Split(sectionNameEnglish, "->")[0]))
 		}
 	}
 
@@ -1728,15 +1728,15 @@ func (e *ElectionController) GetStatistics() {
 
 	// Section Name English Query
 	for _, sectionNameEnglish := range queries.Query.SectionNameEnglish {
-		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
-			condSectionNameEnglishQuery = condSectionNameEnglishQuery.Or("Section_name_english__exact", sectionNameEnglish)
+		if len(strings.TrimSpace(strings.Split(sectionNameEnglish, "->")[0])) > 0 {
+			condSectionNameEnglishQuery = condSectionNameEnglishQuery.Or("Section_name_english__exact", strings.TrimSpace(strings.Split(sectionNameEnglish, "->")[0]))
 		}
 	}
 
 	// Section Name English Scope
 	for _, sectionNameEnglish := range queries.Scope.SectionNameEnglish {
-		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
-			condSectionNameEnglishScope = condSectionNameEnglishScope.Or("Section_name_english", sectionNameEnglish)
+		if len(strings.TrimSpace(strings.Split(sectionNameEnglish, "->")[0])) > 0 {
+			condSectionNameEnglishScope = condSectionNameEnglishScope.Or("Section_name_english", strings.TrimSpace(strings.Split(sectionNameEnglish, "->")[0]))
 		}
 	}
 
