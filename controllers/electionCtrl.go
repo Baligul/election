@@ -3434,7 +3434,7 @@ func (e *ElectionController) GetList() {
 
 	if len(list.Acs) > 0 {
 		sections := getApprovedSections(user[0].Approved_acs, list.Acs, user[0].Approved_sections)
-		sort.Strings(sections)
+		//sort.Strings(sections)
 		e.Data["json"] = &sections
 		e.ServeJSON()
 	}
@@ -3531,7 +3531,7 @@ func getSections(acs []string) []string {
 			if section.Religion == "Muslim" {
 				total := sectionName[section.Section]
 				percentage := (section.Count / total) * 100
-				section.Section = section.Section + " -> " + string(section.Count) + "|" + string(percentage) + "%"
+				section.Section = section.Section + " -> " + strconv.Itoa(section.Count) + "|" + strconv.Itoa(percentage) + "%"
 				sections = append(sections, section.Section)
 			}
 		}
