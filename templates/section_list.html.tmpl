@@ -39,12 +39,12 @@
                <tbody>
                <tr>
                     <th>Total Sections</th>
-                    <td>{{len .sections}}</td>
+                    <td>{{len .}}</td>
                 </tr>
                <tr>
                   <th>Section Name / मौहल्ले का नाम</th>
                </tr>
-               {{ range $section := .sections }}
+               {{ range $section := . }}
                   <tr>
                     <td>{{$section}}</td>
                  </tr>
