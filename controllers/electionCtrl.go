@@ -4369,6 +4369,14 @@ func createFilePath(query *modelVoters.List) string {
 		filepath = "Downloads/" + query.Acs[0]
 	}
 
+	if query.Religion == "Muslim" || query.Religion == "Others" {
+		if filepath == "Downloads/sections_list" {
+			filepath = "Downloads/" + query.Religion
+		} else {
+			filepath = filepath + "-" + query.Religion
+		}
+	}
+
 	if filepath != "Downloads/sections_list" {
 		filepath = filepath + "-sections_list"
 	}
