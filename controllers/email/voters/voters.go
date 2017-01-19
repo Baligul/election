@@ -283,8 +283,8 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 
 	// Section Name English
 	for _, sectionNameEnglish := range query.SectionNameEnglish {
-		if len(strings.TrimSpace(sectionNameEnglish)) > 0 {
-			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__exact", sectionNameEnglish)
+		if len(strings.TrimSpace(strings.Split(sectionNameEnglish, "->")[0])) > 0 {
+			condSectionNameEnglish = condSectionNameEnglish.Or("Section_name_english__exact", strings.TrimSpace(strings.Split(sectionNameEnglish, "->")[0]))
 		}
 	}
 
@@ -882,9 +882,9 @@ func createFilePath(query *modelVoters.Query, key string) string {
 
 	if len(query.SectionNameEnglish) == 1 {
 		if filepath == match {
-			filepath = "Downloads/" + query.SectionNameEnglish[0]
+			filepath = "Downloads/" + strings.TrimSpace(strings.Split(query.SectionNameEnglish[0], "->")[0])
 		} else {
-			filepath = filepath + "-" + query.SectionNameEnglish[0]
+			filepath = filepath + "-" + strings.TrimSpace(strings.Split(query.SectionNameEnglish[0], "->")[0])
 		}
 	}
 
