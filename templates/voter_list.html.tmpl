@@ -46,6 +46,7 @@
                   <th>Name / नाम</th>
                   <th>Father/Husband Name / पिता/पति का नाम</th>
                   <th>Gender / लिंग</th>
+                  <th>Age / आयु</th>
                   <th>Mobile No. / मोबाइल संख्या</th>
                   <th>Email / ईमेल</th>
                </tr>
@@ -55,6 +56,7 @@
                     <td>{{$voter.Name_english}} / {{$voter.Name_hindi}}</td>
                     <td>{{$voter.Relation_name_english}} / {{$voter.Relation_name_hindi}}</td>
                     <td>{{if eq $voter.Gender "M"}}पुरुष{{else}}महिला{{end}}</td>
+                    <td>{{$voter.Age}}</td>
                     <td>{{$voter.Mobile_no}}</td>
                     <td>{{$voter.Email}}</td>
                 </tr>

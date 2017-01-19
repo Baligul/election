@@ -55,6 +55,8 @@ import (
 	"math/rand"
 	"net/mail"
 	"net/smtp"
+	"os"
+	"os/exec"
 	"sort"
 	"strconv"
 	"strings"
@@ -64,6 +66,7 @@ import (
 	modelVoters "github.com/Baligul/election/models/voters"
 
 	"github.com/Baligul/election/formattime"
+	"github.com/Baligul/election/lib/html"
 	"github.com/Baligul/election/logs"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -3440,6 +3443,29 @@ func (e *ElectionController) GetList() {
 			sort.Strings(sections)
 		}
 		e.Data["json"] = &sections
+
+		// Email the list of sections here
+		filepath := createFilePath(list)
+
+		// If the file which is to be send does not exists then create it
+		if _, err := os.Stat(filepath + ".pdf"); os.IsNotExist(err) || filepath == "Downloads/sections_list" {
+			// PDF creation code start here
+			err = html.GenerateHtmlFile("templates/section_list.html.tmpl", sections, filepath+".html")
+			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("logs/error_logs.txt", "Email Sections API: "+err.Error())
+			}
+			err = createPdf(filepath)
+			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("logs/error_logs.txt", "Email Sections API: "+err.Error())
+			}
+		}
+		err = sendEmailWithAttachment("baligcoup8@gmail.com", user[0].Display_name, filepath+".pdf")
+		if err != nil {
+			// Log the error
+			_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
+		}
 		e.ServeJSON()
 	}
 
@@ -3538,7 +3564,7 @@ func getSections(acs []string, religion string) []string {
 					total := sectionName[section.Section]
 					percentage := (float32(section.Count) / float32(total)) * float32(100)
 					strPercentage = fmt.Sprintf("%0.2f", percentage)
-					section.Section = section.Section + " -> " + strconv.Itoa(section.Count) + "|" + strPercentage + "%"
+					section.Section = section.Section + " -> " + strconv.Itoa(section.Count) + " -- " + strPercentage + "%"
 					sections = append(sections, section.Section)
 				}
 			}
@@ -4301,4 +4327,51 @@ func (e *ElectionController) UpdateVoter() {
 	responseStatus.Message = fmt.Sprintf("The voter data didn't get updated. Please check your JSON sent as: %s", inputJson)
 	e.Data["json"] = &responseStatus
 	e.ServeJSON()
+}
+
+func createPdf(filepath string) error {
+	// PDF creation code start here
+	// converts ".html" file to ".pdf"
+	err := exec.Command("/usr/local/bin/wkhtmltopdf", filepath+".html", filepath+".pdf").Run()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func sendEmailWithAttachment(toEmail string, displayName string, filepath string) error {
+	// compose the message
+	m := email.NewMessage(strings.TrimPrefix(filepath, "Downloads/"), "Dear "+displayName+"!\n\nPlease find attached the required file.\n\nThanks & Regards,\nElectionUBDA Team")
+	m.From = mail.Address{Name: "ElectionUBDA Team", Address: "electionubda@gmail.com"}
+	m.To = []string{toEmail}
+
+	// add attachments
+	if err := m.Attach(filepath); err != nil {
+		return err
+	}
+
+	// send it
+	auth := smtp.PlainAuth("", "electionubda@gmail.com", "hu123*ElectionUBDA", "smtp.gmail.com")
+	if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func createFilePath(query *modelVoters.List) string {
+	var filepath string
+
+	filepath = "Downloads/sections_list"
+
+	if len(query.Acs) == 1 {
+		filepath = "Downloads/" + query.Acs[0]
+	}
+
+	if filepath != "Downloads/sections_list" {
+		filepath = filepath + "-sections_list"
+	}
+
+	return filepath
 }
