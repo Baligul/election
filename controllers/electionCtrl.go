@@ -3449,8 +3449,14 @@ func (e *ElectionController) GetList() {
 
 		// If the file which is to be send does not exists then create it
 		if _, err := os.Stat(filepath + ".pdf"); os.IsNotExist(err) || filepath == "Downloads/sections_list" {
+			sectionsMap := make(map[int]string)
+
+			for index, section := range sections {
+				sectionsMap[index+1] = section
+			}
+
 			// PDF creation code start here
-			err = html.GenerateHtmlFile("templates/section_list.html.tmpl", sections, filepath+".html")
+			err = html.GenerateHtmlFile("templates/section_list.html.tmpl", sectionsMap, filepath+".html")
 			if err != nil {
 				// Log the error
 				_ = logs.WriteLogs("logs/error_logs.txt", "Email Sections API: "+err.Error())
@@ -3460,11 +3466,11 @@ func (e *ElectionController) GetList() {
 				// Log the error
 				_ = logs.WriteLogs("logs/error_logs.txt", "Email Sections API: "+err.Error())
 			}
-		}
-		err = sendEmailWithAttachment("baligcoup8@gmail.com", user[0].Display_name, filepath+".pdf")
-		if err != nil {
-			// Log the error
-			_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
+			err = sendEmailWithAttachment("baligcoup8@gmail.com", user[0].Display_name, filepath+".pdf")
+			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
+			}
 		}
 		e.ServeJSON()
 	}

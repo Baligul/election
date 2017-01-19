@@ -44,8 +44,9 @@
                <tr>
                   <th>Section Name / मौहल्ले का नाम</th>
                </tr>
-               {{ range $section := . }}
+               {{ range $index, $section := . }}
                   <tr>
+                    <td>{{$index}}</td>
                     <td>{{$section}}</td>
                  </tr>
                {{ end }}                 
