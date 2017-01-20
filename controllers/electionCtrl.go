@@ -3462,7 +3462,7 @@ func (e *ElectionController) GetList() {
 			sectionsList.Total = len(sectionsMap)
 
 			// PDF creation code start here
-			err = html.GenerateHtmlFile("templates/section_list.html.tmpl", sectionsMap, filepath+".html")
+			err = html.GenerateHtmlFile("templates/section_list.html.tmpl", sectionsList, filepath+".html")
 			if err != nil {
 				// Log the error
 				_ = logs.WriteLogs("logs/error_logs.txt", "Email Sections API: "+err.Error())
