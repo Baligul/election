@@ -35,23 +35,23 @@
    <body>
       <div>
          <div>
-            <h2>{{index . 0}}</h2>
+            <h2>{{ .File_title}}</h2>
             <table style="width:650px; font-size: small; font-family: Arial Narrow, Mangal, Helvetica, sans-serif;" bgcolor="#FFFFFF" border="1">
                <tbody>
                <tr>
                     <th>Total Sections</th>
-                    <td>{{len .}}</td>
+                    <td>{{ .Total}}</td>
                 </tr>
                <tr>
                   <th>S.No. / क्र.सं.</th>
                   <th>Section Name / मौहल्ले का नाम</th>
                </tr>
-               {{ range $index, $section := . }}
+               {{ range $index, $section := .Sections }}
                     {{if ne $index 0}}
                         <tr>
                           <td>{{$index}}</td>
                           <td>{{$section}}</td>
-                      </tr>
+                        </tr>
                     {{ end }}
                {{ end }}
                </tbody>

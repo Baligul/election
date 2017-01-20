@@ -768,6 +768,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	}
 
 	if key == "list" {
+		voters.File_title = createFileTitle(query)
 		err = html.GenerateHtmlFile("templates/voter_list.html.tmpl", voters, filepath+".html")
 	}
 
@@ -937,4 +938,218 @@ func createFilePath(query *modelVoters.Query, key string) string {
 	}
 
 	return filepath
+}
+
+func createFileTitle(query *modelVoters.Query) string {
+	var fileTitle string
+	var match string
+	var voteVal string
+
+	fileTitle = "मतदाता सूची"
+	match = "मतदाता सूची"
+
+	if len(query.StateNumber) == 1 && query.StateNumber[0] == 27 {
+		fileTitle = "उत्तर प्रदेश"
+	}
+
+	if len(query.DistrictNameEnglish) == 1 {
+		if fileTitle == match {
+			fileTitle = getHindiDistrictName(query.DistrictNameEnglish[0])
+		} else {
+			fileTitle = getHindiDistrictName(query.DistrictNameEnglish[0]) + ", " + fileTitle
+		}
+	}
+
+	if len(query.AcNameEnglish) == 1 {
+		if fileTitle == match {
+			fileTitle = getHindiAcName(query.AcNameEnglish[0])
+		} else {
+			fileTitle = getHindiAcName(query.AcNameEnglish[0]) + ", " + fileTitle
+		}
+	}
+
+	if len(query.SectionNameEnglish) == 1 {
+		if fileTitle == match {
+			fileTitle = getHindiSectionName(strings.TrimSpace(strings.Split(query.SectionNameEnglish[0], "->")[0]))
+		} else {
+			fileTitle = getHindiSectionName(strings.TrimSpace(strings.Split(query.SectionNameEnglish[0], "->")[0])) + ", " + fileTitle
+		}
+	}
+
+	if len(query.PartNumber) == 1 {
+		if fileTitle == match {
+			fileTitle = "भाग संख्या " + strconv.Itoa(query.PartNumber[0])
+		} else {
+			fileTitle = "भाग संख्या " + strconv.Itoa(query.PartNumber[0]) + ", " + fileTitle
+		}
+	}
+
+	if len(query.ReligionEnglish) == 1 {
+		if fileTitle == match {
+			fileTitle = "Downloads/" + query.ReligionEnglish[0]
+		} else {
+			fileTitle = fileTitle + "-" + query.ReligionEnglish[0]
+		}
+	}
+
+	if len(query.Vote) == 1 {
+		if query.Vote[0] == 1 {
+			voteVal = "Voted"
+		}
+		if query.Vote[0] == 0 {
+			voteVal = "NonVoted"
+		}
+		if fileTitle == match {
+			fileTitle = "Downloads/" + voteVal
+		} else {
+			fileTitle = fileTitle + "-" + voteVal
+		}
+	}
+
+	if fileTitle != match {
+		fileTitle = fileTitle + " - मतदाता सूची"
+	}
+
+	return fileTitle
+}
+
+func getHindiAcName(acNameEnglish string) string {
+	var acNameHindi string
+
+	switch acNameEnglish {
+	case "Najibabad":
+		acNameHindi = "नजीबाबाद"
+	case "Nagina":
+		acNameHindi = "नगीना"
+	case "Barhapur":
+		acNameHindi = "बरहापुर"
+	case "Dhampur":
+		acNameHindi = "धामपुर"
+	case "Nehtaur":
+		acNameHindi = "नहटौर"
+	case "Bijnor":
+		acNameHindi = "बिजनौर"
+	case "Chandpur":
+		acNameHindi = "चांदपुर"
+	case "Noorpur":
+		acNameHindi = "नूरपुर"
+	case "Kanth":
+		acNameHindi = "कांठ"
+	case "Thakurdwara":
+		acNameHindi = "ठाकुरद्वारा"
+	case "Moradabad Rural":
+		acNameHindi = "मुरादाबाद देहात"
+	case "Moradabad Nagar":
+		acNameHindi = "मुरादाबाद नगर"
+	case "Kundarki":
+		acNameHindi = "कुंदरकी"
+	case "Bilari":
+		acNameHindi = "बिलारी"
+	case "Suar":
+		acNameHindi = "सुआर"
+	case "Chamraua":
+		acNameHindi = "चमरव्वा"
+	case "Bilaspur":
+		acNameHindi = "बिलासपुर"
+	case "Rampur":
+		acNameHindi = "रामपुर"
+	case "Milak":
+		acNameHindi = "मिलक"
+	}
+
+	return acNameHindi
+}
+
+func getHindiDistrictName(acNameEnglish string) string {
+	var acNameHindi string
+
+	switch acNameEnglish {
+	case "Najibabad":
+		acNameHindi = "नजीबाबाद"
+	case "Nagina":
+		acNameHindi = "नगीना"
+	case "Barhapur":
+		acNameHindi = "बरहापुर"
+	case "Dhampur":
+		acNameHindi = "धामपुर"
+	case "Nehtaur":
+		acNameHindi = "नहटौर"
+	case "Bijnor":
+		acNameHindi = "बिजनौर"
+	case "Chandpur":
+		acNameHindi = "चांदपुर"
+	case "Noorpur":
+		acNameHindi = "नूरपुर"
+	case "Kanth":
+		acNameHindi = "कांठ"
+	case "Thakurdwara":
+		acNameHindi = "ठाकुरद्वारा"
+	case "Moradabad Rural":
+		acNameHindi = "मुरादाबाद देहात"
+	case "Moradabad Nagar":
+		acNameHindi = "मुरादाबाद नगर"
+	case "Kundarki":
+		acNameHindi = "कुंदरकी"
+	case "Bilari":
+		acNameHindi = "बिलारी"
+	case "Suar":
+		acNameHindi = "सुआर"
+	case "Chamraua":
+		acNameHindi = "चमरव्वा"
+	case "Bilaspur":
+		acNameHindi = "बिलासपुर"
+	case "Rampur":
+		acNameHindi = "रामपुर"
+	case "Milak":
+		acNameHindi = "मिलक"
+	}
+
+	return acNameHindi
+}
+
+func getHindiSectionName(acNameEnglish string) string {
+	var acNameHindi string
+
+	switch acNameEnglish {
+	case "Najibabad":
+		acNameHindi = "नजीबाबाद"
+	case "Nagina":
+		acNameHindi = "नगीना"
+	case "Barhapur":
+		acNameHindi = "बरहापुर"
+	case "Dhampur":
+		acNameHindi = "धामपुर"
+	case "Nehtaur":
+		acNameHindi = "नहटौर"
+	case "Bijnor":
+		acNameHindi = "बिजनौर"
+	case "Chandpur":
+		acNameHindi = "चांदपुर"
+	case "Noorpur":
+		acNameHindi = "नूरपुर"
+	case "Kanth":
+		acNameHindi = "कांठ"
+	case "Thakurdwara":
+		acNameHindi = "ठाकुरद्वारा"
+	case "Moradabad Rural":
+		acNameHindi = "मुरादाबाद देहात"
+	case "Moradabad Nagar":
+		acNameHindi = "मुरादाबाद नगर"
+	case "Kundarki":
+		acNameHindi = "कुंदरकी"
+	case "Bilari":
+		acNameHindi = "बिलारी"
+	case "Suar":
+		acNameHindi = "सुआर"
+	case "Chamraua":
+		acNameHindi = "चमरव्वा"
+	case "Bilaspur":
+		acNameHindi = "बिलासपुर"
+	case "Rampur":
+		acNameHindi = "रामपुर"
+	case "Milak":
+		acNameHindi = "मिलक"
+	}
+
+	return acNameHindi
 }

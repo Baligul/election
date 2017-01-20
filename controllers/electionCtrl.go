@@ -64,6 +64,7 @@ import (
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
 	modelVoters "github.com/Baligul/election/models/voters"
+	modelSections "github.com/Baligul/election/models/sections"
 
 	"github.com/Baligul/election/formattime"
 	"github.com/Baligul/election/lib/html"
@@ -3348,9 +3349,10 @@ func (e *ElectionController) Register() {
 
 func (e *ElectionController) GetList() {
 	var (
-		num  int64
-		user []*modelAccounts.Account
-		err  error
+		num  	 	 int64
+		user 	 	 []*modelAccounts.Account
+		err  	 	 error
+		sectionsList modelSections.Sections
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -3446,17 +3448,18 @@ func (e *ElectionController) GetList() {
 
 		// Email the list of sections here
 		filepath := createFilePath(list)
-		filetitle := createFileTitle(list)
+		sectionsList.File_title = createFileTitle(list)
 
 		// If the file which is to be send does not exists then create it
 		if _, err := os.Stat(filepath + ".pdf"); os.IsNotExist(err) || filepath == "Downloads/sections_list" {
 			sectionsMap := make(map[int]string)
 
-			sectionsMap[0] = filetitle
-
 			for index, section := range sections {
 				sectionsMap[index+1] = section
 			}
+
+			sectionsList.Sections = sectionsMap
+			sectionsList.Total = len(sectionsMap)
 
 			// PDF creation code start here
 			err = html.GenerateHtmlFile("templates/section_list.html.tmpl", sectionsMap, filepath+".html")
