@@ -49,7 +49,7 @@
                   <th>Section Name / मौहल्ले का नाम</th>
                </tr>
                {{ range $index, $section := . }}
-                    {{if neq $index 0}}
+                    {{if ne $index 0}}
                         <tr>
                           <td>{{$index}}</td>
                           <td>{{$section}}</td>
