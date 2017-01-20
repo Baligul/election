@@ -63,8 +63,8 @@ import (
 	"time"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
-	modelVoters "github.com/Baligul/election/models/voters"
 	modelSections "github.com/Baligul/election/models/sections"
+	modelVoters "github.com/Baligul/election/models/voters"
 
 	"github.com/Baligul/election/formattime"
 	"github.com/Baligul/election/lib/html"
@@ -3349,9 +3349,9 @@ func (e *ElectionController) Register() {
 
 func (e *ElectionController) GetList() {
 	var (
-		num  	 	 int64
-		user 	 	 []*modelAccounts.Account
-		err  	 	 error
+		num          int64
+		user         []*modelAccounts.Account
+		err          error
 		sectionsList modelSections.Sections
 	)
 
