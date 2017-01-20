@@ -3446,10 +3446,13 @@ func (e *ElectionController) GetList() {
 
 		// Email the list of sections here
 		filepath := createFilePath(list)
+		filetitle := createFileTitle(list)
 
 		// If the file which is to be send does not exists then create it
 		if _, err := os.Stat(filepath + ".pdf"); os.IsNotExist(err) || filepath == "Downloads/sections_list" {
 			sectionsMap := make(map[int]string)
+
+			sectionsMap[0] = filetitle
 
 			for index, section := range sections {
 				sectionsMap[index+1] = section
@@ -4388,4 +4391,80 @@ func createFilePath(query *modelVoters.List) string {
 	}
 
 	return filepath
+}
+
+func createFileTitle(query *modelVoters.List) string {
+	var (
+		filetitle string
+		religion  string
+	)
+
+	filetitle = "मौहल्लों की सूचि"
+
+	if len(query.Acs) == 1 {
+		filetitle = getHindiAcName(query.Acs[0])
+	}
+
+	if query.Religion == "Muslim" {
+		religion = "मुसलमानों के क्रम में"
+	} else if query.Religion == "Others" {
+		religion = "अन्यों के क्रम में"
+	}
+
+	if query.Religion == "Muslim" || query.Religion == "Others" {
+		if filetitle == "मौहल्लों की सूचि" {
+			filetitle = religion + " मौहल्लों की सूचि"
+		} else {
+			filetitle = filetitle + " - " + religion + " मौहल्लों की सूचि"
+		}
+	}
+
+	return filetitle
+}
+
+func getHindiAcName(acNameEnglish string) string {
+	var acNameHindi string
+
+	switch acNameEnglish {
+	case "Najibabad":
+		acNameHindi = "नजीबाबाद"
+	case "Nagina":
+		acNameHindi = "नगीना"
+	case "Barhapur":
+		acNameHindi = "बरहापुर"
+	case "Dhampur":
+		acNameHindi = "धामपुर"
+	case "Nehtaur":
+		acNameHindi = "नहटौर"
+	case "Bijnor":
+		acNameHindi = "बिजनौर"
+	case "Chandpur":
+		acNameHindi = "चांदपुर"
+	case "Noorpur":
+		acNameHindi = "नूरपुर"
+	case "Kanth":
+		acNameHindi = "कांठ"
+	case "Thakurdwara":
+		acNameHindi = "ठाकुरद्वारा"
+	case "Moradabad Rural":
+		acNameHindi = "मुरादाबाद देहात"
+	case "Moradabad Nagar":
+		acNameHindi = "मुरादाबाद नगर"
+	case "Kundarki":
+		acNameHindi = "कुंदरकी"
+	case "Bilari":
+		acNameHindi = "बिलारी"
+	case "Suar":
+		acNameHindi = "सुआर"
+	case "Chamraua":
+		acNameHindi = "चमरव्वा"
+	case "Bilaspur":
+		acNameHindi = "बिलासपुर"
+	case "Rampur":
+		acNameHindi = "रामपुर"
+	case "Milak":
+		acNameHindi = "मिलक"
+	}
+
+	return acNameHindi
 }

@@ -38,6 +38,9 @@
             <table style="width:650px; font-size: small; font-family: Arial Narrow, Mangal, Helvetica, sans-serif;" bgcolor="#FFFFFF" border="1">
                <tbody>
                <tr>
+                    <th>{{index . 0}}</th>
+               </tr>
+               <tr>
                     <th>Total Sections</th>
                     <td>{{len .}}</td>
                 </tr>
@@ -46,11 +49,13 @@
                   <th>Section Name / मौहल्ले का नाम</th>
                </tr>
                {{ range $index, $section := . }}
-                  <tr>
-                    <td>{{$index}}</td>
-                    <td>{{$section}}</td>
-                 </tr>
-               {{ end }}                 
+                    {{if neq $index 0}}
+                        <tr>
+                          <td>{{$index}}</td>
+                          <td>{{$section}}</td>
+                      </tr>
+                    {{ end }}
+               {{ end }}
                </tbody>
             </table>
          </div>
