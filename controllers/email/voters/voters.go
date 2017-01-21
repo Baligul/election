@@ -1027,7 +1027,7 @@ func createFileTitle(query *modelVoters.Query) string {
 	}
 
 	if len(query.Age) > 1 {
-		fileTitle = fileTitle + " (आयु वर्ग: " + string(query.Age[0]) + " - " + string(query.Age[len(query.Age)-1]) + ")"
+		fileTitle = fileTitle + " (आयु वर्ग: " + strconv.Itoa(query.Age[0]) + " - " + strconv.Itoa(query.Age[len(query.Age)-1]) + ")"
 	}
 
 	return fileTitle
