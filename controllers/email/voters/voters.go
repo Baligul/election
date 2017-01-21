@@ -1026,6 +1026,10 @@ func createFileTitle(query *modelVoters.Query) string {
 		fileTitle = fileTitle + " मतदाताओं की सूची"
 	}
 
+	if len(query.Age) > 1 {
+		fileTitle = fileTitle + " (आयु वर्ग: " + string(query.Age[0]) + " - " + string(query.Age[len(query.Age)-1]) + ")"
+	}
+
 	return fileTitle
 }
 
