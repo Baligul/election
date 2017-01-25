@@ -37,7 +37,7 @@
    curl -X POST -H "Content-Type: application/json" -d '{"mobile_no": 9343352734, "otp":23435}' http://107.178.208.219:80/api/register
 
    Get List
-   curl -X POST -H "Content-Type: application/json" -d '{"districts": ["Moradabad"], "acs":["Kanth", "Bilari"]}' http://107.178.208.219:80/api/list
+   curl -X POST -H "Content-Type: application/json" -d '{"acs":["Moradabad Nagar"],"religion":"Muslim","display":"Booths"}' http://107.178.208.219:80/api/list
 
    Set Voter
    curl -X POST -H "Content-Type: application/json" -d '{"district":"Moradabad", "voter_id": [12345,20045], "vote":1, "email":"example@example.com","mobile_no":9456732819,"image":"jsdjsd22ksndsndsnk22knknlcxx"}' http://107.178.208.219:80/api/voter
@@ -3743,7 +3743,7 @@ func getBooths(acs []string, religion string) []string {
 		}
 
 		if religion == "Muslim" || religion == "Others" {
-			_, err = o.Raw("SELECT part_number AS booth_number, part_name_hindi AS booth, religion_english AS religion, COUNT(*) AS count FROM "+tableName+" WHERE ac_name_english = ? GROUP BY part_number, religion_english ORDER BY religion_english, COUNT(*) DESC", ac).QueryRows(&dbBooths)
+			_, err = o.Raw("SELECT part_number AS booth_number, part_name_hindi AS booth, religion_english AS religion, COUNT(*) AS count FROM "+tableName+" WHERE ac_name_english = ? GROUP BY part_number, part_name_hindi, religion_english ORDER BY religion_english, COUNT(*) DESC", ac).QueryRows(&dbBooths)
 			if err != nil {
 				// Log the error
 				_ = logs.WriteLogs("logs/error_logs.txt", "Get Booths API: "+err.Error())
