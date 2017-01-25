@@ -206,8 +206,19 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 
 	// Part Number
 	for _, partNumber := range query.PartNumber {
-		if partNumber > 0 {
-			condPartNumber = condPartNumber.Or("Part_number__exact", partNumber)
+		if len(strings.TrimSpace(partNumber)) > 0 {
+			pn, err := strconv.Atoi(strings.TrimSpace(strings.Split(partNumber, "-")[0]))
+			if err != nil {
+				// Log the error
+				_ = logs.WriteLogs("logs/error_logs.txt", "Get Voters API: "+err.Error())
+				responseStatus := modelVoters.NewResponseStatus()
+				responseStatus.Response = "error"
+				responseStatus.Message = fmt.Sprintf("Db Error Get Voters. Unable to get the voters.")
+				responseStatus.Error = err.Error()
+				e.Data["json"] = &responseStatus
+				e.ServeJSON()
+			}
+			condPartNumber = condPartNumber.Or("Part_number__exact", pn)
 		}
 	}
 
@@ -891,9 +902,9 @@ func createFilePath(query *modelVoters.Query, key string) string {
 
 	if len(query.PartNumber) == 1 {
 		if filepath == match {
-			filepath = "Downloads/PN_" + strconv.Itoa(query.PartNumber[0])
+			filepath = "Downloads/" + query.PartNumber[0]
 		} else {
-			filepath = filepath + "-PN_" + strconv.Itoa(query.PartNumber[0])
+			filepath = filepath + "-" + query.PartNumber[0]
 		}
 	}
 
@@ -982,9 +993,9 @@ func createFileTitle(query *modelVoters.Query) string {
 
 	if len(query.PartNumber) == 1 {
 		if fileTitle == match {
-			fileTitle = "भाग संख्या " + strconv.Itoa(query.PartNumber[0])
+			fileTitle = query.PartNumber[0]
 		} else {
-			fileTitle = "भाग संख्या " + strconv.Itoa(query.PartNumber[0]) + ", " + fileTitle
+			fileTitle = query.PartNumber[0] + ", " + fileTitle
 		}
 	}
 

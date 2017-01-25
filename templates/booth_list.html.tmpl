@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+      <meta http-equiv="Content-Language" content="hi" />
+      <style>
+         .card {
+         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+         transition: 0.3s;
+         width: 40%;
+         }
+         .card:hover {
+         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+         }
+         .container {
+         padding: 2px 16px;
+         }
+         .style1 {
+         color: #0066FF;
+         font-weight: bold;
+         }
+         .style2
+         {
+         text-align: justify;
+         }
+         .style4
+         {
+         text-align: center;
+         font-size: x-large;
+         font-weight: bold;
+         }
+         @font-face { font-family: "Mangal"; src: url(MANGAL.TTF); unicode-range: U+0-10FFFF; } * { font-family: "Mangal"; }
+      </style>
+   </head>
+   <body>
+      <div>
+         <div>
+            <h2>{{ .File_title}}</h2>
+            <table style="width:650px; font-size: small; font-family: Arial Narrow, Mangal, Helvetica, sans-serif;" bgcolor="#FFFFFF" border="1">
+               <tbody>
+               <tr>
+                    <th>कुल मतदान केंद्र</th>
+                    <td>{{ .Total}}</td>
+                </tr>
+               <tr>
+                  <th>क्र.सं.</th>
+                  <th>मतदान केंद्र का नाम</th>
+               </tr>
+               {{ range $index, $booth := .Booths }}
+                    {{if ne $index 0}}
+                        <tr>
+                          <td>{{$index}}</td>
+                          <td>{{$booth}}</td>
+                        </tr>
+                    {{ end }}
+               {{ end }}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </body>
+</html>
