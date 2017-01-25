@@ -297,7 +297,7 @@ func GetTableName(districtName string) string {
 	case "Rampur":
 		return "voter_20"
 	case "Moradabad":
-		return "new_voter_19"
+		return "voter_19"
 	case "Bangalore":
 		return "voter_21"
 		//return "voter"
