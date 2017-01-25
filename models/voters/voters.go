@@ -177,7 +177,7 @@ type Query struct {
 	DistrictNumber      []int    `json:"district_number,omitempty"`
 	VoterID             []int    `json:"voter_id,omitempty"`
 	AcNumber            []int    `json:"ac_number,omitempty"`
-	PartNumber          []int    `json:"part_number,omitempty"`
+	PartNumber          []string `json:"part_number,omitempty"`
 	SectionNumber       []int    `json:"section_number,omitempty"`
 	SerialNumberInPart  []int    `json:"serial_number_in_part,omitempty"`
 	NameEnglish         []string `json:"name_english,omitempty"`
@@ -272,6 +272,7 @@ type List struct {
 	Districts []string `json:"districts,omitempty"`
 	Acs       []string `json:"acs,omitempty"`
 	Religion  string   `json:"religion,omitempty"`
+    Display   string   `json:"display,omitempty"`
 }
 
 type UpdateVoter struct {
@@ -294,7 +295,7 @@ func GetTableName(districtName string) string {
 	case "Rampur":
 		return "voter_20"
 	case "Moradabad":
-		return "voter_19"
+		return "new_voter_19"
 	case "Bangalore":
 		return "voter_21"
 		//return "voter"
@@ -326,4 +327,11 @@ type Section struct {
 	Section  string `json:"section,omitempty"`
 	Religion string `json:"religion,omitempty"`
 	Count    int    `json:"count,omitempty"`
+}
+
+type Booth struct {
+    BoothNumber  int    `json:"booth_number,omitempty"`
+	Booth        string `json:"booth,omitempty"`
+	Religion     string `json:"religion,omitempty"`
+	Count        int    `json:"count,omitempty"`
 }
