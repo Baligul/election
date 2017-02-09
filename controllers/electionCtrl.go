@@ -3277,8 +3277,9 @@ func sendOTP(otp int, toEmail string, displayName string, mobileNumber int64) er
 	m := email.NewMessage(title, body)
 	m.From = mail.Address{Name: "ElectionUBDA Team", Address: "electionubda@gmail.com"}
 	toCC1 := "baligcoup8@gmail.com"
-	toCC2 := "iiiftekhar@gmail.com"
-	m.To = []string{toEmail, toCC1, toCC2}
+	//toCC2 := "iiiftekhar@gmail.com"
+	//m.To = []string{toEmail, toCC1, toCC2}
+	m.To = []string{toEmail, toCC1}
 
 	// send it
 	auth := smtp.PlainAuth("", "electionubda@gmail.com", "hu123*ElectionUBDA", "smtp.gmail.com")
