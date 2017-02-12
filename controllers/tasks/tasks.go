@@ -79,7 +79,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -106,7 +106,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -118,7 +118,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -128,7 +128,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -136,7 +136,7 @@ func (e *TaskCtrl) GetCreatedTasks() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -378,7 +378,7 @@ func (e *TaskCtrl) GetMyTasks() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -399,7 +399,7 @@ func (e *TaskCtrl) GetMyTasks() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -411,7 +411,7 @@ func (e *TaskCtrl) GetMyTasks() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Get Tasks API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -421,7 +421,7 @@ func (e *TaskCtrl) GetMyTasks() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -429,7 +429,7 @@ func (e *TaskCtrl) GetMyTasks() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -544,7 +544,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -562,7 +562,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -574,7 +574,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Get Task Details API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -584,7 +584,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -592,7 +592,7 @@ func (e *TaskCtrl) GetTaskDetail() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -803,7 +803,7 @@ func (e *TaskCtrl) CreateTask() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -818,7 +818,7 @@ func (e *TaskCtrl) CreateTask() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -830,7 +830,7 @@ func (e *TaskCtrl) CreateTask() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -840,7 +840,7 @@ func (e *TaskCtrl) CreateTask() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -848,7 +848,7 @@ func (e *TaskCtrl) CreateTask() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -895,7 +895,7 @@ func (e *TaskCtrl) CreateTask() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -917,7 +917,7 @@ func (e *TaskCtrl) CreateTask() {
 			_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
@@ -929,7 +929,7 @@ func (e *TaskCtrl) CreateTask() {
 			_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
@@ -951,7 +951,7 @@ func (e *TaskCtrl) CreateTask() {
 				_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 				responseStatus := modelVoters.NewResponseStatus()
 				responseStatus.Response = "error"
-				responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+				responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 				responseStatus.Error = err.Error()
 				e.Data["json"] = &responseStatus
 				e.ServeJSON()
@@ -975,7 +975,7 @@ func (e *TaskCtrl) CreateTask() {
 			_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
@@ -1008,7 +1008,7 @@ func (e *TaskCtrl) UpdateTask() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -1030,7 +1030,7 @@ func (e *TaskCtrl) UpdateTask() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -1042,7 +1042,7 @@ func (e *TaskCtrl) UpdateTask() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Update Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -1052,7 +1052,7 @@ func (e *TaskCtrl) UpdateTask() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -1060,7 +1060,7 @@ func (e *TaskCtrl) UpdateTask() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -1123,7 +1123,7 @@ func (e *TaskCtrl) UpdateTask() {
 			_ = logs.WriteLogs("logs/error_logs.txt", "Update Task API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
@@ -1167,7 +1167,7 @@ func (e *TaskCtrl) UpdateTask() {
 						_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 						responseStatus := modelVoters.NewResponseStatus()
 						responseStatus.Response = "error"
-						responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+						responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 						responseStatus.Error = err.Error()
 						e.Data["json"] = &responseStatus
 						e.ServeJSON()
@@ -1179,7 +1179,7 @@ func (e *TaskCtrl) UpdateTask() {
 						_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 						responseStatus := modelVoters.NewResponseStatus()
 						responseStatus.Response = "error"
-						responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+						responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 						responseStatus.Error = err.Error()
 						e.Data["json"] = &responseStatus
 						e.ServeJSON()
@@ -1201,7 +1201,7 @@ func (e *TaskCtrl) UpdateTask() {
 							_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 							responseStatus := modelVoters.NewResponseStatus()
 							responseStatus.Response = "error"
-							responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+							responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 							responseStatus.Error = err.Error()
 							e.Data["json"] = &responseStatus
 							e.ServeJSON()
@@ -1237,7 +1237,7 @@ func (e *TaskCtrl) UpdateTask() {
 						_ = logs.WriteLogs("logs/error_logs.txt", "Create Task API: "+err.Error())
 						responseStatus := modelVoters.NewResponseStatus()
 						responseStatus.Response = "error"
-						responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+						responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 						responseStatus.Error = err.Error()
 						e.Data["json"] = &responseStatus
 						e.ServeJSON()
@@ -1269,7 +1269,7 @@ func (e *TaskCtrl) DeleteTask() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -1293,7 +1293,7 @@ func (e *TaskCtrl) DeleteTask() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -1305,7 +1305,7 @@ func (e *TaskCtrl) DeleteTask() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -1315,7 +1315,7 @@ func (e *TaskCtrl) DeleteTask() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -1323,7 +1323,7 @@ func (e *TaskCtrl) DeleteTask() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -1440,7 +1440,7 @@ func (e *TaskCtrl) DeleteTask() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete task based on task_id. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete task based on task_id. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -1464,7 +1464,7 @@ func (e *TaskCtrl) DeleteTask() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete task based on task_id. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete task based on task_id. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -1487,7 +1487,7 @@ func (e *TaskCtrl) DeleteTask() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Task API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete task based on task_id. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete task based on task_id. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()

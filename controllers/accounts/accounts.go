@@ -64,7 +64,7 @@ func (e *AccountCtrl) GetAccounts() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -82,7 +82,7 @@ func (e *AccountCtrl) GetAccounts() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -94,7 +94,7 @@ func (e *AccountCtrl) GetAccounts() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Get Accounts API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -104,7 +104,7 @@ func (e *AccountCtrl) GetAccounts() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -112,7 +112,7 @@ func (e *AccountCtrl) GetAccounts() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -266,7 +266,7 @@ func (e *AccountCtrl) CreateAccount() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -281,7 +281,7 @@ func (e *AccountCtrl) CreateAccount() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -293,7 +293,7 @@ func (e *AccountCtrl) CreateAccount() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Create Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -303,7 +303,7 @@ func (e *AccountCtrl) CreateAccount() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -311,7 +311,7 @@ func (e *AccountCtrl) CreateAccount() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -357,7 +357,7 @@ func (e *AccountCtrl) CreateAccount() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Create Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -395,7 +395,7 @@ func (e *AccountCtrl) UpdateAccount() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -414,7 +414,7 @@ func (e *AccountCtrl) UpdateAccount() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -426,7 +426,7 @@ func (e *AccountCtrl) UpdateAccount() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Update Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -436,7 +436,7 @@ func (e *AccountCtrl) UpdateAccount() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -444,7 +444,7 @@ func (e *AccountCtrl) UpdateAccount() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -588,7 +588,7 @@ func (e *AccountCtrl) UpdateAccount() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Update Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -616,7 +616,7 @@ func (e *AccountCtrl) DeleteAccount() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -635,7 +635,7 @@ func (e *AccountCtrl) DeleteAccount() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -647,7 +647,7 @@ func (e *AccountCtrl) DeleteAccount() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -657,7 +657,7 @@ func (e *AccountCtrl) DeleteAccount() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -665,7 +665,7 @@ func (e *AccountCtrl) DeleteAccount() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -742,7 +742,7 @@ func (e *AccountCtrl) DeleteAccount() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on account_id. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on account_id. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -759,7 +759,7 @@ func (e *AccountCtrl) DeleteAccount() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on group_id. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on group_id. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -776,7 +776,7 @@ func (e *AccountCtrl) DeleteAccount() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Account API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on leader_id. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete account based on leader_id. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()

@@ -63,7 +63,7 @@ func (e *GroupCtrl) GetGroups() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -81,7 +81,7 @@ func (e *GroupCtrl) GetGroups() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -93,7 +93,7 @@ func (e *GroupCtrl) GetGroups() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Get Groups API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -103,7 +103,7 @@ func (e *GroupCtrl) GetGroups() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -111,7 +111,7 @@ func (e *GroupCtrl) GetGroups() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -257,7 +257,7 @@ func (e *GroupCtrl) CreateGroup() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -272,7 +272,7 @@ func (e *GroupCtrl) CreateGroup() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -284,7 +284,7 @@ func (e *GroupCtrl) CreateGroup() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Create Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -294,7 +294,7 @@ func (e *GroupCtrl) CreateGroup() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -302,7 +302,7 @@ func (e *GroupCtrl) CreateGroup() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -347,7 +347,7 @@ func (e *GroupCtrl) CreateGroup() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Create Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -378,7 +378,7 @@ func (e *GroupCtrl) CreateGroup() {
 			_ = logs.WriteLogs("logs/error_logs.txt", "Create Group API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
@@ -409,7 +409,7 @@ func (e *GroupCtrl) UpdateGroup() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -428,7 +428,7 @@ func (e *GroupCtrl) UpdateGroup() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -440,7 +440,7 @@ func (e *GroupCtrl) UpdateGroup() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Update Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -450,7 +450,7 @@ func (e *GroupCtrl) UpdateGroup() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -458,7 +458,7 @@ func (e *GroupCtrl) UpdateGroup() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -549,7 +549,7 @@ func (e *GroupCtrl) UpdateGroup() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Update Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -570,7 +570,7 @@ func (e *GroupCtrl) UpdateGroup() {
 			_ = logs.WriteLogs("logs/error_logs.txt", "Update Group API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
@@ -594,7 +594,7 @@ func (e *GroupCtrl) UpdateGroup() {
 			_ = logs.WriteLogs("logs/error_logs.txt", "Update Group API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
@@ -623,7 +623,7 @@ func (e *GroupCtrl) DeleteGroup() {
 	if mobileNo == 0 || token == "" {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -642,7 +642,7 @@ func (e *GroupCtrl) DeleteGroup() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -654,7 +654,7 @@ func (e *GroupCtrl) DeleteGroup() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -664,7 +664,7 @@ func (e *GroupCtrl) DeleteGroup() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -672,7 +672,7 @@ func (e *GroupCtrl) DeleteGroup() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -753,7 +753,7 @@ func (e *GroupCtrl) DeleteGroup() {
 			_ = logs.WriteLogs("logs/error_logs.txt", "Update Group API: "+err.Error())
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 			responseStatus.Error = err.Error()
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
@@ -765,7 +765,7 @@ func (e *GroupCtrl) DeleteGroup() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on group_id. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on group_id. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -782,7 +782,7 @@ func (e *GroupCtrl) DeleteGroup() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on created_by. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on created_by. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -799,7 +799,7 @@ func (e *GroupCtrl) DeleteGroup() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Delete Group API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on group_lead_id. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request to delete group based on group_lead_id. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()

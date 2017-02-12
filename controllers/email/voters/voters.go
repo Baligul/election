@@ -82,7 +82,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Mobile number or token is wrong.")
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -97,7 +97,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	if !exist {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -109,7 +109,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 		_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Voters API: "+err.Error())
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		responseStatus.Error = err.Error()
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
@@ -119,7 +119,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 		if user[0].Token != token {
 			responseStatus := modelVoters.NewResponseStatus()
 			responseStatus.Response = "error"
-			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact electionubda.com team for assistance.")
+			responseStatus.Message = fmt.Sprintf("You are not authorised for this request. Please contact at info@humansystech.com for assistance.")
 			e.Data["json"] = &responseStatus
 			e.ServeJSON()
 		}
@@ -127,7 +127,7 @@ func (e *VotersCtrl) CreateAndEmailPdf() {
 	} else {
 		responseStatus := modelVoters.NewResponseStatus()
 		responseStatus.Response = "error"
-		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact electionubda.com team for assistance.")
+		responseStatus.Message = fmt.Sprintf("Couldn't serve your request at this time. Please contact at info@humansystech.com for assistance.")
 		e.Data["json"] = &responseStatus
 		e.ServeJSON()
 	}
@@ -839,8 +839,8 @@ func createPdf(filepath string) error {
 
 func sendEmailWithAttachment(toEmail string, displayName string, filepath string) error {
 	// compose the message
-	m := email.NewMessage(strings.TrimPrefix(filepath, "Downloads/"), "Dear "+displayName+"!\n\nPlease find attached the required file.\n\nThanks & Regards,\nElectionUBDA Team")
-	m.From = mail.Address{Name: "ElectionUBDA Team", Address: "electionubda@gmail.com"}
+	m := email.NewMessage(strings.TrimPrefix(filepath, "Downloads/"), "Dear "+displayName+"!\n\nPlease find attached the required file.\n\nThanks & Regards,\nHumansys Technologies Team")
+	m.From = mail.Address{Name: "Humansys Technologies Team", Address: "baligcoup8@gmail.com"}
 	m.To = []string{toEmail}
 
 	// add attachments
@@ -849,7 +849,7 @@ func sendEmailWithAttachment(toEmail string, displayName string, filepath string
 	}
 
 	// send it
-	auth := smtp.PlainAuth("", "electionubda@gmail.com", "hu123*ElectionUBDA", "smtp.gmail.com")
+	auth := smtp.PlainAuth("", "baligcoup8@gmail.com", "Huma!2d7D2f3B", "smtp.gmail.com")
 	if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
 		return err
 	}
