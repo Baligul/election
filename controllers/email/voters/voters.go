@@ -840,7 +840,7 @@ func createPdf(filepath string) error {
 func sendEmailWithAttachment(toEmail string, displayName string, filepath string) error {
 	// compose the message
 	m := email.NewMessage(strings.TrimPrefix(filepath, "Downloads/"), "Dear "+displayName+"!\n\nPlease find attached the required file.\n\nThanks & Regards,\nHumansys Technologies Team")
-	m.From = mail.Address{Name: "Humansys Technologies Team", Address: "baligcoup8@gmail.com"}
+	m.From = mail.Address{Name: "Humansys Technologies Team", Address: "eubdaht@gmail.com"}
 	m.To = []string{toEmail}
 
 	// add attachments
@@ -849,7 +849,7 @@ func sendEmailWithAttachment(toEmail string, displayName string, filepath string
 	}
 
 	// send it
-	auth := smtp.PlainAuth("", "baligcoup8@gmail.com", "Huma!2d7D2f3B", "smtp.gmail.com")
+	auth := smtp.PlainAuth("", "eubdaht@gmail.com", "Huma!2d7D2f3B", "smtp.gmail.com")
 	if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
 		return err
 	}

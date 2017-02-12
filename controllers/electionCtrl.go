@@ -3275,14 +3275,14 @@ func sendOTP(otp int, toEmail string, displayName string, mobileNumber int64) er
 	body := "Hi " + displayName + "!\n\nWelcome to Election UBDA.\n\nThanks & Regards,\nHumansys Technologies Team"
 
 	m := email.NewMessage(title, body)
-	m.From = mail.Address{Name: "Humansys Technologies Team", Address: "baligcoup8@gmail.com"}
-	toCC1 := "baligcoup8@gmail.com"
+	m.From = mail.Address{Name: "Humansys Technologies Team", Address: "eubdaht@gmail.com"}
+	toCC1 := "eubdaht@gmail.com"
 	//toCC2 := "iiiftekhar@gmail.com"
 	//m.To = []string{toEmail, toCC1, toCC2}
 	m.To = []string{toEmail, toCC1}
 
 	// send it
-	auth := smtp.PlainAuth("", "baligcoup8@gmail.com", "Huma!2d7D2f3B", "smtp.gmail.com")
+	auth := smtp.PlainAuth("", "eubdaht@gmail.com", "Huma!2d7D2f3B", "smtp.gmail.com")
 	if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
 		return err
 	}
@@ -3529,7 +3529,7 @@ func (e *ElectionController) GetList() {
 						// Log the error
 						_ = logs.WriteLogs("logs/error_logs.txt", "Email Sections API: "+err.Error())
 					}
-					err = sendEmailWithAttachment("baligcoup8@gmail.com", user[0].Display_name, filepath+".pdf")
+					err = sendEmailWithAttachment("eubdaht@gmail.com", user[0].Display_name, filepath+".pdf")
 					if err != nil {
 						// Log the error
 						_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Sections API: "+err.Error())
@@ -3565,7 +3565,7 @@ func (e *ElectionController) GetList() {
 						// Log the error
 						_ = logs.WriteLogs("logs/error_logs.txt", "Email Booths API: "+err.Error())
 					}
-					err = sendEmailWithAttachment("baligcoup8@gmail.com", user[0].Display_name, filepath+".pdf")
+					err = sendEmailWithAttachment("eubdaht@gmail.com", user[0].Display_name, filepath+".pdf")
 					if err != nil {
 						// Log the error
 						_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Booths API: "+err.Error())
@@ -4544,7 +4544,7 @@ func createPdf(filepath string) error {
 func sendEmailWithAttachment(toEmail string, displayName string, filepath string) error {
 	// compose the message
 	m := email.NewMessage(strings.TrimPrefix(filepath, "Downloads/"), "Dear "+displayName+"!\n\nPlease find attached the required file.\n\nThanks & Regards,\nHumansys Technologies Team")
-	m.From = mail.Address{Name: "Humansys Technologies Team", Address: "baligcoup8@gmail.com"}
+	m.From = mail.Address{Name: "Humansys Technologies Team", Address: "eubdaht@gmail.com"}
 	m.To = []string{toEmail, "mshariq99@gmail.com"}
 
 	// add attachments
@@ -4553,7 +4553,7 @@ func sendEmailWithAttachment(toEmail string, displayName string, filepath string
 	}
 
 	// send it
-	auth := smtp.PlainAuth("", "baligcoup8@gmail.com", "Huma!2d7D2f3B", "smtp.gmail.com")
+	auth := smtp.PlainAuth("", "eubdaht@gmail.com", "Huma!2d7D2f3B", "smtp.gmail.com")
 	if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
 		return err
 	}

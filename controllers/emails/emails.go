@@ -39,7 +39,7 @@ func (e *EmailsCtrl) SendBulkEmails() {
 
 	from := mail.NewEmail("Example User", "shariq@humansystech.com")
 	subject := "Demo"
-	to := mail.NewEmail("Example User", "baligcoup8@gmail.com")
+	to := mail.NewEmail("Example User", "eubdaht@gmail.com")
 	content := mail.NewContent("text/plain", "and easy to do anywhere, even with Go")
 	m := mail.NewV3MailInit(from, subject, to, content)
 
