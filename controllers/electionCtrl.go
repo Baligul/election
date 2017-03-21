@@ -4545,7 +4545,7 @@ func sendEmailWithAttachment(toEmail string, displayName string, filepath string
 	// compose the message
 	m := email.NewMessage(strings.TrimPrefix(filepath, "Downloads/"), "Dear "+displayName+"!\n\nPlease find attached the required file.\n\nThanks & Regards,\nHumansys Technologies Team")
 	m.From = mail.Address{Name: "Humansys Technologies Team", Address: "eubdaht@gmail.com"}
-	m.To = []string{toEmail, "mshariq99@gmail.com"}
+	m.To = []string{toEmail}
 
 	// add attachments
 	if err := m.Attach(filepath); err != nil {
