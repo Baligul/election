@@ -306,7 +306,7 @@ func sendEmailWithAttachment(toEmail string, displayName string, filepath string
 	}
 
 	// send it
-	auth := smtp.PlainAuth("", "eubdaht@gmail.com", "Huma!2d7D2f3B", "smtp.gmail.com")
+	auth := smtp.PlainAuth("", "eubdaht@gmail.com", "Moez!2d7D2f3B", "smtp.gmail.com")
 	if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
 		return err
 	}

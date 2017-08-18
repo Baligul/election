@@ -63,9 +63,9 @@ import (
 	"time"
 
 	modelAccounts "github.com/Baligul/election/models/accounts"
+	modelBooths "github.com/Baligul/election/models/booths"
 	modelSections "github.com/Baligul/election/models/sections"
 	modelVoters "github.com/Baligul/election/models/voters"
-	modelBooths "github.com/Baligul/election/models/booths"
 
 	"github.com/Baligul/election/formattime"
 	"github.com/Baligul/election/lib/html"
@@ -3282,7 +3282,7 @@ func sendOTP(otp int, toEmail string, displayName string, mobileNumber int64) er
 	m.To = []string{toEmail, toCC1}
 
 	// send it
-	auth := smtp.PlainAuth("", "eubdaht@gmail.com", "Huma!2d7D2f3B", "smtp.gmail.com")
+	auth := smtp.PlainAuth("", "eubdaht@gmail.com", "Moez!2d7D2f3B", "smtp.gmail.com")
 	if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
 		return err
 	}
@@ -3399,8 +3399,8 @@ func (e *ElectionController) GetList() {
 		user         []*modelAccounts.Account
 		err          error
 		sectionsList modelSections.Sections
-		boothsList 	 modelBooths.Booths
-		match		 string
+		boothsList   modelBooths.Booths
+		match        string
 	)
 
 	mobileNo, _ := e.GetInt("mobile_no")
@@ -3496,81 +3496,81 @@ func (e *ElectionController) GetList() {
 
 	if len(list.Acs) > 0 {
 		switch display {
-			case "Sections":
-				sections := getApprovedSections(user[0].Approved_acs, list.Acs, user[0].Approved_sections, religion)
-				if religion != "Muslim" && religion != "Others" {
-					sort.Strings(sections)
+		case "Sections":
+			sections := getApprovedSections(user[0].Approved_acs, list.Acs, user[0].Approved_sections, religion)
+			if religion != "Muslim" && religion != "Others" {
+				sort.Strings(sections)
+			}
+			e.Data["json"] = &sections
+
+			// Email the list of sections here
+			filepath := createFilePath(list, display)
+			sectionsList.File_title = createFileTitle(list, display)
+
+			// If the file which is to be send does not exists then create it
+			if _, err := os.Stat(filepath + ".pdf"); os.IsNotExist(err) || filepath == match {
+				sectionsMap := make(map[int]string)
+
+				for index, section := range sections {
+					sectionsMap[index+1] = section
 				}
-				e.Data["json"] = &sections
 
-				// Email the list of sections here
-				filepath := createFilePath(list, display)
-				sectionsList.File_title = createFileTitle(list, display)
+				sectionsList.Sections = sectionsMap
+				sectionsList.Total = len(sectionsMap)
 
-				// If the file which is to be send does not exists then create it
-				if _, err := os.Stat(filepath + ".pdf"); os.IsNotExist(err) || filepath == match {
-					sectionsMap := make(map[int]string)
-
-					for index, section := range sections {
-						sectionsMap[index+1] = section
-					}
-
-					sectionsList.Sections = sectionsMap
-					sectionsList.Total = len(sectionsMap)
-
-					// PDF creation code start here
-					err = html.GenerateHtmlFile("templates/section_list.html.tmpl", sectionsList, filepath+".html")
-					if err != nil {
-						// Log the error
-						_ = logs.WriteLogs("logs/error_logs.txt", "Email Sections API: "+err.Error())
-					}
-					err = createPdf(filepath)
-					if err != nil {
-						// Log the error
-						_ = logs.WriteLogs("logs/error_logs.txt", "Email Sections API: "+err.Error())
-					}
-					err = sendEmailWithAttachment("eubdaht@gmail.com", user[0].Display_name, filepath+".pdf")
-					if err != nil {
-						// Log the error
-						_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Sections API: "+err.Error())
-					}
+				// PDF creation code start here
+				err = html.GenerateHtmlFile("templates/section_list.html.tmpl", sectionsList, filepath+".html")
+				if err != nil {
+					// Log the error
+					_ = logs.WriteLogs("logs/error_logs.txt", "Email Sections API: "+err.Error())
 				}
-			case "Booths":
-				booths := getBooths(list.Acs, religion)
-				e.Data["json"] = &booths
-
-				// Email the list of booths here
-				filepath := createFilePath(list, display)
-				boothsList.File_title = createFileTitle(list, display)
-
-				// If the file which is to be send does not exists then create it
-				if _, err := os.Stat(filepath + ".pdf"); os.IsNotExist(err) || filepath == match{
-					boothsMap := make(map[int]string)
-
-					for index, booth := range booths {
-						boothsMap[index+1] = booth
-					}
-
-					boothsList.Booths = boothsMap
-					boothsList.Total = len(boothsMap)
-
-					// PDF creation code start here
-					err = html.GenerateHtmlFile("templates/booth_list.html.tmpl", boothsList, filepath+".html")
-					if err != nil {
-						// Log the error
-						_ = logs.WriteLogs("logs/error_logs.txt", "Email Booths API: "+err.Error())
-					}
-					err = createPdf(filepath)
-					if err != nil {
-						// Log the error
-						_ = logs.WriteLogs("logs/error_logs.txt", "Email Booths API: "+err.Error())
-					}
-					err = sendEmailWithAttachment("eubdaht@gmail.com", user[0].Display_name, filepath+".pdf")
-					if err != nil {
-						// Log the error
-						_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Booths API: "+err.Error())
-					}
+				err = createPdf(filepath)
+				if err != nil {
+					// Log the error
+					_ = logs.WriteLogs("logs/error_logs.txt", "Email Sections API: "+err.Error())
 				}
+				err = sendEmailWithAttachment("eubdaht@gmail.com", user[0].Display_name, filepath+".pdf")
+				if err != nil {
+					// Log the error
+					_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Sections API: "+err.Error())
+				}
+			}
+		case "Booths":
+			booths := getBooths(list.Acs, religion)
+			e.Data["json"] = &booths
+
+			// Email the list of booths here
+			filepath := createFilePath(list, display)
+			boothsList.File_title = createFileTitle(list, display)
+
+			// If the file which is to be send does not exists then create it
+			if _, err := os.Stat(filepath + ".pdf"); os.IsNotExist(err) || filepath == match {
+				boothsMap := make(map[int]string)
+
+				for index, booth := range booths {
+					boothsMap[index+1] = booth
+				}
+
+				boothsList.Booths = boothsMap
+				boothsList.Total = len(boothsMap)
+
+				// PDF creation code start here
+				err = html.GenerateHtmlFile("templates/booth_list.html.tmpl", boothsList, filepath+".html")
+				if err != nil {
+					// Log the error
+					_ = logs.WriteLogs("logs/error_logs.txt", "Email Booths API: "+err.Error())
+				}
+				err = createPdf(filepath)
+				if err != nil {
+					// Log the error
+					_ = logs.WriteLogs("logs/error_logs.txt", "Email Booths API: "+err.Error())
+				}
+				err = sendEmailWithAttachment("eubdaht@gmail.com", user[0].Display_name, filepath+".pdf")
+				if err != nil {
+					// Log the error
+					_ = logs.WriteLogs("logs/error_logs.txt", "Send Email Booths API: "+err.Error())
+				}
+			}
 		}
 		e.ServeJSON()
 	}
@@ -3658,7 +3658,7 @@ func getSections(acs []string, religion string) []string {
 
 			sectionName := make(map[string]int)
 			for _, section := range dbSections {
-			
+
 				if _, ok := sectionName[section.Section]; ok {
 					sectionName[section.Section] = sectionName[section.Section] + section.Count
 				} else {
@@ -4553,7 +4553,7 @@ func sendEmailWithAttachment(toEmail string, displayName string, filepath string
 	}
 
 	// send it
-	auth := smtp.PlainAuth("", "eubdaht@gmail.com", "Huma!2d7D2f3B", "smtp.gmail.com")
+	auth := smtp.PlainAuth("", "eubdaht@gmail.com", "Moez!2d7D2f3B", "smtp.gmail.com")
 	if err := email.Send("smtp.gmail.com:587", auth, m); err != nil {
 		return err
 	}
@@ -4564,8 +4564,8 @@ func sendEmailWithAttachment(toEmail string, displayName string, filepath string
 func createFilePath(query *modelVoters.List, display string) string {
 
 	var (
-			filepath string
-			match string
+		filepath string
+		match    string
 	)
 
 	if display == "Sections" {
@@ -4603,7 +4603,7 @@ func createFileTitle(query *modelVoters.List, display string) string {
 	var (
 		filetitle string
 		religion  string
-		match 	  string
+		match     string
 	)
 
 	if display == "Sections" {
@@ -4612,8 +4612,7 @@ func createFileTitle(query *modelVoters.List, display string) string {
 	} else if display == "Booths" {
 		filetitle = "मतदान केन्द्रों की सूचि"
 		match = "मतदान केन्द्रों की सूचि"
-	} 
-	
+	}
 
 	if len(query.Acs) == 1 {
 		filetitle = getHindiAcName(query.Acs[0])

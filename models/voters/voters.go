@@ -61,7 +61,7 @@ type Voter struct {
 	Mobile_no             int64  `form:"mobile_no" json:"mobile_no,omitempty"`
 	Image                 string `form:"image" json:"image,omitempty"`
 	Updated_on            string `json:"updated_on,omitempty"`
-    Part_name_english     string `form:"partnameenglish" json:"part_name_english,omitempty"`
+	Part_name_english     string `form:"partnameenglish" json:"part_name_english,omitempty"`
 	Part_name_hindi       string `form:"partnamehindi" json:"part_name_hindi,omitempty"`
 }
 
@@ -274,7 +274,7 @@ type List struct {
 	Districts []string `json:"districts,omitempty"`
 	Acs       []string `json:"acs,omitempty"`
 	Religion  string   `json:"religion,omitempty"`
-    Display   string   `json:"display,omitempty"`
+	Display   string   `json:"display,omitempty"`
 }
 
 type UpdateVoter struct {
@@ -332,8 +332,8 @@ type Section struct {
 }
 
 type Booth struct {
-    BoothNumber  int    `json:"booth_number,omitempty"`
-	Booth        string `json:"booth,omitempty"`
-	Religion     string `json:"religion,omitempty"`
-	Count        int    `json:"count,omitempty"`
+	BoothNumber int    `json:"booth_number,omitempty"`
+	Booth       string `json:"booth,omitempty"`
+	Religion    string `json:"religion,omitempty"`
+	Count       int    `json:"count,omitempty"`
 }
